@@ -24,6 +24,26 @@ from .config import CACHE_DIR, Source, settings
 
 log = logging.getLogger(__name__)
 
+
+def _use_system_trust_store() -> None:
+    """Trust the certificates Windows already trusts.
+
+    Connect's network terminates TLS at a corporate proxy, so Microsoft endpoints
+    present a certificate signed by an internal CA. Windows trusts it; Python's
+    bundled certifi store does not, which surfaces as CERTIFICATE_VERIFY_FAILED.
+    Deferring to the OS store fixes that without ever disabling verification.
+    Silently ignored where it is unnecessary, such as on the CI runner.
+    """
+    try:
+        import truststore
+
+        truststore.inject_into_ssl()
+    except Exception as exc:  # noqa: BLE001
+        log.debug("System trust store unavailable (%s); using certifi.", exc)
+
+
+_use_system_trust_store()
+
 GRAPH = "https://graph.microsoft.com/v1.0"
 SCOPE = ["https://graph.microsoft.com/.default"]
 TIMEOUT = 180

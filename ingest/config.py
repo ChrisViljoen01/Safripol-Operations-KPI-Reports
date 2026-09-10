@@ -115,6 +115,30 @@ SOURCES: list[Source] = [
 SOURCE_BY_KEY = {s.key: s for s in SOURCES}
 
 
+def _load_dotenv() -> None:
+    """Read key=value pairs from a local .env into the environment.
+
+    Lets the credentials sit in one gitignored file for local runs, while
+    GitHub Actions supplies the same names as real environment variables.
+    Anything already set in the environment wins, so CI is never overridden.
+    """
+    path = REPO_ROOT / ".env"
+    if not path.exists():
+        return
+    for raw in path.read_text(encoding="utf-8-sig").splitlines():
+        line = raw.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, _, value = line.partition("=")
+        key = key.strip()
+        value = value.strip().strip('"').strip("'")
+        if key and key not in os.environ:
+            os.environ[key] = value
+
+
+_load_dotenv()
+
+
 @dataclass
 class Settings:
     tenant_id: str = field(default_factory=lambda: os.getenv("AZURE_TENANT_ID", ""))
