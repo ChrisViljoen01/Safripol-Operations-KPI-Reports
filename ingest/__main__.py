@@ -25,6 +25,7 @@ def _check() -> int:
     except GraphError as exc:
         print(f"FAIL  {exc}")
         return 2
+    print(f"Auth: {client.mode} - signed in as {client.signed_in_as()}\n")
     rc = 0
     for source in SOURCES:
         try:
@@ -39,11 +40,34 @@ def _check() -> int:
     return rc
 
 
+def _login() -> int:
+    """One-off interactive sign-in that seeds the refresh-token cache."""
+    from .graph import TOKEN_CACHE_PATH, GraphClient, GraphError
+
+    settings.allow_interactive = True
+    settings.auth_mode = "delegated"
+    try:
+        client = GraphClient(prefer="delegated")
+        client.item_metadata(SOURCES[0].url)
+    except GraphError as exc:
+        print(f"\nSign-in failed: {exc}")
+        return 1
+    except Exception as exc:  # noqa: BLE001
+        print(f"\nSigned in, but the first read failed: {exc}")
+        return 1
+    print(f"\nSigned in as {client.signed_in_as()}.")
+    print(f"Token cached at {TOKEN_CACHE_PATH}")
+    print("Scheduled refreshes on this machine will now run without prompting.")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(prog="ingest")
     ap.add_argument("--local", default="", help="folder holding local copies of the workbooks")
     ap.add_argument("--offline", action="store_true", help="skip Graph entirely")
     ap.add_argument("--check", action="store_true", help="verify Graph access and exit")
+    ap.add_argument("--login", action="store_true",
+                    help="sign in once (device code) and cache the refresh token")
     ap.add_argument("--out", default="", help="output folder (default docs/data)")
     ap.add_argument("--quiet", action="store_true")
     args = ap.parse_args(argv)
@@ -61,6 +85,9 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.check:
         return _check()
+
+    if args.login:
+        return _login()
 
     snapshot = build_snapshot()
     from pathlib import Path

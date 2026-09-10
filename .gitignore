@@ -14,3 +14,7 @@ preview/
 
 .DS_Store
 Thumbs.db
+
+# local refresh artefacts
+refresh.log
+refresh.log.1

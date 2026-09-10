@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import base64
 import logging
+import os
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -46,7 +47,39 @@ _use_system_trust_store()
 
 GRAPH = "https://graph.microsoft.com/v1.0"
 SCOPE = ["https://graph.microsoft.com/.default"]
+# Delegated sign-in asks for the specific permission rather than /.default, so the
+# consent prompt states plainly that this only ever reads files.
+DELEGATED_SCOPE = ["Files.Read.All"]
 TIMEOUT = 180
+
+# Refresh tokens are what let the scheduled refresh run without a human. Keep the
+# cache outside the repo so it can never be committed, and readable only by this
+# Windows/Linux user account.
+TOKEN_CACHE_PATH = Path(
+    os.getenv("SAFRIPOL_TOKEN_CACHE")
+    or (Path.home() / ".safripol_report" / "token_cache.json")
+)
+
+
+def _load_cache() -> msal.SerializableTokenCache:
+    cache = msal.SerializableTokenCache()
+    if TOKEN_CACHE_PATH.exists():
+        try:
+            cache.deserialize(TOKEN_CACHE_PATH.read_text(encoding="utf-8"))
+        except Exception as exc:  # noqa: BLE001
+            log.warning("Token cache unreadable (%s); a new sign-in is needed.", exc)
+    return cache
+
+
+def _save_cache(cache: msal.SerializableTokenCache) -> None:
+    if not cache.has_state_changed:
+        return
+    TOKEN_CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
+    TOKEN_CACHE_PATH.write_text(cache.serialize(), encoding="utf-8")
+    try:
+        os.chmod(TOKEN_CACHE_PATH, 0o600)
+    except OSError:
+        pass
 
 
 class GraphError(RuntimeError):
@@ -72,25 +105,54 @@ def _encode_share_url(url: str) -> str:
 
 
 class GraphClient:
-    def __init__(self) -> None:
-        if not settings.has_graph_credentials:
-            raise GraphError(
-                "Missing Entra credentials. Set AZURE_TENANT_ID, AZURE_CLIENT_ID and "
-                "AZURE_CLIENT_SECRET."
+    """Talks to Graph as either the application or a signed-in user.
+
+    App-only is preferable for an unattended job, but it needs an *Application*
+    permission grant. Where only *Delegated* permissions are available, the
+    client falls back to signing a user in once via device code and reusing the
+    cached refresh token from then on. Graph then sees exactly the access that
+    user already has in SharePoint - nothing more.
+    """
+
+    def __init__(self, prefer: str = "") -> None:
+        mode = prefer or settings.auth_mode
+        if mode == "app" or (mode != "delegated" and settings.has_graph_credentials):
+            self._mode = "app"
+        else:
+            self._mode = "delegated"
+
+        if self._mode == "app":
+            if not settings.has_graph_credentials:
+                raise GraphError(
+                    "Missing Entra credentials. Set AZURE_TENANT_ID, AZURE_CLIENT_ID "
+                    "and AZURE_CLIENT_SECRET."
+                )
+            self._app = msal.ConfidentialClientApplication(
+                client_id=settings.client_id,
+                client_credential=settings.client_secret,
+                authority=settings.authority,
             )
-        self._app = msal.ConfidentialClientApplication(
-            client_id=settings.client_id,
-            client_credential=settings.client_secret,
-            authority=settings.authority,
-        )
+        else:
+            if not (settings.tenant_id and settings.client_id):
+                raise GraphError(
+                    "Missing Entra details. Set AZURE_TENANT_ID and AZURE_CLIENT_ID."
+                )
+            self._cache = _load_cache()
+            self._app = msal.PublicClientApplication(
+                client_id=settings.client_id,
+                authority=settings.authority,
+                token_cache=self._cache,
+            )
         self._token: str | None = None
+
+    # -- authentication -----------------------------------------------------
 
     def _acquire(self) -> str:
         if self._token:
             return self._token
-        result = self._app.acquire_token_silent(SCOPE, account=None)
-        if not result:
-            result = self._app.acquire_token_for_client(scopes=SCOPE)
+        result = (
+            self._acquire_app() if self._mode == "app" else self._acquire_delegated()
+        )
         if "access_token" not in result:
             raise GraphError(
                 f"Token request failed: {result.get('error')} - "
@@ -98,6 +160,52 @@ class GraphClient:
             )
         self._token = result["access_token"]
         return self._token
+
+    def _acquire_app(self) -> dict:
+        result = self._app.acquire_token_silent(SCOPE, account=None)
+        return result or self._app.acquire_token_for_client(scopes=SCOPE)
+
+    def _acquire_delegated(self) -> dict:
+        accounts = self._app.get_accounts()
+        if accounts:
+            result = self._app.acquire_token_silent(DELEGATED_SCOPE, account=accounts[0])
+            if result and "access_token" in result:
+                _save_cache(self._cache)
+                return result
+
+        if not settings.allow_interactive:
+            raise GraphError(
+                "No usable cached sign-in. Run 'python -m ingest --login' on this "
+                "machine to authorise it."
+            )
+
+        flow = self._app.initiate_device_flow(scopes=DELEGATED_SCOPE)
+        if "user_code" not in flow:
+            raise GraphError(
+                f"Device flow failed: {flow.get('error')} - "
+                f"{flow.get('error_description', '')[:300]}"
+            )
+        print("\n" + "=" * 68)
+        print("  Authorise the Safripol report to read SharePoint on your behalf")
+        print("=" * 68)
+        print(f"\n  1. Open   : {flow['verification_uri']}")
+        print(f"  2. Enter  : {flow['user_code']}")
+        print("  3. Sign in as yourself and approve.\n")
+        print("  Needed once per machine. The refresh token is then cached locally")
+        print("  and renews itself on every run.\n")
+        result = self._app.acquire_token_by_device_flow(flow)
+        _save_cache(self._cache)
+        return result
+
+    def signed_in_as(self) -> str:
+        if self._mode == "app":
+            return "application (app-only)"
+        accounts = self._app.get_accounts()
+        return accounts[0].get("username", "unknown") if accounts else "not signed in"
+
+    @property
+    def mode(self) -> str:
+        return self._mode
 
     def _headers(self) -> dict[str, str]:
         return {"Authorization": f"Bearer {self._acquire()}"}

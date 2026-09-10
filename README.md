@@ -26,12 +26,12 @@ is being lost while there is still time to react.
 
 ```
 SharePoint / OneDrive workbooks
-        │  Microsoft Graph (read-only, app-only auth)
+        │  Microsoft Graph (read-only)
         ▼
-   python -m ingest        ← runs every 30 min in GitHub Actions
+   python -m ingest        ← runs every 30 min via a Windows Scheduled Task
         │  parses, recomputes every KPI, ranks exceptions
         ▼
-   docs/data/snapshot.json  (committed)
+   docs/data/snapshot.json  (committed and pushed)
         │  GitHub Pages
         ▼
    docs/index.html          ← polls version.json every 60 s, repaints on change
@@ -40,8 +40,24 @@ SharePoint / OneDrive workbooks
 The page is plain HTML/CSS/JS with one vendored copy of Chart.js. No build step,
 no framework, no CDN call, no tracking. It loads on a phone on site.
 
-**Nothing writes back to SharePoint.** The Graph permission is `Files.Read.All`;
-the source workbooks cannot be modified by this system.
+**Nothing writes back to SharePoint.** The Graph permission is read-only; the
+source workbooks cannot be modified by this system.
+
+> **Where the refresh runs, and why it isn't CI.** The tenant granted
+> *Delegated* `Files.Read.All` rather than *Application*, so Graph tokens are
+> tied to a signed-in user and cannot be issued on a GitHub runner. The refresh
+> therefore runs on an operator PC under Task Scheduler and pushes the snapshot.
+> `.github/workflows/refresh-data.yml` is ready to take over unchanged if an
+> Application grant is approved later. See `ENTRA_SETUP.md`.
+
+### First-time setup
+
+```powershell
+pip install -r requirements.txt
+python -m ingest --login     # sign in once (device code)
+python -m ingest --check     # confirm all four sources read
+powershell -ExecutionPolicy Bypass -File tools\install_task.ps1 -Minutes 30
+```
 
 ### Sources
 

@@ -1,25 +1,28 @@
 name: Refresh report data
 
-# Pulls the live workbooks from SharePoint via Microsoft Graph, rebuilds the
-# snapshot and commits it. GitHub Pages serves docs/ from the default branch,
-# so a successful run publishes updated figures within a minute or two.
+# NOTE: currently inactive on a schedule.
+#
+# Refreshing from CI needs app-only auth, which requires an *Application*
+# permission grant (Files.Read.All) on the "Connect Logistics AI Hub" app
+# registration. Only *Delegated* permissions were approved, and a delegated
+# token is tied to a signed-in user, so it cannot be issued on a runner.
+#
+# Until that grant changes, the refresh runs on an operator machine via
+# tools/install_task.ps1 (Windows Scheduled Task) which does the same work and
+# pushes the snapshot here.
+#
+# If Application permission is granted later, delete the workflow_dispatch-only
+# restriction below and restore the schedule to make this the primary path.
 
 on:
-  schedule:
-    - cron: "*/30 * * * *"      # every 30 minutes, UTC
   workflow_dispatch:
     inputs:
       reason:
         description: "Why this manual refresh was triggered"
         required: false
         default: "Manual refresh"
-  push:
-    branches: [main]
-    paths:
-      - "ingest/**"
-      - "docs/index.html"
-      - "docs/assets/**"
-      - ".github/workflows/refresh-data.yml"
+  # schedule:
+  #   - cron: "*/30 * * * *"
 
 permissions:
   contents: write

@@ -146,6 +146,14 @@ class Settings:
     client_secret: str = field(default_factory=lambda: os.getenv("AZURE_CLIENT_SECRET", ""))
     local_dir: str = field(default_factory=lambda: os.getenv("SAFRIPOL_LOCAL_DIR", ""))
     offline: bool = field(default_factory=lambda: os.getenv("SAFRIPOL_OFFLINE", "") == "1")
+    # "app" for client credentials, "delegated" to run as a signed-in user, or
+    # "" to pick automatically based on whether a client secret is present.
+    auth_mode: str = field(
+        default_factory=lambda: os.getenv("SAFRIPOL_AUTH_MODE", "").strip().lower()
+    )
+    # Device-code sign-in needs a human, so it is only offered when explicitly
+    # allowed. Scheduled runs must rely on the cached refresh token.
+    allow_interactive: bool = False
 
     @property
     def authority(self) -> str:
