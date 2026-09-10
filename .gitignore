@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# downloaded workbooks and dev-only output — never commit source data
+.cache/
+preview/
+*.xlsx
+!docs/**/*.xlsx
+
+.env
+*.env
+
+.DS_Store
+Thumbs.db

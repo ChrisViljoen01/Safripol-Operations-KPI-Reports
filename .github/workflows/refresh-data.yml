@@ -1,0 +1,78 @@
+name: Refresh report data
+
+# Pulls the live workbooks from SharePoint via Microsoft Graph, rebuilds the
+# snapshot and commits it. GitHub Pages serves docs/ from the default branch,
+# so a successful run publishes updated figures within a minute or two.
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"      # every 30 minutes, UTC
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: "Why this manual refresh was triggered"
+        required: false
+        default: "Manual refresh"
+  push:
+    branches: [main]
+    paths:
+      - "ingest/**"
+      - "docs/index.html"
+      - "docs/assets/**"
+      - ".github/workflows/refresh-data.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-data
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Build snapshot
+        id: build
+        env:
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+        run: |
+          set +e
+          python -m ingest
+          code=$?
+          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+          # 0 = clean, 2 = built but a required source was unreachable.
+          # Anything else is a genuine failure.
+          if [ $code -ne 0 ] && [ $code -ne 2 ]; then exit $code; fi
+
+      - name: Commit snapshot
+        run: |
+          git config user.name  "safripol-report-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/data/snapshot.json docs/data/version.json
+          if git diff --cached --quiet; then
+            echo "No data change."
+          else
+            git commit -m "data: refresh snapshot $(date -u +'%Y-%m-%d %H:%M UTC')"
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}"
+            git push
+          fi
+
+      - name: Flag degraded refresh
+        if: steps.build.outputs.exit_code == '2'
+        run: |
+          echo "::warning::A required source could not be read. The snapshot was" \
+               "published from the last good data. Check the Data Sources tab."

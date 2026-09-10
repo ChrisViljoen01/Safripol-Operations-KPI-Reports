@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Safripol Operations KPI Report &middot; MV TAC IMOLA</title>
+<meta name="description" content="Live PTA outbound drawdown performance report - Connect Logistics for Safripol." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/styles.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230b1220'/><path d='M22 66 L40 40 L54 56 L78 26' stroke='%2338bdf8' stroke-width='9' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>" />
+</head>
+<body>
+
+<div id="loader" class="loader">
+  <div class="loader-inner">
+    <div class="spinner"></div>
+    <p>Loading operational data&hellip;</p>
+  </div>
+</div>
+
+<header class="topbar">
+  <div class="topbar-left">
+    <div class="mark" aria-hidden="true">
+      <svg viewBox="0 0 100 100"><rect width="100" height="100" rx="22"/><path d="M22 66 L40 40 L54 56 L78 26"/></svg>
+    </div>
+    <div class="titles">
+      <h1>Safripol Operations KPI Report</h1>
+      <p><span id="vesselName">MV TAC IMOLA</span> &middot; PTA Outbound Drawdown &middot; <span class="muted">Connect Logistics</span></p>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <div class="stamp">
+      <span class="stamp-label">Last refreshed</span>
+      <span class="stamp-value" id="lastRefreshed">&mdash;</span>
+      <span class="stamp-sub" id="refreshAge"></span>
+    </div>
+    <button id="refreshBtn" class="btn" title="Check for new data">
+      <svg viewBox="0 0 24 24" width="16" height="16"><path d="M21 12a9 9 0 1 1-2.64-6.36M21 3v6h-6"/></svg>
+      <span>Refresh</span>
+    </button>
+    <button id="themeBtn" class="btn btn-icon" title="Toggle light / dark">
+      <svg viewBox="0 0 24 24" width="16" height="16"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+    </button>
+    <button id="printBtn" class="btn btn-icon" title="Print / save as PDF">
+      <svg viewBox="0 0 24 24" width="16" height="16"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v8H6z"/></svg>
+    </button>
+  </div>
+</header>
+
+<div id="banner" class="banner hidden"></div>
+
+<nav class="tabs" id="tabs">
+  <button class="tab active" data-view="overview">Overview</button>
+  <button class="tab" data-view="drawdown">Drawdown &amp; Delivery</button>
+  <button class="tab" data-view="decant">Decanting &amp; Shifts</button>
+  <button class="tab" data-view="turnaround">Turnaround &amp; Dwell</button>
+  <button class="tab" data-view="losses">Time Lost</button>
+  <button class="tab" data-view="vessel">Vessel Discharge</button>
+  <button class="tab" data-view="team">Team</button>
+  <button class="tab" data-view="data">Data Sources</button>
+</nav>
+
+<main id="main">
+
+  <!-- ================= OVERVIEW ================= -->
+  <section class="view active" id="view-overview">
+
+    <div class="progress-hero card">
+      <div class="hero-head">
+        <div>
+          <h2>Shipment completion</h2>
+          <p class="sub">Recognised delivery to Safripol against the <span id="targetMt">20,390.40</span> MT drawdown target</p>
+        </div>
+        <div class="hero-pct"><span id="heroPct">0.0</span><small>%</small></div>
+      </div>
+      <div class="bar"><div class="bar-fill" id="heroBar" style="width:0%"></div></div>
+      <div class="hero-stats" id="heroStats"></div>
+    </div>
+
+    <div class="kpi-grid" id="kpiPrimary"></div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-head">
+          <h3>Cumulative offtake against target</h3>
+          <span class="chip" id="offtakeChip"></span>
+        </div>
+        <div class="chart-wrap tall"><canvas id="chartOfftake"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Daily delivered MT and loads</h3></div>
+        <div class="chart-wrap tall"><canvas id="chartDaily"></canvas></div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-head">
+          <h3>Exceptions requiring attention</h3>
+          <span class="chip" id="excChip"></span>
+        </div>
+        <div id="exceptionList" class="exceptions"></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Turnaround against target</h3></div>
+        <div id="turnaroundBars" class="bars"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= DRAWDOWN ================= -->
+  <section class="view" id="view-drawdown">
+    <div class="kpi-grid" id="kpiDrawdown"></div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-head"><h3>Plan versus actual cumulative MT</h3></div>
+        <div class="chart-wrap tall"><canvas id="chartPlan"></canvas></div>
+        <p class="note" id="planNote"></p>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Delivered MT by isotainer</h3></div>
+        <div class="chart-wrap tall"><canvas id="chartByIso"></canvas></div>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-head"><h3>Receipts into Connect Logistics</h3></div>
+        <div class="chart-wrap"><canvas id="chartReceipts"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Delivery detail by day</h3></div>
+        <div class="table-wrap"><table id="tblDelivery"></table></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= DECANT ================= -->
+  <section class="view" id="view-decant">
+    <div id="decantEmpty" class="empty-state hidden">
+      <h3>No decanting data captured yet</h3>
+      <p>This view populates as soon as the ops team starts capturing into
+         <strong>SAF Ops Tracking - TAC IMOLA.xlsx</strong> on SharePoint.
+         Decant times, intervals, shift attainment and time lost all flow from that workbook.</p>
+    </div>
+    <div id="decantBody">
+      <div class="kpi-grid" id="kpiDecant"></div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-head"><h3>Average decant and interval by day</h3></div>
+          <div class="chart-wrap tall"><canvas id="chartDecantTrend"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>Isotainers completed per day</h3></div>
+          <div class="chart-wrap tall"><canvas id="chartDecantVolume"></canvas></div>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-head"><h3>Shift output against plan</h3></div>
+          <div class="chart-wrap tall"><canvas id="chartShift"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>Performance by team</h3></div>
+          <div class="table-wrap"><table id="tblTeam"></table></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <h3>Shift log</h3>
+          <span class="chip" id="shiftChip"></span>
+        </div>
+        <div class="table-wrap tall"><table id="tblShifts"></table></div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-head"><h3>Decant activity by hour of day</h3></div>
+          <div class="chart-wrap"><canvas id="chartHour"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>Performance by isotainer</h3></div>
+          <div class="table-wrap"><table id="tblIso"></table></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TURNAROUND ================= -->
+  <section class="view" id="view-turnaround">
+    <div class="kpi-grid" id="kpiDwell"></div>
+    <div class="card">
+      <div class="card-head">
+        <h3>Cycle stages against target</h3>
+        <span class="chip">Derived from GPS tracking, not captured by hand</span>
+      </div>
+      <div id="cycleStrip" class="cycle-strip"></div>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-head"><h3>Turnaround trend</h3></div>
+        <div class="chart-wrap tall"><canvas id="chartTurnTrend"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Average dwell by site</h3></div>
+        <div class="chart-wrap tall"><canvas id="chartDwellTrend"></canvas></div>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-head"><h3>Site dwell performance</h3></div>
+        <div class="table-wrap"><table id="tblSites"></table></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Dwell by isotainer</h3></div>
+        <div class="table-wrap"><table id="tblDwellIso"></table></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TIME LOST ================= -->
+  <section class="view" id="view-losses">
+    <div class="kpi-grid" id="kpiLoss"></div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-head"><h3>Time lost by reason</h3></div>
+        <div class="chart-wrap tall"><canvas id="chartDelayCat"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Time lost by accountable party</h3></div>
+        <div class="chart-wrap tall"><canvas id="chartDelayOwner"></canvas></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h3>Time lost register</h3></div>
+      <div class="table-wrap"><table id="tblDelays"></table></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h3>All exceptions</h3></div>
+      <div id="exceptionListFull" class="exceptions"></div>
+    </div>
+  </section>
+
+  <!-- ================= VESSEL ================= -->
+  <section class="view" id="view-vessel">
+    <div class="kpi-grid" id="kpiVessel"></div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-head"><h3>Discharge volume and rate by hatch</h3></div>
+        <div class="chart-wrap tall"><canvas id="chartHatch"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Hatch sequence and durations</h3></div>
+        <div class="table-wrap"><table id="tblHatch"></table></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h3>Weather interruptions</h3></div>
+      <div class="table-wrap"><table id="tblWeather"></table></div>
+    </div>
+  </section>
+
+  <!-- ================= TEAM ================= -->
+  <section class="view" id="view-team">
+    <div class="kpi-grid" id="kpiTeam"></div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-head"><h3>Headcount by team</h3></div>
+        <div class="chart-wrap"><canvas id="chartTeamHeads"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Headcount by role</h3></div>
+        <div class="chart-wrap"><canvas id="chartTeamRole"></canvas></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h3>Resourcing against output</h3></div>
+      <div class="table-wrap"><table id="tblTeamOutput"></table></div>
+    </div>
+  </section>
+
+  <!-- ================= DATA ================= -->
+  <section class="view" id="view-data">
+    <div class="card">
+      <div class="card-head"><h3>Source status</h3></div>
+      <div class="table-wrap"><table id="tblSources"></table></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h3>Reporting basis</h3></div>
+      <div class="basis" id="basisList"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <span>Connect Logistics &middot; Process Optimization &amp; Development</span>
+  <span class="muted" id="footStamp"></span>
+</footer>
+
+<script src="assets/chart.umd.min.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

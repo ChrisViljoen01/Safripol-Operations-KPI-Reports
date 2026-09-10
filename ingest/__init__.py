@@ -1,0 +1,1 @@
+"""Safripol Operations KPI ingest."""
