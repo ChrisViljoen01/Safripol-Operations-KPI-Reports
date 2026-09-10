@@ -59,6 +59,11 @@ jobs:
           if [ $code -ne 0 ] && [ $code -ne 2 ]; then exit $code; fi
 
       - name: Commit snapshot
+        # A degraded build means a required source was unreachable, so the
+        # snapshot is missing real figures. Publishing it would blank a working
+        # report over a transient SharePoint or Graph outage. Keep the last good
+        # one instead - a stale timestamp is far better than a page of zeroes.
+        if: steps.build.outputs.exit_code == '0'
         run: |
           git config user.name  "safripol-report-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -74,5 +79,6 @@ jobs:
       - name: Flag degraded refresh
         if: steps.build.outputs.exit_code == '2'
         run: |
-          echo "::warning::A required source could not be read. The snapshot was" \
-               "published from the last good data. Check the Data Sources tab."
+          echo "::warning::A required source could not be read, so the snapshot" \
+               "was NOT published. The report is still serving the last good" \
+               "data. Check credentials and the Data Sources tab."
