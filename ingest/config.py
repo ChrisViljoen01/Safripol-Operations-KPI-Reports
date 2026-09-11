@@ -110,6 +110,17 @@ SOURCES: list[Source] = [
         required=False,
         local_hint="Saf Staff Roles .xlsx",
     ),
+    Source(
+        key="plan",
+        label="PTA Drawdown Plan",
+        url=(
+            "https://connectlogisticscoza.sharepoint.com/sites/"
+            "ProcessOptimizationandDevelopment/Shared%20Documents/Power%20BI/"
+            "Safripol%20Reports/PTA_Drawdown_Plan.xlsx"
+        ),
+        required=False,
+        local_hint="PTA_Drawdown_Plan.xlsx",
+    ),
 ]
 
 SOURCE_BY_KEY = {s.key: s for s in SOURCES}

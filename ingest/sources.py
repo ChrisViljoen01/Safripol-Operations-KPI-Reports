@@ -646,30 +646,139 @@ def parse_delay_log(path: Path) -> pd.DataFrame:
     return df.reset_index(drop=True)
 
 
+def _find_header_row(path: Path, sheet: str, must_have: str, limit: int = 12) -> int:
+    """Locate the real header row in a sheet that opens with title/banner rows."""
+    probe = pd.read_excel(path, sheet_name=sheet, header=None, nrows=limit,
+                          engine="openpyxl")
+    want = must_have.strip().lower()
+    for i in range(len(probe)):
+        cells = [str(c).strip().lower() for c in probe.iloc[i].tolist()]
+        if want in cells:
+            return i
+    return 0
+
+
 def parse_drawdown_plan(path: Path) -> pd.DataFrame:
-    sheet = _find_sheet(path, "Drawdown Plan")
+    """Daily drawdown plan.
+
+    Handles the standalone PTA_Drawdown_Plan workbook as well as the older
+    'Drawdown Plan' sheet embedded in the ops tracker, so either can supply it.
+    """
+    sheet = _find_sheet(path, "Daily Drawdown Plan", "Drawdown Plan")
     if sheet is None:
         return pd.DataFrame()
-    df = _read(path, sheet)
+    df = _read(path, sheet, header=_find_header_row(path, sheet, "Date"))
+    df = df.loc[:, ~df.columns.astype(str).str.startswith("Unnamed")]
     if df.empty:
         return df
-    ren = {"Date": "date", "Planned Isotainers": "planned_isotainers",
-           "Planned MT": "planned_mt", "Notes": "notes"}
+    ren = {
+        "Date": "date",
+        "Daily Target (t)": "planned_mt",
+        "Planned MT": "planned_mt",
+        "Isotainers to Schedule": "planned_isotainers",
+        "Planned Isotainers": "planned_isotainers",
+        "Isotainers Req'd (exact)": "planned_isotainers_exact",
+        "Cumulative Tons": "cum_planned_mt",
+        "Cumulative Isotainers": "cum_planned_isotainers",
+        "Balance Remaining (t)": "planned_balance_mt",
+        "Day": "weekday",
+        "Notes": "notes",
+    }
     df = df.rename(columns={k: v for k, v in ren.items() if k in df.columns})
     if "date" not in df:
         return pd.DataFrame()
     df["date"] = df["date"].map(_to_date)
     df = df[df["date"].notna()].copy()
-    df["planned_isotainers"] = df.get("planned_isotainers", pd.Series(dtype=float)).map(
-        lambda v: _num(v, 0.0)) or 0.0
+    if df.empty:
+        return df
+
+    df["planned_isotainers"] = df.get(
+        "planned_isotainers", pd.Series([None] * len(df))).map(lambda v: _num(v, 0.0))
     df["planned_mt"] = [
         p if p is not None else (i or 0) * TARGET_LOAD_KG / 1000.0
         for p, i in zip(df.get("planned_mt", pd.Series([None] * len(df))).map(lambda v: _num(v)),
                         df["planned_isotainers"])
     ]
     df = df.sort_values("date").reset_index(drop=True)
-    df["cum_planned_mt"] = df["planned_mt"].cumsum()
+    # Trust the workbook's own cumulative column when present; it is what the
+    # ops team reads off the plan.
+    if "cum_planned_mt" in df:
+        df["cum_planned_mt"] = df["cum_planned_mt"].map(lambda v: _num(v))
+    if "cum_planned_mt" not in df or df["cum_planned_mt"].isna().any():
+        df["cum_planned_mt"] = df["planned_mt"].cumsum()
+    if "cum_planned_isotainers" in df:
+        df["cum_planned_isotainers"] = df["cum_planned_isotainers"].map(
+            lambda v: _num(v)).round(0)
+    else:
+        df["cum_planned_isotainers"] = df["planned_isotainers"].cumsum().round(0)
     return df
+
+
+def parse_plan_assumptions(path: Path) -> dict:
+    """Key assumptions and phase table from the drawdown plan Dashboard sheet."""
+    out: dict = {"phases": []}
+    sheet = _find_sheet(path, "Dashboard")
+    if sheet is None:
+        return out
+    raw = pd.read_excel(path, sheet_name=sheet, header=None, engine="openpyxl")
+
+    labels = {
+        "total pta volume": "total_mt",
+        "isotainer capacity": "iso_capacity_mt",
+        "plan start date": "plan_start",
+        "plan end date": "plan_end",
+        "total plan duration": "duration_days",
+        "total isotainers require": "total_isotainers",
+        "average isotainers / day": "avg_isotainers_per_day",
+        "average tons / day": "avg_mt_per_day",
+    }
+    for row in raw.itertuples(index=False):
+        cells = list(row)
+        head = str(cells[0]).strip().lower() if cells and cells[0] is not None else ""
+        if not head:
+            continue
+        for prefix, key in labels.items():
+            if head.startswith(prefix):
+                val = next((c for c in cells[1:] if c is not None and str(c).strip() != ""),
+                           None)
+                if key in ("plan_start", "plan_end"):
+                    d = _to_date(val)
+                    out[key] = d.isoformat() if d else None
+                else:
+                    out[key] = _num(val)
+                break
+
+    # Phase table sits to the right of the assumptions, under a 'Phase' header.
+    hdr = None
+    for i in range(len(raw)):
+        cells = [str(c).strip().lower() for c in raw.iloc[i].tolist()]
+        if "phase" in cells and "start date" in cells:
+            hdr = i
+            break
+    if hdr is not None:
+        cols = {str(c).strip().lower(): j for j, c in enumerate(raw.iloc[hdr].tolist())}
+        def cell(r, name):
+            j = cols.get(name)
+            return r[j] if j is not None and j < len(r) else None
+        for i in range(hdr + 1, len(raw)):
+            r = raw.iloc[i].tolist()
+            name = cell(r, "phase")
+            if name is None or str(name).strip() == "":
+                continue
+            label = str(name).strip()
+            if label.lower() == "total":
+                break
+            start, end = _to_date(cell(r, "start date")), _to_date(cell(r, "end date"))
+            out["phases"].append({
+                "phase": label,
+                "start": start.isoformat() if start else None,
+                "end": end.isoformat() if end else None,
+                "days": _num(cell(r, "days")),
+                "daily_target_mt": _num(cell(r, "daily target (t)")),
+                "isotainers_per_day": _num(cell(r, "isotainers / day")),
+                "phase_total_mt": _num(cell(r, "phase total (t)")),
+            })
+    return out
 
 
 def parse_staff(path: Path) -> pd.DataFrame:

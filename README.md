@@ -55,7 +55,7 @@ source workbooks cannot be modified by this system.
 ```powershell
 pip install -r requirements.txt
 python -m ingest --login     # sign in once (device code)
-python -m ingest --check     # confirm all four sources read
+python -m ingest --check     # confirm all five sources read
 powershell -ExecutionPolicy Bypass -File tools\install_task.ps1 -Minutes 15
 ```
 
@@ -83,6 +83,7 @@ Start-ScheduledTask -TaskName 'Safripol Ops Report Refresh'
 | `Safripol v Connect Dwells.xlsx` | Automated GPS feed | Dwell, transit, turnaround — **read-only, never edited** |
 | `SAF Ops Tracking - TAC IMOLA.xlsx` | Yard / ops team | Decant times, delays, shift plan, heads |
 | `Saf Staff Roles.xlsx` | Ops management | Team and role allocation |
+| `PTA_Drawdown_Plan.xlsx` | Ops management | Daily drawdown targets, phases, planned completion date |
 
 ## Running it locally
 
@@ -136,7 +137,7 @@ ENTRA_SETUP.md   app registration, permissions, secrets
 ## Setting up a new shipment
 
 Everything shipment-specific is in `ingest/config.py`: the vessel label, the
-`TARGET_TOTAL_MT`, the four source URLs, the hatch table and the weather events.
+`TARGET_TOTAL_MT`, the five source URLs, the hatch table and the weather events.
 Change those, re-run `tools/build_tracker.py` for a fresh capture workbook, and
 the rest follows.
 

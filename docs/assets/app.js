@@ -394,6 +394,7 @@
       ["Outstanding", `${num(h.outstanding_mt, 2)} MT`],
       ["Loads completed", num(h.loads_total)],
       ["Connect stock on hand", `${num(h.pta_balance_mt, 2)} MT`],
+      ["Planned completion", h.planned_completion ? dLong(h.planned_completion) : "—"],
       ["Projected completion", h.projected_completion && h.projected_completion.length > 10
         ? h.projected_completion : dLong(h.projected_completion) === "—"
           ? h.projected_completion : dLong(h.projected_completion)],
@@ -620,6 +621,18 @@
   /* ----------------------------- DRAWDOWN ------------------------------ */
   function renderDrawdown(d) {
     const dp = d.dispatch, rc = d.receipts;
+    const pl = d.plan || {}, pj = pl.projection || {};
+
+    const statusTone = { ahead: "good", "on-track": "good", behind: "bad",
+                         complete: "good" }[pj.status] || "";
+    const slip = pj.days_vs_plan;
+    const slipText = slip === null || slip === undefined ? "Awaiting delivery history"
+      : slip === 0 ? "Exactly on the plan end date"
+      : slip > 0 ? `${slip} day${slip === 1 ? "" : "s"} later than plan`
+      : `${Math.abs(slip)} day${Math.abs(slip) === 1 ? "" : "s"} ahead of plan`;
+    const conf = pj.confidence && pj.confidence !== "high"
+      ? ` · ${pj.confidence} confidence` : "";
+
     renderKpis("#kpiDrawdown", [
       { label: "Delivered to Safripol", value: num(dp.delivered_mt, 2), unit: "MT",
         sub: `${pct(dp.completion_pct, 2)} of target` },
@@ -629,46 +642,111 @@
         sub: "Physically received less dispatched" },
       { label: "Total received", value: num(rc.total_admin_mt, 2), unit: "MT",
         sub: `Vessel ${num(rc.direct_mt, 0)} · leasehold ${num(rc.leasehold_mt, 0)} MT` },
+      { label: "Planned completion",
+        value: pl.plan_end ? dLong(pl.plan_end) : "—",
+        sub: pl.days
+          ? `${pl.days}-day plan from ${dLong(pl.plan_start)}`
+          : "No drawdown plan loaded",
+        icon: "target.png" },
+      { label: "Projected completion",
+        value: pj.projected_end ? dLong(pj.projected_end)
+          : (dp.projected_completion || "Pending"),
+        sub: pj.rate_mt_per_day
+          ? `At ${num(pj.rate_mt_per_day, 1)} MT/day · ${pj.rate_basis}${conf}`
+          : "Awaiting delivery history",
+        tone: statusTone, icon: "on-time.png" },
+      { label: "Schedule variance",
+        value: slip === null || slip === undefined ? "—"
+          : `${slip > 0 ? "+" : ""}${slip}`,
+        unit: slip === null || slip === undefined ? "" : "days",
+        sub: slipText, tone: statusTone, icon: "delivered.png" },
+      { label: "Ahead / behind plan",
+        value: pl.variance_to_date_mt === null || pl.variance_to_date_mt === undefined
+          ? "—" : num(pl.variance_to_date_mt, 1),
+        unit: "MT",
+        sub: pl.cum_planned_to_date_mt !== null && pl.cum_planned_to_date_mt !== undefined
+          ? `Plan says ${num(pl.cum_planned_to_date_mt, 0)} MT by today`
+          : "Plan has not started",
+        tone: (pl.variance_to_date_mt ?? 0) >= 0 ? "good" : "bad" },
+      { label: "Required rate",
+        value: num(pj.required_rate_mt_per_day ?? dp.required_rate_mt_per_day, 1),
+        unit: "MT/day",
+        sub: pl.days_remaining
+          ? `To finish by ${dLong(pl.plan_end)} · ${pl.days_remaining} days left`
+          : "No plan end date",
+        tone: (d.headline.avg_daily_offtake_mt || 0)
+              >= (pj.required_rate_mt_per_day || Infinity) ? "good" : "warn" },
       { label: "Loads completed", value: num(dp.loads_total),
         sub: `${num(dp.open_loads)} open · max ${num(dp.max_loads_day)}/day` },
       { label: "Avg MT per load", value: num(dp.avg_mt_per_load, 2), unit: "MT",
         sub: `Avg residual in tank ${num(dp.avg_remained_in_tank_kg, 0)} kg` },
-      { label: "Projected completion",
-        value: dp.projected_completion && dp.projected_completion.length === 10
-          ? dLong(dp.projected_completion) : dp.projected_completion,
-        sub: dp.projected_remaining_days
-          ? `${dp.projected_remaining_days} delivery days remaining` : "Awaiting delivery history" },
     ]);
 
     // plan vs actual
     if (d.plan.has_plan) {
       clearEmpty("chartPlan");
       const rows = d.plan.rows;
+      // Draw the forecast as a dashed run from today's actual to the projected
+      // finish, so the gap against plan is visible rather than implied.
+      let forecast = null;
+      if (pj.projected_end && pj.rate_mt_per_day) {
+        const lastActualIdx = rows.reduce(
+          (acc, r, i) => (r.cum_actual_mt !== null && r.cum_actual_mt !== undefined ? i : acc), -1);
+        if (lastActualIdx >= 0) {
+          const startMt = rows[lastActualIdx].cum_actual_mt;
+          const startDate = new Date(rows[lastActualIdx].date);
+          forecast = rows.map((r, i) => {
+            if (i < lastActualIdx) return null;
+            const days = (new Date(r.date) - startDate) / 86400000;
+            return Math.min(startMt + days * pj.rate_mt_per_day, d.headline.target_total_mt);
+          });
+        }
+      }
+      const datasets = [
+        { label: "Plan cumulative MT", data: rows.map((r) => r.cum_planned_mt),
+          borderColor: css("--text-3"), borderWidth: 2, borderDash: [6, 4],
+          pointRadius: 0, tension: .2, fill: false },
+        { label: "Actual cumulative MT", data: rows.map((r) => r.cum_actual_mt),
+          borderColor: css("--accent"), borderWidth: 2.5,
+          backgroundColor: (c) => fadeFill(c, "#38bdf8"), fill: true,
+          spanGaps: true, tension: .3, pointRadius: 0 },
+      ];
+      if (forecast) {
+        datasets.push({
+          label: "Forecast at current rate", data: forecast,
+          borderColor: css("--warn"), borderWidth: 2, borderDash: [3, 4],
+          pointRadius: 0, tension: .2, fill: false, spanGaps: true,
+        });
+      }
       draw("chartPlan", {
         type: "line",
-        data: {
-          labels: rows.map((r) => dLabel(r.date)),
-          datasets: [
-            { label: "Plan cumulative MT", data: rows.map((r) => r.cum_planned_mt),
-              borderColor: css("--text-3"), borderWidth: 2, borderDash: [6, 4],
-              pointRadius: 0, tension: .2, fill: false },
-            { label: "Actual cumulative MT", data: rows.map((r) => r.cum_actual_mt),
-              borderColor: css("--accent"), borderWidth: 2.5,
-              backgroundColor: (c) => fadeFill(c, "#38bdf8"), fill: true,
-              spanGaps: true, tension: .3, pointRadius: 0 },
-          ],
-        },
+        data: { labels: rows.map((r) => dLabel(r.date)), datasets },
         options: baseOpts(),
       });
-      const v = d.plan.variance_mt;
-      $("#planNote").textContent = v === null
-        ? "Plan loaded. Actuals will track against it once deliveries begin."
-        : `Currently ${v >= 0 ? "ahead of" : "behind"} plan by ${num(Math.abs(v), 2)} MT.`;
+
+      const v = pl.variance_to_date_mt ?? d.plan.variance_mt;
+      const parts = [];
+      if (v === null || v === undefined) {
+        parts.push("Plan loaded. Actuals will track against it once deliveries begin.");
+      } else {
+        parts.push(`Currently ${v >= 0 ? "ahead of" : "behind"} plan by ` +
+                   `${num(Math.abs(v), 2)} MT.`);
+      }
+      if (pl.current_phase) {
+        parts.push(`${pl.current_phase.phase}: ` +
+          `${num(pl.current_phase.daily_target_mt, 0)} MT/day ` +
+          `(${num(pl.current_phase.isotainers_per_day, 0)} isotainers) to ` +
+          `${dLong(pl.current_phase.end)}.`);
+      }
+      if (pj.projected_end && pj.status && pj.status !== "unknown") {
+        parts.push(`Forecast finish ${dLong(pj.projected_end)} — ${slipText.toLowerCase()}.`);
+      }
+      $("#planNote").textContent = parts.join(" ");
     } else {
-      emptyChart("chartPlan", "Add the Safripol daily commitment to the Drawdown Plan sheet " +
-        "in SAF Ops Tracking to chart plan against actual.");
+      emptyChart("chartPlan", "The PTA drawdown plan could not be read, so plan " +
+        "against actual cannot be charted.");
       $("#planNote").textContent =
-        "No drawdown plan captured. Populate the Drawdown Plan sheet to enable pace tracking.";
+        "No drawdown plan loaded, so pace tracking is unavailable.";
     }
 
     if (dp.by_iso.length) {

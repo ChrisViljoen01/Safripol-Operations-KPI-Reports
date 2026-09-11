@@ -40,6 +40,7 @@ def build_snapshot() -> dict:
     dwells = fetched.get("dwells")
     tracking = fetched.get("tracking")
     staff_src = fetched.get("staff")
+    plan_src = fetched.get("plan")
 
     dispatch = receipts = pd.DataFrame()
     if stock and stock.ok:
@@ -53,11 +54,20 @@ def build_snapshot() -> dict:
             turns = _safe(sources.build_turnaround, visits, label="turnaround")
 
     decant = shift_plan = delay_log = drawdown = pd.DataFrame()
+    assumptions: dict = {}
     if tracking and tracking.ok:
         decant = _safe(sources.parse_decant_log, tracking.path, label="decant log")
         shift_plan = _safe(sources.parse_shift_plan, tracking.path, label="shift plan")
         delay_log = _safe(sources.parse_delay_log, tracking.path, label="delay log")
         drawdown = _safe(sources.parse_drawdown_plan, tracking.path, label="drawdown")
+    # The standalone plan workbook is the authority; it wins over any older
+    # copy of the plan embedded in the tracker.
+    if plan_src and plan_src.ok:
+        standalone = _safe(sources.parse_drawdown_plan, plan_src.path, label="drawdown plan")
+        if not standalone.empty:
+            drawdown = standalone
+        assumptions = _safe(sources.parse_plan_assumptions, plan_src.path,
+                            label="plan assumptions", default={}) or {}
 
     staff = pd.DataFrame()
     if tracking and tracking.ok:
@@ -70,7 +80,8 @@ def build_snapshot() -> dict:
     disp = metrics.dispatch_block(dispatch, rec["total_physical_mt"] or 0.0, drawdown)
     dwl = metrics.dwell_block(visits, turns)
     dec = metrics.decant_block(decant, delay_log, shift_plan, staff)
-    pln = metrics.plan_block(drawdown, disp["by_date"])
+    pln = metrics.plan_block(drawdown, disp["by_date"], disp["delivered_mt"] or 0.0,
+                             TARGET_TOTAL_MT, assumptions)
     exc = metrics.exceptions_block(decant, delay_log, dwl, disp, dec)
 
     now_utc = datetime.now(timezone.utc)
@@ -115,6 +126,18 @@ def build_snapshot() -> dict:
         "avg_turnaround_hours": (dwl.get("turnaround") or {}).get("avg_turnaround_hours"),
         "open_exceptions": len([e for e in exc if e["severity"] == "high"]),
     }
+
+    # The plan block forecasts off recent pace and knows the plan end date, so it
+    # is the better projection. Keep one number across the whole report.
+    _proj = pln.get("projection") or {}
+    if _proj.get("projected_end"):
+        headline["projected_completion"] = _proj["projected_end"]
+        headline["projected_remaining_days"] = _proj["days_to_go"]
+    if _proj.get("required_rate_mt_per_day") is not None:
+        headline["required_rate_mt_per_day"] = _proj["required_rate_mt_per_day"]
+    headline["planned_completion"] = pln.get("plan_end")
+    headline["days_vs_plan"] = _proj.get("days_vs_plan")
+    headline["plan_status"] = _proj.get("status")
 
     return {
         "schema_version": SNAPSHOT_VERSION,

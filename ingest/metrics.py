@@ -580,9 +580,18 @@ def decant_block(decant: pd.DataFrame, delays: pd.DataFrame,
 # --------------------------------------------------------------------------- #
 # plan vs actual
 # --------------------------------------------------------------------------- #
-def plan_block(drawdown: pd.DataFrame, dispatch_by_date: list[dict]) -> dict:
+def plan_block(drawdown: pd.DataFrame, dispatch_by_date: list[dict],
+               delivered_mt: float = 0.0, target_total_mt: float = TARGET_TOTAL_MT,
+               assumptions: dict | None = None) -> dict:
+    assumptions = assumptions or {}
+    empty = {
+        "has_plan": False, "rows": [], "variance_mt": None, "days": 0,
+        "assumptions": assumptions, "phases": assumptions.get("phases", []),
+        "projection": _projection(dispatch_by_date, delivered_mt, target_total_mt, None),
+    }
     if drawdown is None or drawdown.empty:
-        return {"has_plan": False, "rows": [], "variance_mt": None, "days": 0}
+        return empty
+
     actual_map = {r["date"]: r["cum_mt"] for r in dispatch_by_date}
     running = None
     rows = []
@@ -593,19 +602,121 @@ def plan_block(drawdown: pd.DataFrame, dispatch_by_date: list[dict]) -> dict:
         rows.append({
             "date": d,
             "planned_mt": r2(r.planned_mt),
+            "planned_isotainers": r2(getattr(r, "planned_isotainers", None), 0),
             "cum_planned_mt": r2(r.cum_planned_mt),
+            "cum_planned_isotainers": r2(getattr(r, "cum_planned_isotainers", None), 0),
             "cum_actual_mt": r2(running),
             "variance_mt": r2((running - r.cum_planned_mt) if running is not None else None),
         })
+
+    plan_end = rows[-1]["date"] if rows else None
+    plan_start = rows[0]["date"] if rows else None
+    today = date.today().isoformat()
+
+    # Where the plan says we should be by today (the last planned day that has
+    # already happened), so "ahead/behind" is measured against today, not against
+    # the last day we happened to dispatch on.
+    due = next((x for x in reversed(rows) if x["date"] <= today), None)
+    cum_planned_to_date = due["cum_planned_mt"] if due else None
+    variance_to_date = (r2(delivered_mt - cum_planned_to_date)
+                        if cum_planned_to_date is not None else None)
+
     latest = next((x for x in reversed(rows) if x["cum_actual_mt"] is not None), None)
+    proj = _projection(dispatch_by_date, delivered_mt, target_total_mt, plan_end)
+
     return {
         "has_plan": True,
         "rows": rows,
-        "plan_end": rows[-1]["date"] if rows else None,
+        "plan_start": plan_start,
+        "plan_end": plan_end,
         "plan_total_mt": rows[-1]["cum_planned_mt"] if rows else None,
+        "plan_total_isotainers": rows[-1]["cum_planned_isotainers"] if rows else None,
+        "cum_planned_to_date_mt": cum_planned_to_date,
+        "variance_to_date_mt": variance_to_date,
         "variance_mt": latest["variance_mt"] if latest else None,
         "days": len(rows),
+        "days_elapsed": sum(1 for x in rows if x["date"] <= today),
+        "days_remaining": sum(1 for x in rows if x["date"] > today),
+        "assumptions": assumptions,
+        "phases": assumptions.get("phases", []),
+        "current_phase": _current_phase(assumptions.get("phases", []), today),
+        "projection": proj,
     }
+
+
+def _current_phase(phases: list[dict], today: str) -> dict | None:
+    for p in phases:
+        if p.get("start") and p.get("end") and p["start"] <= today <= p["end"]:
+            return p
+    return None
+
+
+def _projection(dispatch_by_date: list[dict], delivered_mt: float,
+                target_total_mt: float, plan_end: str | None) -> dict:
+    """Forecast the completion date from the achieved offtake rate.
+
+    Uses the last 7 active days so the forecast tracks current performance
+    rather than being dragged by a slow start, and falls back to the full
+    average while there is too little history to trust a rolling window.
+    """
+    out = {
+        "projected_end": None, "days_to_go": None, "rate_mt_per_day": None,
+        "rate_basis": None, "plan_end": plan_end, "days_vs_plan": None,
+        "status": "unknown", "required_rate_mt_per_day": None,
+        "confidence": None,
+        "outstanding_mt": r2(max(target_total_mt - (delivered_mt or 0.0), 0.0)),
+    }
+    active = [r for r in (dispatch_by_date or []) if (r.get("mt") or 0) > 0]
+    outstanding = max(target_total_mt - (delivered_mt or 0.0), 0.0)
+
+    if outstanding <= 0:
+        last = active[-1]["date"] if active else date.today().isoformat()
+        out.update(projected_end=last, days_to_go=0, status="complete")
+        if plan_end:
+            out["days_vs_plan"] = (date.fromisoformat(last)
+                                   - date.fromisoformat(plan_end)).days
+        return out
+    if not active:
+        return out
+
+    window = active[-7:] if len(active) >= 3 else active
+    span_mt = sum(r.get("mt") or 0 for r in window)
+    # Span the calendar days the window covers, so idle days between dispatches
+    # drag the rate down exactly as they do in reality.
+    first, last = window[0]["date"], window[-1]["date"]
+    span_days = (date.fromisoformat(last) - date.fromisoformat(first)).days + 1
+    rate = span_mt / span_days if span_days > 0 else None
+    if not rate:
+        return out
+
+    days_to_go = math.ceil(outstanding / rate)
+    projected = date.today() + timedelta(days=days_to_go)
+    out.update(
+        rate_mt_per_day=r2(rate),
+        rate_basis=f"{len(window)} active day{'s' if len(window) != 1 else ''}"
+                   f" to {_d_label(last)}",
+        days_to_go=days_to_go,
+        projected_end=projected.isoformat(),
+        # Day one or two of a drawdown cannot support a credible 80-day forecast;
+        # say so rather than presenting a volatile date as fact.
+        confidence=("low" if len(window) < 3 else
+                    "medium" if len(window) < 7 else "high"),
+    )
+    if plan_end:
+        pe = date.fromisoformat(plan_end)
+        out["days_vs_plan"] = (projected - pe).days
+        left = (pe - date.today()).days + 1
+        out["required_rate_mt_per_day"] = r2(outstanding / left) if left > 0 else None
+        out["status"] = ("ahead" if out["days_vs_plan"] < 0
+                         else "on-track" if out["days_vs_plan"] == 0 else "behind")
+    return out
+
+
+def _d_label(iso: str) -> str:
+    try:
+        return date.fromisoformat(iso).strftime("%d %b")
+    except Exception:  # noqa: BLE001
+        return iso
 
 
 # --------------------------------------------------------------------------- #
