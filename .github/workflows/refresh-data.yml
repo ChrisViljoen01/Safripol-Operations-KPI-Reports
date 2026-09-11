@@ -2,17 +2,16 @@ name: Refresh report data
 
 # Unattended cloud refresh.
 #
-# Requires app-only auth: Microsoft Graph *Application* permission Sites.Selected
-# on the "Connect Logistics AI Hub" registration, admin consented, PLUS an
-# explicit per-site grant for the two site collections that hold the sources
-# (the team site and Richard's OneDrive). See ENTRA_SETUP.md.
+# Requires app-only auth: Microsoft Graph *Application* permission Sites.Selected,
+# admin consented, plus a per-site grant on the site collection holding the
+# sources. This runs as the "YMS - Sharepoint API" registration, which already
+# carries both for /sites/ProcessOptimizationandDevelopment.
 #
 # Verify readiness at any time with:  python tools/check_app_auth.py
 #
-# Until that is in place this job still runs, but every source returns 401, the
-# build is flagged degraded and NOTHING is published - the report keeps serving
-# the last good snapshot from the operator-machine schedule
-# (tools/install_task.ps1). That makes this safe to enable ahead of consent.
+# If auth lapses (an expired client secret being the likely cause) every source
+# returns 401, the build is flagged degraded and NOTHING is published - the
+# report keeps serving the last good snapshot rather than a page of zeroes.
 
 on:
   workflow_dispatch:
