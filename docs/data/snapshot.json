@@ -6,9 +6,9 @@
     "client": "Safripol",
     "operator": "Connect Logistics",
     "product": "PTA",
-    "generated_at_utc": "2026-09-11T13:15:32+00:00",
-    "generated_at_sast": "2026-09-11T15:15:32+02:00",
-    "generated_display": "11 Sep 2026 15:15 SAST",
+    "generated_at_utc": "2026-09-11T13:30:29+00:00",
+    "generated_at_sast": "2026-09-11T15:30:29+02:00",
+    "generated_display": "11 Sep 2026 15:30 SAST",
     "sources": [
       {
         "key": "stock",
@@ -35,7 +35,7 @@
         "label": "SAF Ops Tracking - TAC IMOLA",
         "ok": true,
         "origin": "graph",
-        "last_modified": "2026-09-11T15:11+02:00",
+        "last_modified": "2026-09-11T15:18+02:00",
         "size_kb": 941,
         "required": false,
         "error": ""
@@ -54,7 +54,7 @@
         "key": "plan",
         "label": "PTA Drawdown Plan",
         "ok": true,
-        "origin": "local",
+        "origin": "graph",
         "last_modified": "2026-09-11T15:09+02:00",
         "size_kb": 36,
         "required": false,
@@ -81,7 +81,7 @@
     "projected_remaining_days": 157,
     "avg_decant_hours": 1.15,
     "avg_interval_hours": 0.77,
-    "time_lost_hours": 0.57,
+    "time_lost_hours": 1.47,
     "decants_per_day": 3.5,
     "avg_attainment_pct": 0.4,
     "avg_turnaround_hours": 10.34,
@@ -1293,10 +1293,10 @@
     "total_decants": 7,
     "avg_decant_hours": 1.15,
     "avg_interval_hours": 0.77,
-    "avg_productive_hours": 1.06,
+    "avg_productive_hours": 0.94,
     "clean_pct": 1.0,
     "time_lost_hours": 0.0,
-    "delay_hours_logged": 0.57,
+    "delay_hours_logged": 1.47,
     "total_net_mt": 123.86,
     "decants_per_day": 3.5,
     "by_day": [
@@ -1316,7 +1316,7 @@
         "cum_mt": 123.86,
         "avg_decant_hours": 1.45,
         "avg_interval_hours": 1.05,
-        "delay_minutes": 0.0
+        "delay_minutes": 54.0
       }
     ],
     "by_shift": [
@@ -1326,7 +1326,7 @@
         "avg_decant_hours": 1.33,
         "avg_interval_hours": 1.05,
         "net_mt": 53.02,
-        "delay_minutes": 6.0
+        "delay_minutes": 60.0
       },
       {
         "shift": "Nightshift",
@@ -1344,7 +1344,7 @@
         "avg_decant_hours": 1.45,
         "avg_interval_hours": 1.05,
         "net_mt": 35.26,
-        "delay_minutes": 0.0
+        "delay_minutes": 54.0
       },
       {
         "team": "B",
@@ -1386,7 +1386,7 @@
         "avg_decant_hours": 1.27,
         "avg_interval_hours": 0.87,
         "net_mt": 35.48,
-        "delay_minutes": 0.0
+        "delay_minutes": 40.0
       },
       {
         "iso": "ISO-04",
@@ -1394,7 +1394,7 @@
         "avg_decant_hours": 0.98,
         "avg_interval_hours": 0.37,
         "net_mt": 35.22,
-        "delay_minutes": 0.0
+        "delay_minutes": 14.0
       },
       {
         "iso": "ISO-05",
@@ -1407,23 +1407,23 @@
     ],
     "delay_categories": [
       {
+        "category": "Other",
+        "minutes": 60.0,
+        "hours": 1.0,
+        "share": 0.6818
+      },
+      {
         "category": "Shift Handover",
         "minutes": 28.0,
         "hours": 0.47,
-        "share": 0.8235
-      },
-      {
-        "category": "Other",
-        "minutes": 6.0,
-        "hours": 0.1,
-        "share": 0.1765
+        "share": 0.3182
       }
     ],
     "delay_owners": [
       {
         "owner": "Connect",
-        "minutes": 34.0,
-        "hours": 0.57,
+        "minutes": 88.0,
+        "hours": 1.47,
         "share": 1.0
       }
     ],
@@ -1562,8 +1562,8 @@
         "actual_mt": 35.26,
         "avg_decant_hours": 1.45,
         "avg_interval_hours": 1.05,
-        "delay_minutes": 0.0,
-        "productive_hours": 2.9,
+        "delay_minutes": 54.0,
+        "productive_hours": 2.0,
         "isotainers_per_head": 0.125,
         "notes": "1st day of dispatching "
       },
@@ -1700,7 +1700,7 @@
     "time_saved_hours": 4.23,
     "avg_excess_kg": 71.43,
     "avg_carry_over_kg": 20.0,
-    "total_delay_hours": 0.57
+    "total_delay_hours": 1.47
   },
   "plan": {
     "has_plan": true,
@@ -2727,6 +2727,14 @@
       "when": null,
       "owner": "Transporter",
       "value": "+0.54 h"
+    },
+    {
+      "severity": "low",
+      "category": "Top time loss",
+      "detail": "Other accounts for 1.0 h (68%) of recorded time lost.",
+      "when": null,
+      "owner": "",
+      "value": "1.0 h"
     }
   ]
 }
