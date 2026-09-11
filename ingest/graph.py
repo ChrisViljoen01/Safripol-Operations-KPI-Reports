@@ -324,19 +324,17 @@ class GraphClient:
 
 
 def _local_lookup(source: Source) -> Path | None:
-    if not settings.local_dir:
-        return None
-    base = Path(settings.local_dir)
-    if not base.exists():
-        return None
-    candidate = base / source.local_hint
-    if candidate.exists():
-        return candidate
-    # tolerate the trailing-space filenames that exist in the shared folder
-    stem = source.local_hint.strip().lower().replace(" ", "")
-    for p in base.glob("*.xlsx"):
-        if p.name.strip().lower().replace(" ", "") == stem:
-            return p
+    for base in settings.local_dirs:
+        if not base.exists():
+            continue
+        candidate = base / source.local_hint
+        if candidate.exists():
+            return candidate
+        # tolerate the trailing-space filenames that exist in the shared folder
+        stem = source.local_hint.strip().lower().replace(" ", "")
+        for p in base.glob("*.xlsx"):
+            if p.name.strip().lower().replace(" ", "") == stem:
+                return p
     return None
 
 

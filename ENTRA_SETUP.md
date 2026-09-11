@@ -34,25 +34,24 @@ Microsoft Graph → **Application permissions** → **`Sites.Selected`** →
 The status column must read **Granted**. Adding the permission without consenting
 leaves the token's `roles` claim empty, which is exactly the 401 seen before.
 
-### Step 2 — Grant the app access to each site
+### Step 2 — Grant the app access to the site
 
-Consent alone does nothing. An admin must grant `read` on **both** site
-collections that hold the sources, because they are separate collections:
+Consent alone does nothing. An admin must grant `read` on the site collection
+that holds the sources. All four workbooks now live in one place, so this is a
+single grant:
 
 | Source | Lives in | Site collection |
 |---|---|---|
-| Dwells, SAF Ops Tracking, Staff Roles | team site | `connectlogisticscoza.sharepoint.com:/sites/ProcessOptimizationandDevelopment` |
-| **Stock Report** | Richard Casten's OneDrive | `connectlogisticscoza-my.sharepoint.com:/personal/richard_casten_connectlogistics_co_za` |
+| All four workbooks | team site | `connectlogisticscoza.sharepoint.com:/sites/ProcessOptimizationandDevelopment` |
 
 Run these in **Graph Explorer** (`https://developer.microsoft.com/graph/graph-explorer`)
-signed in as an admin. First resolve each site id:
+signed in as an admin. First resolve the site id:
 
 ```http
 GET https://graph.microsoft.com/v1.0/sites/connectlogisticscoza.sharepoint.com:/sites/ProcessOptimizationandDevelopment
-GET https://graph.microsoft.com/v1.0/sites/connectlogisticscoza-my.sharepoint.com:/personal/richard_casten_connectlogistics_co_za
 ```
 
-Then grant read on each, substituting the `id` returned above:
+Then grant read on it, substituting the `id` returned above:
 
 ```http
 POST https://graph.microsoft.com/v1.0/sites/{site-id}/permissions
@@ -174,10 +173,11 @@ Get-Content refresh.log -Tail 20
 
 ## Hardening (recommended follow-up)
 
-1. Move `Safripol Stock Report - TAC IMOLA.xlsx` off personal OneDrive onto the
-   **Process Optimization and Development** team site. A personal OneDrive is a
-   single point of failure — if that account is disabled, the report loses its
-   most important source, and it needs its own `Sites.Selected` grant.
+1. ~~Move the stock report off personal OneDrive~~ — **done 11 Sep 2026.**
+   `Safripol Stock Report - TAC IMOLA.xlsx` now lives on the **Process
+   Optimization and Development** team site under `Safripol/2026/`, so all four
+   sources sit in one site collection and only one `Sites.Selected` grant is
+   needed. It also removes the single point of failure of a personal OneDrive.
 2. Replace the client secret with **federated credentials (OIDC)** so GitHub
    Actions authenticates with nothing stored and nothing to expire.
 

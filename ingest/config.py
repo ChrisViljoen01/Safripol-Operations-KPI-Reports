@@ -72,9 +72,9 @@ SOURCES: list[Source] = [
         key="stock",
         label="Safripol Stock Report - TAC IMOLA",
         url=(
-            "https://connectlogisticscoza-my.sharepoint.com/personal/"
-            "richard_casten_connectlogistics_co_za/Documents/Warehouse/Warehouse%20Reports/"
-            "Safripol/2026/Safripol%20Stock%20Report%20-%20TAC%20IMOLA.xlsx"
+            "https://connectlogisticscoza.sharepoint.com/sites/"
+            "ProcessOptimizationandDevelopment/Shared%20Documents/Safripol/2026/"
+            "Safripol%20Stock%20Report%20-%20TAC%20IMOLA.xlsx"
         ),
         local_hint="Safripol Stock Report - TAC IMOLA.xlsx",
     ),
@@ -144,6 +144,8 @@ class Settings:
     tenant_id: str = field(default_factory=lambda: os.getenv("AZURE_TENANT_ID", ""))
     client_id: str = field(default_factory=lambda: os.getenv("AZURE_CLIENT_ID", ""))
     client_secret: str = field(default_factory=lambda: os.getenv("AZURE_CLIENT_SECRET", ""))
+    # One or more folders, separated by ';'. Searched in order when Graph cannot
+    # be reached, so the sources may live in different synced libraries.
     local_dir: str = field(default_factory=lambda: os.getenv("SAFRIPOL_LOCAL_DIR", ""))
     offline: bool = field(default_factory=lambda: os.getenv("SAFRIPOL_OFFLINE", "") == "1")
     # "app" for client credentials, "delegated" to run as a signed-in user, or
@@ -154,6 +156,14 @@ class Settings:
     # Device-code sign-in needs a human, so it is only offered when explicitly
     # allowed. Scheduled runs must rely on the cached refresh token.
     allow_interactive: bool = False
+
+    @property
+    def local_dirs(self) -> list[Path]:
+        return [
+            Path(p.strip())
+            for p in self.local_dir.split(";")
+            if p.strip()
+        ]
 
     @property
     def authority(self) -> str:
