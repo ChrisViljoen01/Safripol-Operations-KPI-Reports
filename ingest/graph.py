@@ -17,6 +17,7 @@ import os
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from urllib.parse import quote, unquote, urlparse
 
 import msal
 import requests
@@ -102,6 +103,32 @@ def _encode_share_url(url: str) -> str:
     """Graph's share-id encoding: base64url of the URL, 'u!' prefixed, '=' stripped."""
     b64 = base64.urlsafe_b64encode(url.encode("utf-8")).decode("ascii")
     return "u!" + b64.rstrip("=")
+
+
+def _split_sharepoint_url(url: str) -> tuple[str, str, str] | None:
+    """Split a SharePoint/OneDrive URL into (hostname, site path, file path).
+
+    Needed for Sites.Selected, where the app is entitled to named sites rather than
+    to every file in the tenant. The /shares endpoint resolves a link without ever
+    naming a site, so it can be refused under that model; addressing the site and
+    then the drive path explicitly is what Sites.Selected is designed to allow.
+
+    Handles team sites (/sites/<name>/<library>/<path>) and personal OneDrive
+    (/personal/<user>/Documents/<path>), which is a site collection of its own.
+    """
+    parsed = urlparse(url)
+    host = parsed.netloc
+    parts = [unquote(p) for p in parsed.path.split("/") if p]
+    if not host or len(parts) < 3 or parts[0].lower() not in {"sites", "teams", "personal"}:
+        return None
+
+    site_path = f"/{parts[0]}/{parts[1]}"
+    rest = parts[2:]
+    if len(rest) < 2:
+        return None
+    # The first remaining segment is the document library ("Shared Documents",
+    # "Documents"); Graph's /drive already points at the default library.
+    return host, site_path, "/".join(rest[1:])
 
 
 class GraphClient:
@@ -211,6 +238,10 @@ class GraphClient:
         return {"Authorization": f"Bearer {self._acquire()}"}
 
     def item_metadata(self, url: str) -> dict:
+        if self._mode == "app":
+            direct = self._item_metadata_by_site_path(url)
+            if direct is not None:
+                return direct
         share_id = _encode_share_url(url)
         r = requests.get(
             f"{GRAPH}/shares/{share_id}/driveItem",
@@ -221,20 +252,60 @@ class GraphClient:
             raise GraphError(f"Metadata {r.status_code}: {r.text[:400]}")
         return r.json()
 
+    def _item_metadata_by_site_path(self, url: str) -> dict | None:
+        """Resolve an item as site -> drive -> path, the Sites.Selected-friendly route.
+
+        Returns None when the URL is not addressable this way or the lookup fails,
+        so the caller can still try /shares rather than losing the source outright.
+        """
+        split = _split_sharepoint_url(url)
+        if split is None:
+            return None
+        host, site_path, file_path = split
+        try:
+            site = requests.get(
+                f"{GRAPH}/sites/{host}:{site_path}",
+                headers=self._headers(),
+                timeout=TIMEOUT,
+            )
+            if site.status_code != 200:
+                log.debug("Site lookup %s: %s", site.status_code, site.text[:200])
+                return None
+            site_id = site.json().get("id")
+            item = requests.get(
+                f"{GRAPH}/sites/{site_id}/drive/root:/{quote(file_path)}",
+                headers=self._headers(),
+                timeout=TIMEOUT,
+            )
+            if item.status_code != 200:
+                log.debug("Item lookup %s: %s", item.status_code, item.text[:200])
+                return None
+            return item.json()
+        except requests.RequestException as exc:
+            log.debug("Site-path resolution failed: %s", exc)
+            return None
+
     def download(self, source: Source, dest_dir: Path) -> Fetched:
-        share_id = _encode_share_url(source.url)
         meta = self.item_metadata(source.url)
         modified = meta.get("lastModifiedDateTime")
         last_modified = (
             datetime.fromisoformat(modified.replace("Z", "+00:00")) if modified else None
         )
 
-        r = requests.get(
-            f"{GRAPH}/shares/{share_id}/driveItem/content",
-            headers=self._headers(),
-            timeout=TIMEOUT,
-            allow_redirects=True,
-        )
+        # A resolved item carries its own pre-authorised download URL. Using it keeps
+        # the fetch on whichever route already worked for metadata, which matters
+        # under Sites.Selected where /shares may not be permitted.
+        direct_url = meta.get("@microsoft.graph.downloadUrl")
+        if direct_url:
+            r = requests.get(direct_url, timeout=TIMEOUT, allow_redirects=True)
+        else:
+            share_id = _encode_share_url(source.url)
+            r = requests.get(
+                f"{GRAPH}/shares/{share_id}/driveItem/content",
+                headers=self._headers(),
+                timeout=TIMEOUT,
+                allow_redirects=True,
+            )
         if r.status_code != 200:
             raise GraphError(f"Download {r.status_code}: {r.text[:400]}")
 

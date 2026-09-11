@@ -1,13 +1,13 @@
 # Entra (Azure AD) setup
 
-> **Current state:** this tenant granted **Delegated** `Files.Read.All` only, so
-> the report runs in *delegated mode* — see [Delegated mode](#delegated-mode-current-setup)
-> below, which is what is actually deployed. The app-only instructions are kept
-> because they are the better end state if an Application grant is ever approved.
+> **Current state:** `Sites.Selected` (Application) has been **requested** and is
+> awaiting admin consent. Until it lands, the report runs in
+> [delegated mode](#delegated-mode-fallback) from an operator PC. The moment
+> consent + the per-site grants are in place, run
+> `python tools\check_app_auth.py` — when it prints **READY**, the refresh moves
+> to GitHub Actions and no PC is involved.
 
-The two modes differ in one important way:
-
-| | App-only | Delegated *(in use)* |
+| | App-only *(target)* | Delegated *(fallback, in use)* |
 |---|---|---|
 | Permission type | Application | Delegated |
 | Who it reads as | the app itself | Christopher Viljoen |
@@ -17,14 +17,117 @@ The two modes differ in one important way:
 
 ---
 
-## Delegated mode (current setup)
+## App-only mode with `Sites.Selected` (target state)
 
-Nothing further is needed in Entra. The app registration
-**Connect Logistics AI Hub** (`207d9293-d311-4b5d-ba2b-5bbd3d3ade48`) already has
-Delegated `Files.Read.All`, and its "public client" redirect URI allows the
-device-code sign-in this uses.
+`Sites.Selected` is the least-privilege option: consenting to it grants the app
+**no data at all** until an admin separately names each site it may read. That is
+why it is a two-step process, and why step 2 is the one people forget.
 
-### One-off setup on the machine that will refresh
+### Step 1 — Admin consent
+
+Entra ID → **App registrations** → **Connect Logistics AI Hub**
+(`207d9293-d311-4b5d-ba2b-5bbd3d3ade48`) → **API permissions**
+
+Microsoft Graph → **Application permissions** → **`Sites.Selected`** →
+**Grant admin consent for Connect Logistics**.
+
+The status column must read **Granted**. Adding the permission without consenting
+leaves the token's `roles` claim empty, which is exactly the 401 seen before.
+
+### Step 2 — Grant the app access to each site
+
+Consent alone does nothing. An admin must grant `read` on **both** site
+collections that hold the sources, because they are separate collections:
+
+| Source | Lives in | Site collection |
+|---|---|---|
+| Dwells, SAF Ops Tracking, Staff Roles | team site | `connectlogisticscoza.sharepoint.com:/sites/ProcessOptimizationandDevelopment` |
+| **Stock Report** | Richard Casten's OneDrive | `connectlogisticscoza-my.sharepoint.com:/personal/richard_casten_connectlogistics_co_za` |
+
+Run these in **Graph Explorer** (`https://developer.microsoft.com/graph/graph-explorer`)
+signed in as an admin. First resolve each site id:
+
+```http
+GET https://graph.microsoft.com/v1.0/sites/connectlogisticscoza.sharepoint.com:/sites/ProcessOptimizationandDevelopment
+GET https://graph.microsoft.com/v1.0/sites/connectlogisticscoza-my.sharepoint.com:/personal/richard_casten_connectlogistics_co_za
+```
+
+Then grant read on each, substituting the `id` returned above:
+
+```http
+POST https://graph.microsoft.com/v1.0/sites/{site-id}/permissions
+Content-Type: application/json
+
+{
+  "roles": ["read"],
+  "grantedToIdentities": [
+    {
+      "application": {
+        "id": "207d9293-d311-4b5d-ba2b-5bbd3d3ade48",
+        "displayName": "Connect Logistics AI Hub"
+      }
+    }
+  ]
+}
+```
+
+`"roles": ["read"]` is deliberate — the job never writes to SharePoint.
+
+> **If the admin will not grant the OneDrive one:** move
+> `Safripol Stock Report - TAC IMOLA.xlsx` onto the team site instead and update
+> its URL in `ingest/config.py`. That is the better end state anyway — see
+> *Hardening*.
+
+### Step 3 — Verify
+
+```powershell
+python tools\check_app_auth.py
+```
+
+It decodes the token, prints the granted roles, and reads all four sources:
+
+```
+  [OK]  Application permissions granted: Sites.Selected
+  [OK]  Safripol Stock Report - TAC IMOLA
+  [OK]  Safripol v Connect Dwells
+  [OK]  SAF Ops Tracking - TAC IMOLA
+  [OK]  Saf Staff Roles
+READY. The refresh can run in GitHub Actions without your PC.
+```
+
+### Step 4 — Move the refresh to the cloud
+
+```bash
+gh secret set AZURE_TENANT_ID
+gh secret set AZURE_CLIENT_ID
+gh secret set AZURE_CLIENT_SECRET
+```
+
+`.github/workflows/refresh-data.yml` is already scheduled every 15 minutes and
+already sets `SAFRIPOL_AUTH_MODE: app`, so it starts working on its own once the
+grants are live. Confirm two or three green runs, then retire the PC task:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File tools\install_task.ps1 -Remove
+```
+
+> It is safe to leave both running during the changeover. The workflow refuses to
+> publish a degraded snapshot, so a failed cloud run cannot blank the report.
+
+### The client secret
+
+**Certificates & secrets** → **New client secret** → expires **24 months**. Copy
+the **Value**, not the Secret ID — it is shown once.
+
+> ⚠️ Set a calendar reminder a month before expiry. When it lapses the report
+> stops updating and shows a stale-data banner.
+
+---
+
+## Delegated mode (fallback)
+
+Already configured, and what runs today. The app has Delegated `Files.Read.All`
+and a public-client redirect URI, which is what the device-code sign-in needs.
 
 ```powershell
 cd C:\Users\Christopher.Viljoen\source\repos\Safripol-Operations-KPI-Reports
@@ -34,9 +137,9 @@ powershell -ExecutionPolicy Bypass -File tools\install_task.ps1 -Minutes 15
 ```
 
 `--login` caches a refresh token at
-`%USERPROFILE%\.safripol_report\token_cache.json`. It renews itself on every run,
-so it keeps working indefinitely as long as the task runs at least every ~90 days
-and the account's password does not change.
+`%USERPROFILE%\.safripol_report\token_cache.json`. It renews on every run, so it
+keeps working as long as the task runs at least every ~90 days and the account
+password does not change.
 
 ### What this means day to day
 
@@ -55,110 +158,6 @@ Get-Content refresh.log -Tail 20
 
 `LastTaskResult : 0` means the last run published cleanly.
 
-### Moving it off your PC
-
-The dependency on one workstation is the weak point of delegated mode. Options,
-best first:
-
-1. **Get Application permission approved** (below) and move the refresh to
-   GitHub Actions. No machine involved.
-2. Run the refresh on an always-on server or VM, signed in once as a shared
-   service account with read access to the four files.
-3. Keep it here, but tell the ops team that the "last refreshed" stamp on the
-   report is the thing to watch.
-
----
-
-## App-only mode (preferred, needs admin approval)
-
-Ask the tenant admin for:
-
-> Microsoft Graph → **Application** permission → **`Files.Read.All`** → *Grant admin consent*
-> on app `Connect Logistics AI Hub` (`207d9293-d311-4b5d-ba2b-5bbd3d3ade48`).
->
-> It is read-only (not `ReadWrite`), it runs unattended so Delegated cannot work,
-> and it is used to read four Excel files for a client operations dashboard.
-
-To confirm a grant actually landed, decode the token — `roles` must contain
-`Files.Read.All`. If `roles` is `null`, only Delegated was granted.
-
-### 1. Create the app registration
-
-Azure portal → **Microsoft Entra ID** → **App registrations** → **New registration**
-
-| Field | Value |
-|---|---|
-| Name | `Safripol Ops Report – Data Refresh` |
-| Supported account types | *Accounts in this organizational directory only* |
-| Redirect URI | leave blank |
-
-Copy from **Overview**:
-
-- **Application (client) ID** → `AZURE_CLIENT_ID`
-- **Directory (tenant) ID** → `AZURE_TENANT_ID`
-
-### 2. Add the API permission
-
-**API permissions** → **Add a permission** → **Microsoft Graph** →
-**Application permissions** → tick **`Files.Read.All`** → **Add permissions**.
-
-Then **Grant admin consent**. The status column must read *Granted*.
-
-> **Why `Files.Read.All` and not something narrower?**
-> `Sites.Selected` is least-privilege and preferable, but it only covers
-> SharePoint **sites**. The stock report currently lives on a personal OneDrive,
-> which `Sites.Selected` cannot reach. Move that file to the team site and the
-> permission can be narrowed — see *Hardening*.
-
-Do **not** add `Files.ReadWrite.All`. The job never writes to SharePoint.
-
-### 3. Create the client secret
-
-**Certificates & secrets** → **New client secret** → expires **24 months**.
-
-Copy the **Value** (not the Secret ID) → `AZURE_CLIENT_SECRET`. Shown once only.
-
-> ⚠️ Set a reminder a month before expiry. When it lapses the report stops
-> updating and shows a stale-data banner.
-
-### 4. Store the values
-
-Locally, in a gitignored `.env` at the repo root (see `.env.example`):
-
-```
-AZURE_TENANT_ID=...
-AZURE_CLIENT_ID=...
-AZURE_CLIENT_SECRET=...
-```
-
-For GitHub Actions:
-
-```bash
-gh secret set AZURE_TENANT_ID
-gh secret set AZURE_CLIENT_ID
-gh secret set AZURE_CLIENT_SECRET
-```
-
-### 5. Verify
-
-```powershell
-python -m ingest --check
-```
-
-Expected:
-
-```
-Auth: app - signed in as application (app-only)
-
-OK    Safripol Stock Report - TAC IMOLA   (2026-09-10T11:38:37Z, 244 KB)
-OK    Safripol v Connect Dwells           (2026-09-10T13:01:01Z, 231 KB)
-OK    SAF Ops Tracking - TAC IMOLA        (2026-09-10T12:20:42Z, 1049 KB)
-OK    Saf Staff Roles                     (2026-09-10T11:17:20Z, 19 KB)
-```
-
-Then re-enable the schedule in `.github/workflows/refresh-data.yml` and remove
-the local scheduled task with `tools\install_task.ps1 -Remove`.
-
 ---
 
 ## Troubleshooting
@@ -166,9 +165,9 @@ the local scheduled task with `tools\install_task.ps1 -Remove`.
 | Symptom | Cause | Fix |
 |---|---|---|
 | `CERTIFICATE_VERIFY_FAILED` | corporate TLS proxy; Python does not trust the internal CA | handled automatically by `truststore`; ensure `pip install -r requirements.txt` has run |
-| `401 generalException` with `roles: null` | only Delegated was granted | use delegated mode, or get an Application grant |
+| `401 generalException` with `roles: null` | permission added but **not consented** | complete Step 1 |
+| `403 accessDenied` with `roles: Sites.Selected` | consented, but the site grant is missing | complete Step 2 for that site |
 | `AADSTS7000215` invalid client secret | Secret ID copied instead of Value | recreate the secret, copy the **Value** |
-| `403 accessDenied` | admin consent not granted | grant consent |
 | `404 itemNotFound` | file renamed or moved | update the URL in `ingest/config.py` |
 | `No usable cached sign-in` | token cache missing or expired | `python -m ingest --login` |
 | Report timestamp is old | refresh machine off, or task failed | check `refresh.log` and the task's `LastTaskResult` |
@@ -178,9 +177,8 @@ the local scheduled task with `tools\install_task.ps1 -Remove`.
 1. Move `Safripol Stock Report - TAC IMOLA.xlsx` off personal OneDrive onto the
    **Process Optimization and Development** team site. A personal OneDrive is a
    single point of failure — if that account is disabled, the report loses its
-   most important source.
-2. Once moved, switch to **`Sites.Selected`** and grant the app `read` on just
-   that site.
-3. Replace the client secret with **federated credentials (OIDC)** so GitHub
+   most important source, and it needs its own `Sites.Selected` grant.
+2. Replace the client secret with **federated credentials (OIDC)** so GitHub
    Actions authenticates with nothing stored and nothing to expire.
+
 

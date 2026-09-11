@@ -1,18 +1,18 @@
 name: Refresh report data
 
-# NOTE: currently inactive on a schedule.
+# Unattended cloud refresh.
 #
-# Refreshing from CI needs app-only auth, which requires an *Application*
-# permission grant (Files.Read.All) on the "Connect Logistics AI Hub" app
-# registration. Only *Delegated* permissions were approved, and a delegated
-# token is tied to a signed-in user, so it cannot be issued on a runner.
+# Requires app-only auth: Microsoft Graph *Application* permission Sites.Selected
+# on the "Connect Logistics AI Hub" registration, admin consented, PLUS an
+# explicit per-site grant for the two site collections that hold the sources
+# (the team site and Richard's OneDrive). See ENTRA_SETUP.md.
 #
-# Until that grant changes, the refresh runs on an operator machine via
-# tools/install_task.ps1 (Windows Scheduled Task) which does the same work and
-# pushes the snapshot here.
+# Verify readiness at any time with:  python tools/check_app_auth.py
 #
-# If Application permission is granted later, delete the workflow_dispatch-only
-# restriction below and restore the schedule to make this the primary path.
+# Until that is in place this job still runs, but every source returns 401, the
+# build is flagged degraded and NOTHING is published - the report keeps serving
+# the last good snapshot from the operator-machine schedule
+# (tools/install_task.ps1). That makes this safe to enable ahead of consent.
 
 on:
   workflow_dispatch:
@@ -21,8 +21,11 @@ on:
         description: "Why this manual refresh was triggered"
         required: false
         default: "Manual refresh"
-  # schedule:
-  #   - cron: "*/30 * * * *"
+  schedule:
+    - cron: "*/15 * * * *"
+
+env:
+  SAFRIPOL_AUTH_MODE: app
 
 permissions:
   contents: write
