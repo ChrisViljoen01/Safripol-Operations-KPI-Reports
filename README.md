@@ -28,7 +28,7 @@ is being lost while there is still time to react.
 SharePoint / OneDrive workbooks
         │  Microsoft Graph (read-only)
         ▼
-   python -m ingest        ← runs every 30 min via a Windows Scheduled Task
+   python -m ingest        ← runs every 15 min via a Windows Scheduled Task
         │  parses, recomputes every KPI, ranks exceptions
         ▼
    docs/data/snapshot.json  (committed and pushed)
@@ -56,7 +56,7 @@ source workbooks cannot be modified by this system.
 pip install -r requirements.txt
 python -m ingest --login     # sign in once (device code)
 python -m ingest --check     # confirm all four sources read
-powershell -ExecutionPolicy Bypass -File tools\install_task.ps1 -Minutes 30
+powershell -ExecutionPolicy Bypass -File tools\install_task.ps1 -Minutes 15
 ```
 
 ### Monitoring the refresh

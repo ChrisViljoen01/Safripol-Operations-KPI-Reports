@@ -12,7 +12,7 @@
 #>
 [CmdletBinding()]
 param(
-    [int]$Minutes = 30,
+    [int]$Minutes = 15,
     [switch]$Remove
 )
 

@@ -30,7 +30,7 @@ device-code sign-in this uses.
 cd C:\Users\Christopher.Viljoen\source\repos\Safripol-Operations-KPI-Reports
 python -m ingest --login          # sign in once, in a browser
 python -m ingest --check          # confirm all four sources read
-powershell -ExecutionPolicy Bypass -File tools\install_task.ps1 -Minutes 30
+powershell -ExecutionPolicy Bypass -File tools\install_task.ps1 -Minutes 15
 ```
 
 `--login` caches a refresh token at

@@ -441,9 +441,6 @@
           ? dLong(dp.projected_completion) : dp.projected_completion,
         sub: dp.projected_remaining_days
           ? `${dp.projected_remaining_days} delivery days remaining` : "Awaiting delivery history" },
-      { label: "Load tolerance", value: pct(dp.tolerance_pct, 3),
-        sub: `${num(dp.variance_mt, 2)} MT variance on completed loads`,
-        tone: Math.abs(dp.tolerance_pct || 0) > 0.005 ? "warn" : "good" },
     ]);
 
     // plan vs actual
