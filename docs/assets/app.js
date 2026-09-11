@@ -1097,8 +1097,19 @@
     Object.values(state.charts).forEach((c) => c.resize());
   }
 
+  function setRefreshNote(message, ms = 3500) {
+    const el = $("#refreshAge");
+    if (!el) return;
+    el.textContent = message;
+    window.clearTimeout(setRefreshNote.timer);
+    setRefreshNote.timer = window.setTimeout(() => {
+      if (state.stamp) el.textContent = ago(state.stamp);
+    }, ms);
+  }
+
   async function load(force = false) {
     const btn = $("#refreshBtn");
+    const priorStamp = state.stamp;
     btn.classList.add("busy");
     try {
       const res = await fetch(`data/snapshot.json?t=${Date.now()}`, { cache: "no-store" });
@@ -1106,6 +1117,13 @@
       state.data = await res.json();
       state.stamp = state.data.meta.generated_at_utc;
       renderAll();
+      if (force && priorStamp) {
+        setRefreshNote(
+          state.stamp === priorStamp
+            ? "checked — no newer snapshot"
+            : "updated to latest snapshot"
+        );
+      }
       $("#loader").classList.add("done");
     } catch (err) {
       console.error(err);
