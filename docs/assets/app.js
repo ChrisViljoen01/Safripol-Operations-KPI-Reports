@@ -68,7 +68,7 @@
     getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 
   /* --------------------------- kpi + table dsl -------------------------- */
-  function kpi({ label, value, unit, sub, tone, icon }) {
+  function kpi({ label, value, unit, sub, tone, icon, date }) {
     const t = tone ? ` ${tone}` : "";
     const s = sub ? `<div class="sub${tone ? " " + tone : ""}">${sub}</div>` : "";
     const u = unit ? `<span class="unit">${unit}</span>` : "";
@@ -77,7 +77,7 @@
       : "";
     return `<div class="kpi${t}${icon ? " has-icon" : ""}">${image}
             <div class="label">${label}</div>
-            <div class="value">${value}${u}</div>${s}</div>`;
+            <div class="value${date ? " is-date" : ""}">${value}${u}</div>${s}</div>`;
   }
 
   function renderKpis(target, items) {
@@ -432,10 +432,6 @@
       ["Outstanding", `${num(h.outstanding_mt, 2)} MT`],
       ["Loads completed", num(h.loads_total)],
       ["Connect stock on hand", `${num(h.pta_balance_mt, 2)} MT`],
-      ["Planned completion", h.planned_completion ? dLong(h.planned_completion) : "—"],
-      ["Projected completion", h.projected_completion && h.projected_completion.length > 10
-        ? h.projected_completion : dLong(h.projected_completion) === "—"
-          ? h.projected_completion : dLong(h.projected_completion)],
     ].map(([l, v]) =>
       `<div class="hero-stat"><div class="l">${l}</div><div class="v">${v}</div></div>`)
       .join("");
@@ -450,6 +446,8 @@
     const paceSub = h.required_rate_mt_per_day
       ? `${num(h.required_rate_mt_per_day, 1)} MT/day needed to finish on plan`
       : "No drawdown plan loaded";
+
+    renderKpis("#kpiPlanOverview", planKpis(d));
 
     renderKpis("#kpiPrimary", [
       { label: "Avg daily offtake", value: num(h.avg_daily_offtake_mt, 1), unit: "MT",
@@ -661,11 +659,10 @@
     }).join("");
   }
 
-  /* ----------------------------- DRAWDOWN ------------------------------ */
-  function renderDrawdown(d) {
-    const dp = d.dispatch, rc = d.receipts;
-    const pl = d.plan || {}, pj = pl.projection || {};
-
+  /* ------------------------- shared plan KPI set ------------------------ */
+  /* Derived once so the KPI cards and the plan chart note always agree. */
+  function planNarrative(d) {
+    const pj = (d.plan || {}).projection || {};
     const statusTone = { ahead: "good", "on-track": "good", behind: "bad",
                          complete: "good" }[pj.status] || "";
     const slip = pj.days_vs_plan;
@@ -675,23 +672,27 @@
       : `${Math.abs(slip)} day${Math.abs(slip) === 1 ? "" : "s"} ahead of plan`;
     const conf = pj.confidence && pj.confidence !== "high"
       ? ` · ${pj.confidence} confidence` : "";
+    // Early in a drawdown a handful of days cannot support an 80-day forecast,
+    // so say so rather than let a client read a wild date as settled fact.
+    const settling = pj.confidence && pj.confidence !== "high"
+      ? "Firms up as more days are captured" : "";
+    return { statusTone, slip, slipText, conf, settling };
+  }
 
-    renderKpis("#kpiDrawdown", [
-      { label: "Delivered to Safripol", value: num(dp.delivered_mt, 2), unit: "MT",
-        sub: `${pct(dp.completion_pct, 2)} of target` },
-      { label: "Outstanding", value: num(dp.outstanding_mt, 2), unit: "MT",
-        sub: "Still to deliver against the drawdown target" },
-      { label: "Connect stock on hand", value: num(dp.pta_balance_mt, 2), unit: "MT",
-        sub: "Physically received less dispatched" },
-      { label: "Total received", value: num(rc.total_admin_mt, 2), unit: "MT",
-        sub: `Vessel ${num(rc.direct_mt, 0)} · leasehold ${num(rc.leasehold_mt, 0)} MT` },
-      { label: "Planned completion",
+  /* Used on both Overview and Drawdown so the two views cannot drift. */
+  function planKpis(d) {
+    const dp = d.dispatch || {};
+    const pl = d.plan || {}, pj = pl.projection || {};
+    const { statusTone, slip, slipText, conf, settling } = planNarrative(d);
+
+    return [
+      { label: "Planned completion", date: true,
         value: pl.plan_end ? dLong(pl.plan_end) : "—",
         sub: pl.days
           ? `${pl.days}-day plan from ${dLong(pl.plan_start)}`
           : "No drawdown plan loaded",
         icon: "target.png" },
-      { label: "Projected completion",
+      { label: "Projected completion", date: true,
         value: pj.projected_end ? dLong(pj.projected_end)
           : (dp.projected_completion || "Pending"),
         sub: pj.rate_mt_per_day
@@ -702,7 +703,7 @@
         value: slip === null || slip === undefined ? "—"
           : `${slip > 0 ? "+" : ""}${slip}`,
         unit: slip === null || slip === undefined ? "" : "days",
-        sub: slipText, tone: statusTone, icon: "delivered.png" },
+        sub: settling || slipText, tone: statusTone },
       { label: "Ahead / behind plan",
         value: pl.variance_to_date_mt === null || pl.variance_to_date_mt === undefined
           ? "—" : num(pl.variance_to_date_mt, 1),
@@ -717,13 +718,34 @@
         sub: pl.days_remaining
           ? `To finish by ${dLong(pl.plan_end)} · ${pl.days_remaining} days left`
           : "No plan end date",
-        tone: (d.headline.avg_daily_offtake_mt || 0)
+        tone: ((d.headline || {}).avg_daily_offtake_mt || 0)
               >= (pj.required_rate_mt_per_day || Infinity) ? "good" : "warn" },
+    ];
+  }
+
+  /* ----------------------------- DRAWDOWN ------------------------------ */
+  function renderDrawdown(d) {
+    const dp = d.dispatch, rc = d.receipts;
+    const pl = d.plan || {}, pj = pl.projection || {};
+    const { slipText } = planNarrative(d);
+
+    renderKpis("#kpiDrawdown", [
+      { label: "Delivered to Safripol", value: num(dp.delivered_mt, 2), unit: "MT",
+        sub: `${pct(dp.completion_pct, 2)} of target`, icon: "delivered.png" },
+      { label: "Outstanding", value: num(dp.outstanding_mt, 2), unit: "MT",
+        sub: "Still to deliver against the drawdown target" },
+      { label: "Connect stock on hand", value: num(dp.pta_balance_mt, 2), unit: "MT",
+        sub: "Physically received less dispatched" },
+      { label: "Total received", value: num(rc.total_admin_mt, 2), unit: "MT",
+        sub: `Vessel ${num(rc.direct_mt, 0)} · leasehold ${num(rc.leasehold_mt, 0)} MT` },
       { label: "Loads completed", value: num(dp.loads_total),
-        sub: `${num(dp.open_loads)} open · max ${num(dp.max_loads_day)}/day` },
+        sub: `${num(dp.open_loads)} open · max ${num(dp.max_loads_day)}/day`,
+        icon: "delivery-truck.png" },
       { label: "Avg MT per load", value: num(dp.avg_mt_per_load, 2), unit: "MT",
         sub: `Avg residual in tank ${num(dp.avg_remained_in_tank_kg, 0)} kg` },
     ]);
+
+    renderKpis("#kpiPlan", planKpis(d));
 
     // plan vs actual
     if (d.plan.has_plan) {

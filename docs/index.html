@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="assets/styles.css" />
+<link rel="stylesheet" href="assets/styles.css?v=9da01ea1" />
 <link rel="icon" type="image/png" href="assets/images/Connect-Logistics-Icon.png" />
 </head>
 <body>
@@ -78,6 +78,10 @@
       <div class="hero-stats" id="heroStats"></div>
     </div>
 
+    <h4 class="kpi-group-title">Schedule &amp; drawdown plan</h4>
+    <div class="kpi-grid cols-5" id="kpiPlanOverview"></div>
+
+    <h4 class="kpi-group-title">Operational performance</h4>
     <div class="kpi-grid" id="kpiPrimary"></div>
 
     <div class="operations-ribbon card">
@@ -147,7 +151,10 @@
 
   <!-- ================= DRAWDOWN ================= -->
   <section class="view" id="view-drawdown">
+    <h4 class="kpi-group-title">Delivery position</h4>
     <div class="kpi-grid" id="kpiDrawdown"></div>
+    <h4 class="kpi-group-title">Schedule &amp; drawdown plan</h4>
+    <div class="kpi-grid cols-5" id="kpiPlan"></div>
     <div class="grid-2">
       <div class="card">
         <div class="card-head"><h3>Plan versus actual cumulative MT</h3></div>
@@ -366,6 +373,6 @@
 </footer>
 
 <script src="assets/chart.umd.min.js"></script>
-<script src="assets/app.js"></script>
+<script src="assets/app.js?v=fccc3d1f"></script>
 </body>
 </html>

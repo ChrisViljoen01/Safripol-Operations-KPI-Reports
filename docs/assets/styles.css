@@ -211,9 +211,22 @@ main { padding: clamp(18px, 1.4vw, 34px); width: 100%; max-width: none; margin: 
 .hero-stat .v { font-size: 19px; font-weight: 700; font-family: "JetBrains Mono", monospace; margin-top: 2px; }
 
 /* --------------------------------- kpis ------------------------------- */
+.kpi-group-title {
+  font-size: clamp(11px, .6vw, 12.5px); text-transform: uppercase; letter-spacing: .1em;
+  color: var(--text-3); font-weight: 700;
+  margin: clamp(4px, .6vw, 10px) 0 12px;
+  display: flex; align-items: center; gap: 12px;
+}
+.kpi-group-title::after {
+  content: ""; flex: 1; height: 1px; background: var(--line);
+}
 .kpi-grid {
   display: grid; gap: clamp(14px, .9vw, 22px); margin-bottom: clamp(18px, 1.2vw, 26px);
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(236px, 1fr));
+}
+/* The plan set is exactly five cards; force one clean row rather than a 4+1 orphan. */
+@media (min-width: 1180px) {
+  .kpi-grid.cols-5 { grid-template-columns: repeat(5, 1fr); }
 }
 .kpi {
   display: grid;
@@ -255,6 +268,11 @@ main { padding: clamp(18px, 1.4vw, 34px); width: 100%; max-width: none; margin: 
   font-family: "JetBrains Mono", monospace; letter-spacing: -.02em;
 }
 .kpi .value .unit { font-size: 12px; color: var(--text-3); margin-left: 4px; font-weight: 500; }
+/* Dates read as words, not measurements, so they get the UI face a touch smaller. */
+.kpi .value.is-date {
+  font-family: inherit; font-size: clamp(19px, 1.05vw, 25px); letter-spacing: -.01em;
+  white-space: nowrap;
+}
 .kpi .sub {
   align-self: start;
   font-size: clamp(11.5px, .64vw, 13px); color: var(--text-2); margin-top: 0;
