@@ -15,7 +15,7 @@ import base64
 import logging
 import os
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import msal
@@ -269,11 +269,30 @@ def _local_lookup(source: Source) -> Path | None:
     return None
 
 
+def _copy_local_source(source: Source, local: Path) -> Fetched:
+    import shutil
+
+    CACHE_DIR.mkdir(parents=True, exist_ok=True)
+    dest = CACHE_DIR / f"{source.key}.xlsx"
+    shutil.copy2(local, dest)   # copy: OneDrive locks the original
+    stat = local.stat()
+    return Fetched(
+        key=source.key,
+        label=source.label,
+        path=dest,
+        last_modified=datetime.fromtimestamp(stat.st_mtime, tz=timezone.utc),
+        size=stat.st_size,
+        origin="local",
+    )
+
+
 def fetch_all(sources: list[Source]) -> dict[str, Fetched]:
-    """Fetch every source, preferring Graph and falling back to a local copy.
+    """Fetch every source, preferring the freshest available copy.
 
     A failure on an optional source is recorded rather than raised, so the report
     still refreshes when, for example, the ops tracker has not been uploaded yet.
+    When a OneDrive-synced local workbook is newer than Graph metadata, use it:
+    SharePoint/Graph can lag the desktop sync client by several minutes.
     """
     out: dict[str, Fetched] = {}
     client: GraphClient | None = None
@@ -291,23 +310,17 @@ def fetch_all(sources: list[Source]) -> dict[str, Fetched]:
             except Exception as exc:  # noqa: BLE001 - we degrade rather than fail
                 log.warning("Graph fetch failed for %s: %s", source.label, exc)
 
-        if fetched is None:
-            local = _local_lookup(source)
-            if local is not None:
-                import shutil
-
-                CACHE_DIR.mkdir(parents=True, exist_ok=True)
-                dest = CACHE_DIR / f"{source.key}.xlsx"
-                shutil.copy2(local, dest)   # copy: OneDrive locks the original
-                stat = local.stat()
-                fetched = Fetched(
-                    key=source.key,
-                    label=source.label,
-                    path=dest,
-                    last_modified=datetime.fromtimestamp(stat.st_mtime, tz=timezone.utc),
-                    size=stat.st_size,
-                    origin="local",
+        local = _local_lookup(source)
+        if local is not None:
+            local_mtime = datetime.fromtimestamp(local.stat().st_mtime, tz=timezone.utc)
+            if fetched is None:
+                fetched = _copy_local_source(source, local)
+            elif fetched.last_modified and local_mtime > fetched.last_modified + timedelta(seconds=60):
+                log.info(
+                    "Using newer local copy for %s (local %s > graph %s)",
+                    source.label, local_mtime.isoformat(), fetched.last_modified.isoformat(),
                 )
+                fetched = _copy_local_source(source, local)
 
         if fetched is None:
             cached = CACHE_DIR / f"{source.key}.xlsx"
