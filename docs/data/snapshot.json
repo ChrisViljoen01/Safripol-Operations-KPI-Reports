@@ -6,9 +6,9 @@
     "client": "Safripol",
     "operator": "Connect Logistics",
     "product": "PTA",
-    "generated_at_utc": "2026-09-11T06:09:51+00:00",
-    "generated_at_sast": "2026-09-11T08:09:51+02:00",
-    "generated_display": "11 Sep 2026 08:09 SAST",
+    "generated_at_utc": "2026-09-11T06:39:31+00:00",
+    "generated_at_sast": "2026-09-11T08:39:31+02:00",
+    "generated_display": "11 Sep 2026 08:39 SAST",
     "sources": [
       {
         "key": "stock",
@@ -58,9 +58,9 @@
     "delivered_mt": 0.0,
     "outstanding_mt": 20390.4,
     "completion_pct": 0.0,
-    "pta_balance_mt": 16479.6,
-    "received_admin_mt": 16479.6,
-    "received_physical_mt": 16479.6,
+    "pta_balance_mt": 20400.0,
+    "received_admin_mt": 20400.0,
+    "received_physical_mt": 20400.0,
     "loads_total": 0,
     "avg_daily_offtake_mt": 0.0,
     "avg_loads_per_day": 0.0,
@@ -82,6 +82,14 @@
     "end": "2026-09-04T10:55",
     "duration_display": "3 days 8 hours 58 min",
     "total_discharged_mt": 20446.47,
+    "admin_outturn_mt": 20390.4,
+    "admin_receipts_mt": 20390.4,
+    "discharged_bags": 16992,
+    "booked_bags": 17000,
+    "bag_shortfall": 8,
+    "booked_shortfall_mt": 9.6264,
+    "measurement_basis_difference_mt": 56.07,
+    "bag_receipt_coverage_pct": 1.0,
     "avg_mt_per_day": 6060.71,
     "total_downtime_hours": 11.9,
     "total_weather_hours": 5.82,
@@ -153,44 +161,49 @@
     ]
   },
   "receipts": {
-    "total_admin_mt": 16479.6,
-    "total_physical_mt": 16479.6,
+    "total_admin_mt": 20400.0,
+    "total_physical_mt": 20400.0,
     "direct_mt": 16479.6,
-    "leasehold_mt": 0.0,
-    "total_bags": 13733,
-    "damaged_bags": 18,
+    "leasehold_mt": 3920.4,
+    "total_bags": 17000,
+    "damaged_bags": 20,
+    "receipt_lines": 837,
     "receipt_days": 4,
-    "avg_mt_per_receipt_day": 4119.9,
+    "avg_mt_per_receipt_day": 5100.0,
     "first_arrival": "2026-09-01",
     "last_arrival": "2026-09-04",
     "by_date": [
       {
         "date": "2026-09-01",
-        "bags": 4095,
-        "admin_mt": 4914.0,
-        "physical_mt": 4914.0,
-        "cum_admin_mt": 4914.0
+        "bags": 5747,
+        "rows": 284,
+        "admin_mt": 6896.4,
+        "physical_mt": 6896.4,
+        "cum_admin_mt": 6896.4
       },
       {
         "date": "2026-09-02",
-        "bags": 4914,
-        "admin_mt": 5896.8,
-        "physical_mt": 5896.8,
-        "cum_admin_mt": 10810.8
+        "bags": 6287,
+        "rows": 309,
+        "admin_mt": 7544.4,
+        "physical_mt": 7544.4,
+        "cum_admin_mt": 14440.8
       },
       {
         "date": "2026-09-03",
-        "bags": 3919,
-        "admin_mt": 4702.8,
-        "physical_mt": 4702.8,
-        "cum_admin_mt": 15513.6
+        "bags": 4161,
+        "rows": 203,
+        "admin_mt": 4993.2,
+        "physical_mt": 4993.2,
+        "cum_admin_mt": 19434.0
       },
       {
         "date": "2026-09-04",
         "bags": 805,
+        "rows": 41,
         "admin_mt": 966.0,
         "physical_mt": 966.0,
-        "cum_admin_mt": 16479.6
+        "cum_admin_mt": 20400.0
       }
     ]
   },
@@ -206,7 +219,7 @@
     "avg_daily_offtake_mt": 0.0,
     "avg_mt_per_load": 0.0,
     "avg_mt_offloaded_per_tank": 0.0,
-    "pta_balance_mt": 16479.6,
+    "pta_balance_mt": 20400.0,
     "projected_completion": "Pending",
     "projected_remaining_days": null,
     "required_rate_mt_per_day": null,
@@ -259,31 +272,31 @@
     "by_iso": [
       {
         "iso": "ISO-01",
-        "connect_avg_hours": null,
+        "connect_avg_hours": 2.9,
         "safripol_avg_hours": 6.4,
         "visits": 356
       },
       {
         "iso": "ISO-02",
-        "connect_avg_hours": null,
+        "connect_avg_hours": 3.09,
         "safripol_avg_hours": 7.56,
         "visits": 231
       },
       {
         "iso": "ISO-03",
-        "connect_avg_hours": null,
+        "connect_avg_hours": 3.05,
         "safripol_avg_hours": 5.94,
         "visits": 404
       },
       {
         "iso": "ISO-04",
-        "connect_avg_hours": null,
+        "connect_avg_hours": 3.0,
         "safripol_avg_hours": 6.15,
         "visits": 343
       },
       {
         "iso": "ISO-05",
-        "connect_avg_hours": null,
+        "connect_avg_hours": 3.04,
         "safripol_avg_hours": 6.34,
         "visits": 305
       }
