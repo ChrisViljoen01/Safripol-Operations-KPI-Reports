@@ -6,9 +6,9 @@
     "client": "Safripol",
     "operator": "Connect Logistics",
     "product": "PTA",
-    "generated_at_utc": "2026-09-11T11:30:26+00:00",
-    "generated_at_sast": "2026-09-11T13:30:26+02:00",
-    "generated_display": "11 Sep 2026 13:30 SAST",
+    "generated_at_utc": "2026-09-11T11:33:45+00:00",
+    "generated_at_sast": "2026-09-11T13:33:45+02:00",
+    "generated_display": "11 Sep 2026 13:33 SAST",
     "sources": [
       {
         "key": "stock",
@@ -74,7 +74,7 @@
     "time_lost_hours": 0.25,
     "decants_per_day": 1.0,
     "avg_attainment_pct": null,
-    "avg_turnaround_hours": 13.58,
+    "avg_turnaround_hours": 10.33,
     "open_exceptions": 0
   },
   "vessel_discharge": {
@@ -346,12 +346,12 @@
     "trend": [
       {
         "date": "2026-03-29",
-        "connect": 13.58,
+        "connect": 9.87,
         "safripol": null
       },
       {
         "date": "2026-03-30",
-        "connect": 3.55,
+        "connect": 6.45,
         "safripol": 12.76
       },
       {
@@ -506,7 +506,7 @@
       },
       {
         "date": "2026-04-30",
-        "connect": 3.15,
+        "connect": 3.42,
         "safripol": 7.68
       },
       {
@@ -526,7 +526,7 @@
       },
       {
         "date": "2026-05-04",
-        "connect": 3.54,
+        "connect": 3.23,
         "safripol": 8.59
       },
       {
@@ -611,7 +611,7 @@
       },
       {
         "date": "2026-05-21",
-        "connect": 2.05,
+        "connect": 2.23,
         "safripol": 3.35
       },
       {
@@ -661,7 +661,7 @@
       },
       {
         "date": "2026-05-31",
-        "connect": 3.72,
+        "connect": 3.39,
         "safripol": 5.13
       },
       {
@@ -717,7 +717,7 @@
       {
         "date": "2026-06-11",
         "connect": 1.99,
-        "safripol": 4.05
+        "safripol": 4.1
       },
       {
         "date": "2026-06-12",
@@ -742,21 +742,16 @@
       {
         "date": "2026-06-16",
         "connect": 2.83,
-        "safripol": 4.4
+        "safripol": 4.31
       },
       {
         "date": "2026-06-17",
-        "connect": 2.87,
+        "connect": 3.38,
         "safripol": 5.96
       },
       {
-        "date": "2026-06-24",
+        "date": "2026-07-04",
         "connect": 4.14,
-        "safripol": null
-      },
-      {
-        "date": "2026-07-05",
-        "connect": 0.25,
         "safripol": null
       },
       {
@@ -766,7 +761,7 @@
       },
       {
         "date": "2026-09-10",
-        "connect": 10.26,
+        "connect": 6.43,
         "safripol": null
       },
       {
@@ -776,13 +771,15 @@
       }
     ],
     "turnaround": {
-      "cycles": 821,
-      "completed_cycles": 811,
+      "cycles": 820,
+      "completed_cycles": 797,
+      "excluded_parked_cycles": 10,
+      "max_turnaround_hours": 24.0,
       "avg_connect_dwell_hours": 3.04,
-      "avg_transit_out_hours": 1.25,
+      "avg_transit_out_hours": 1.28,
       "avg_safripol_dwell_hours": 6.43,
       "avg_transit_return_hours": 1.04,
-      "avg_turnaround_hours": 13.58,
+      "avg_turnaround_hours": 10.33,
       "targets": {
         "connect_dwell": 2.75,
         "transit": 0.75,
@@ -791,16 +788,10 @@
       },
       "trend": [
         {
-          "date": "2026-03-29",
-          "turnaround": 37.4,
-          "transit_out": 7.69,
-          "safripol_dwell": 15.61
-        },
-        {
           "date": "2026-03-30",
-          "turnaround": 9.61,
-          "transit_out": 1.05,
-          "safripol_dwell": 3.15
+          "turnaround": 11.04,
+          "transit_out": 0.92,
+          "safripol_dwell": 5.49
         },
         {
           "date": "2026-03-31",
@@ -840,14 +831,14 @@
         },
         {
           "date": "2026-04-06",
-          "turnaround": 11.06,
-          "transit_out": 2.24,
-          "safripol_dwell": 7.95
+          "turnaround": 10.02,
+          "transit_out": 1.6,
+          "safripol_dwell": 7.69
         },
         {
           "date": "2026-04-07",
           "turnaround": 11.25,
-          "transit_out": 0.56,
+          "transit_out": 2.32,
           "safripol_dwell": 6.52
         },
         {
@@ -858,9 +849,9 @@
         },
         {
           "date": "2026-04-09",
-          "turnaround": 18.11,
-          "transit_out": 5.38,
-          "safripol_dwell": 7.73
+          "turnaround": 15.27,
+          "transit_out": 3.41,
+          "safripol_dwell": 7.82
         },
         {
           "date": "2026-04-10",
@@ -888,9 +879,9 @@
         },
         {
           "date": "2026-04-14",
-          "turnaround": 17.98,
-          "transit_out": 4.73,
-          "safripol_dwell": 8.15
+          "turnaround": 14.02,
+          "transit_out": 0.42,
+          "safripol_dwell": 8.02
         },
         {
           "date": "2026-04-15",
@@ -984,9 +975,9 @@
         },
         {
           "date": "2026-04-30",
-          "turnaround": 21.13,
-          "transit_out": 0.58,
-          "safripol_dwell": 7.66
+          "turnaround": 11.42,
+          "transit_out": 0.59,
+          "safripol_dwell": 8.19
         },
         {
           "date": "2026-05-01",
@@ -1008,9 +999,9 @@
         },
         {
           "date": "2026-05-04",
-          "turnaround": 13.86,
-          "transit_out": 0.69,
-          "safripol_dwell": 8.75
+          "turnaround": 14.2,
+          "transit_out": 0.67,
+          "safripol_dwell": 8.1
         },
         {
           "date": "2026-05-05",
@@ -1068,9 +1059,9 @@
         },
         {
           "date": "2026-05-14",
-          "turnaround": 13.06,
-          "transit_out": 3.59,
-          "safripol_dwell": 4.91
+          "turnaround": 10.94,
+          "transit_out": 1.83,
+          "safripol_dwell": 5.1
         },
         {
           "date": "2026-05-15",
@@ -1110,9 +1101,9 @@
         },
         {
           "date": "2026-05-21",
-          "turnaround": 27.38,
-          "transit_out": 1.09,
-          "safripol_dwell": 3.84
+          "turnaround": 7.3,
+          "transit_out": 0.6,
+          "safripol_dwell": 3.82
         },
         {
           "date": "2026-05-22",
@@ -1164,15 +1155,15 @@
         },
         {
           "date": "2026-05-30",
-          "turnaround": 9.42,
-          "transit_out": 1.6,
-          "safripol_dwell": 4.24
+          "turnaround": 7.73,
+          "transit_out": 0.55,
+          "safripol_dwell": 4.27
         },
         {
           "date": "2026-05-31",
-          "turnaround": 10.08,
-          "transit_out": 0.96,
-          "safripol_dwell": 4.56
+          "turnaround": 10.41,
+          "transit_out": 1.45,
+          "safripol_dwell": 4.52
         },
         {
           "date": "2026-06-01",
@@ -1194,9 +1185,9 @@
         },
         {
           "date": "2026-06-04",
-          "turnaround": 10.15,
-          "transit_out": 1.94,
-          "safripol_dwell": 4.17
+          "turnaround": 7.81,
+          "transit_out": 0.38,
+          "safripol_dwell": 4.23
         },
         {
           "date": "2026-06-05",
@@ -1248,9 +1239,9 @@
         },
         {
           "date": "2026-06-13",
-          "turnaround": 16.9,
+          "turnaround": 7.29,
           "transit_out": 0.41,
-          "safripol_dwell": 3.87
+          "safripol_dwell": 3.92
         },
         {
           "date": "2026-06-14",
@@ -1266,27 +1257,21 @@
         },
         {
           "date": "2026-06-16",
-          "turnaround": 7.81,
+          "turnaround": 7.98,
           "transit_out": 0.3,
           "safripol_dwell": 4.29
         },
         {
           "date": "2026-06-17",
-          "turnaround": 519.59,
-          "transit_out": 4.84,
-          "safripol_dwell": 5.47
-        },
-        {
-          "date": "2026-07-05",
-          "turnaround": null,
-          "transit_out": 14.93,
-          "safripol_dwell": 3.85
+          "turnaround": 8.79,
+          "transit_out": 0.35,
+          "safripol_dwell": 6.33
         },
         {
           "date": "2026-09-10",
-          "turnaround": 17.48,
-          "transit_out": 3.52,
-          "safripol_dwell": 3.73
+          "turnaround": 18.61,
+          "transit_out": 8.1,
+          "safripol_dwell": 3.75
         }
       ]
     },
@@ -1684,10 +1669,10 @@
     {
       "severity": "medium",
       "category": "Transit over target",
-      "detail": "Average Connect to Safripol transit 1.25 h against a 0.75 h target.",
+      "detail": "Average Connect to Safripol transit 1.28 h against a 0.75 h target.",
       "when": null,
       "owner": "Transporter",
-      "value": "+0.5 h"
+      "value": "+0.53 h"
     }
   ]
 }
