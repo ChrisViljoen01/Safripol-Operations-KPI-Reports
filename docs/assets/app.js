@@ -682,7 +682,9 @@
         sub: ta.targets ? `vs ${hrs(ta.targets.transit)} h target` : "",
         tone: toneOf(ta.avg_transit_return_hours, ta.targets && ta.targets.transit) },
       { label: "Cycles tracked", value: num(ta.cycles),
-        sub: `${num(ta.completed_cycles)} complete round trips` },
+        sub: ta.excluded_parked_cycles
+          ? `${num(ta.completed_cycles)} complete · ${num(ta.excluded_parked_cycles)} parked excluded`
+          : `${num(ta.completed_cycles)} complete round trips` },
       { label: "Connect P90 dwell", value: hrs(connect.p90_hours), unit: "h",
         sub: `Worst ${hrs(connect.max_hours)} h` },
       { label: "Safripol P90 dwell", value: hrs(saf.p90_hours), unit: "h",

@@ -34,6 +34,7 @@ from .config import (
     TRANSIT_TARGET_HRS,
     WEATHER_EVENTS,
 )
+from .sources import MAX_TURNAROUND_HOURS
 
 
 # --------------------------------------------------------------------------- #
@@ -364,9 +365,22 @@ def dwell_block(visits: pd.DataFrame, turns: pd.DataFrame) -> dict:
     if turns is not None and not turns.empty:
         full = turns[turns.get("turnaround_hours").notna()] if "turnaround_hours" in turns \
             else pd.DataFrame()
+        # Parked units are not operational cycles; keep them out of the averages and
+        # the trend so one idle isotainer cannot swamp the chart.
+        if not full.empty and "turnaround_excluded" in full:
+            parked = int(full["turnaround_excluded"].fillna(0).sum())
+            full = full[full["turnaround_excluded"].fillna(0) == 0]
+        else:
+            parked = 0
+        trend_src = (
+            turns[turns.get("turnaround_excluded").fillna(0) == 0]
+            if "turnaround_excluded" in turns else turns
+        )
         out["turnaround"] = {
             "cycles": int(len(turns)),
             "completed_cycles": int(len(full)),
+            "excluded_parked_cycles": parked,
+            "max_turnaround_hours": MAX_TURNAROUND_HOURS,
             "avg_connect_dwell_hours": r2(_mean(turns["connect_dwell_hours"])),
             "avg_transit_out_hours": r2(_mean(turns["transit_out_hours"])),
             "avg_safripol_dwell_hours": r2(_mean(turns["safripol_dwell_hours"])),
@@ -384,7 +398,7 @@ def dwell_block(visits: pd.DataFrame, turns: pd.DataFrame) -> dict:
                 "turnaround": r2(_mean(g.get("turnaround_hours"))),
                 "transit_out": r2(_mean(g["transit_out_hours"])),
                 "safripol_dwell": r2(_mean(g["safripol_dwell_hours"])),
-            } for d, g in turns.groupby("date")],
+            } for d, g in trend_src.groupby("date")],
         }
     return out
 

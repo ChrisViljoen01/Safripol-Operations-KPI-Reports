@@ -30,6 +30,17 @@ from .config import (
 
 log = logging.getLogger(__name__)
 
+# GPS data-quality bounds.
+#
+# A tracker that goes quiet and later resumes in the same zone looks, to a naive
+# reader, like one continuous stay. Allowing a little slack absorbs ordinary
+# reporting jitter; beyond it the gap is treated as a separate visit.
+MAX_PING_GAP_HOURS = 6.0
+# An isotainer parked between jobs is not an operational turnaround. Cycles longer
+# than this are excluded from turnaround averages and the trend, and counted
+# separately so the exclusion is visible rather than silent.
+MAX_TURNAROUND_HOURS = 24.0
+
 
 # --------------------------------------------------------------------------- #
 # helpers
@@ -304,12 +315,30 @@ def parse_dwell_visits(path: Path) -> pd.DataFrame:
         visit_id = 0
         prev_site = None
         prev_dwell = None
+        prev_time = None
         current: dict | None = None
         for _, row in grp.iterrows():
+            # The dwell counter is the authority on continuous presence. If far more
+            # wall-clock time has passed than the counter advanced, the unit was not
+            # sitting in the zone the whole time - the tracker went quiet (parked,
+            # off, out of coverage) and came back. Treating that as one visit merges
+            # months into a single "visit" and produces absurd turnaround times.
+            gap_hours = (
+                (row["gps_datetime"] - prev_time).total_seconds() / 3600.0
+                if prev_time is not None else 0.0
+            )
+            dwell_delta = (
+                row["dwell_hours"] - prev_dwell if prev_dwell is not None else 0.0
+            )
+            stale_gap = (
+                prev_time is not None
+                and gap_hours > dwell_delta + MAX_PING_GAP_HOURS
+            )
             new_visit = (
                 prev_site is None
                 or row["site"] != prev_site
                 or (prev_dwell is not None and row["dwell_hours"] < prev_dwell)
+                or stale_gap
             )
             if new_visit:
                 if current is not None:
@@ -336,6 +365,7 @@ def parse_dwell_visits(path: Path) -> pd.DataFrame:
                 )
             prev_site = row["site"]
             prev_dwell = row["dwell_hours"]
+            prev_time = row["gps_datetime"]
         if current is not None:
             visits.append(current)
 
@@ -392,11 +422,16 @@ def build_turnaround(visits: pd.DataFrame) -> pd.DataFrame:
             if back is not None:
                 ret = (back["visit_start"] - saf["visit_end"]).total_seconds() / 3600.0
                 if 0 <= ret <= 24:
-                    row["return_connect"] = back["visit_start"]
-                    row["transit_return_hours"] = ret
-                    row["turnaround_hours"] = (
+                    turnaround = (
                         (back["visit_start"] - v["visit_start"]).total_seconds() / 3600.0
                     )
+                    row["return_connect"] = back["visit_start"]
+                    row["transit_return_hours"] = ret
+                    row["turnaround_hours"] = turnaround
+                    # Both legs can be sane while the cycle is not: the unit stood at
+                    # Connect for days before departing. Flag rather than drop, so the
+                    # exception stays auditable.
+                    row["turnaround_excluded"] = int(turnaround > MAX_TURNAROUND_HOURS)
             rows.append(row)
     return pd.DataFrame(rows)
 
