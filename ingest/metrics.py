@@ -595,23 +595,28 @@ def plan_block(drawdown: pd.DataFrame, dispatch_by_date: list[dict],
     actual_map = {r["date"]: r["cum_mt"] for r in dispatch_by_date}
     running = None
     rows = []
+    today_iso = date.today().isoformat()
     for r in drawdown.itertuples():
         d = iso_d(r.date)
         if d in actual_map:
             running = actual_map[d]
+        # Actuals must stop at today. Carrying the last value forward to the plan
+        # end would draw a flat line across the future and read as real progress.
+        future = d > today_iso
         rows.append({
             "date": d,
             "planned_mt": r2(r.planned_mt),
             "planned_isotainers": r2(getattr(r, "planned_isotainers", None), 0),
             "cum_planned_mt": r2(r.cum_planned_mt),
             "cum_planned_isotainers": r2(getattr(r, "cum_planned_isotainers", None), 0),
-            "cum_actual_mt": r2(running),
-            "variance_mt": r2((running - r.cum_planned_mt) if running is not None else None),
+            "cum_actual_mt": None if future else r2(running),
+            "variance_mt": (None if future else
+                            r2((running - r.cum_planned_mt) if running is not None else None)),
         })
 
     plan_end = rows[-1]["date"] if rows else None
     plan_start = rows[0]["date"] if rows else None
-    today = date.today().isoformat()
+    today = today_iso
 
     # Where the plan says we should be by today (the last planned day that has
     # already happened), so "ahead/behind" is measured against today, not against
@@ -637,6 +642,7 @@ def plan_block(drawdown: pd.DataFrame, dispatch_by_date: list[dict],
         "days": len(rows),
         "days_elapsed": sum(1 for x in rows if x["date"] <= today),
         "days_remaining": sum(1 for x in rows if x["date"] > today),
+        "today": today,
         "assumptions": assumptions,
         "phases": assumptions.get("phases", []),
         "current_phase": _current_phase(assumptions.get("phases", []), today),

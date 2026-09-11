@@ -152,9 +152,10 @@
       },
       scales: {
         x: {
-          // Vertical rules add clutter without aiding comparison; the axis line alone
-          // is enough to anchor the series.
-          grid: { display: false, drawBorder: false },
+          // Soft vertical rules help trace a point across to the axis without
+          // competing with the series.
+          grid: { display: true, color: css("--grid-soft"), drawBorder: false,
+                  tickLength: 0 },
           border: { color: css("--line") },
           ticks: {
             color: text, font: { size: 11, family: "Inter" }, maxRotation: 0,
@@ -163,7 +164,7 @@
         },
         y: {
           grid: { color: grid, drawBorder: false, lineWidth: 1, tickLength: 0 },
-          border: { display: false, dash: [4, 5] },
+          border: { display: false },
           ticks: {
             color: text, font: { size: 11, family: "Inter" }, padding: 10,
             maxTicksLimit: 6,
@@ -198,9 +199,9 @@
     state.charts[id] = new Chart(el.getContext("2d"), config);
   }
 
-  /* -------------------- value labels at the end of bars ------------------ */
-  /* Chart.js ships no datalabels plugin, so this draws the value just beyond
-     each bar's end. Opt in per chart with `plugins: { valueLabels: {...} }`. */
+  /* ---------------- always-on value labels on bars and lines ------------- */
+  /* Chart.js ships no datalabels plugin, so this draws values directly on the
+     plot — no hover required. Opt in with `plugins: { valueLabels: {...} }`. */
   const valueLabels = {
     id: "valueLabels",
     afterDatasetsDraw(chart, _args, opts) {
@@ -208,36 +209,73 @@
       const { ctx, chartArea } = chart;
       const fmt = opts.formatter || ((v) => num(v, 0));
       const pad = opts.padding ?? 6;
+      const base = opts.color || css("--text-2");
+      const placed = [];
+
+      // Labels sit over gridlines and series, so each gets a soft halo drawn
+      // from the page background rather than an opaque box.
+      const paint = (text, x, y, align, baseline, colour) => {
+        ctx.textAlign = align;
+        ctx.textBaseline = baseline;
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = "rgba(255,255,255,.92)";
+        ctx.lineJoin = "round";
+        ctx.miterLimit = 2;
+        ctx.strokeText(text, x, y);
+        ctx.fillStyle = colour;
+        ctx.fillText(text, x, y);
+      };
+
       ctx.save();
       ctx.font = `600 ${opts.fontSize || 11}px Inter, system-ui, sans-serif`;
-      ctx.fillStyle = opts.color || css("--text-2");
+
       chart.data.datasets.forEach((ds, di) => {
         const meta = chart.getDatasetMeta(di);
-        if (meta.hidden || meta.type !== "bar") return;
+        if (meta.hidden) return;
         if (opts.datasets && !opts.datasets.includes(di)) return;
+        const kind = meta.type || chart.config.type;
+        if (kind !== "bar" && kind !== "line") return;
         const horizontal = chart.options.indexAxis === "y";
-        meta.data.forEach((bar, i) => {
+
+        meta.data.forEach((pt, i) => {
           const raw = ds.data[i];
           const v = typeof raw === "object" && raw !== null ? raw.y ?? raw.x : raw;
-          if (v === null || v === undefined || v === 0 || Number.isNaN(v)) return;
+          if (v === null || v === undefined || Number.isNaN(v)) return;
+          if (kind === "bar" && v === 0) return;
           const text = fmt(v, i, ds);
           if (!text) return;
+          const w = ctx.measureText(text).width;
+
+          if (kind === "line") {
+            // Thin out dense series so a long run of dates stays legible.
+            const step = opts.every || Math.max(1, Math.ceil(meta.data.length / 12));
+            const isLast = i === meta.data.length - 1;
+            if (!isLast && i % step !== 0) return;
+            const above = pt.y - pad - 11 > chartArea.top;
+            const x = Math.min(Math.max(pt.x, chartArea.left + w / 2),
+                               chartArea.right - w / 2);
+            const y = pt.y + (above ? -pad : pad);
+            // Drop any label that would collide with one already drawn.
+            if (placed.some((p) => Math.abs(p.x - x) < (p.w + w) / 2 + 6
+                                   && Math.abs(p.y - y) < 14)) return;
+            placed.push({ x, y, w });
+            paint(text, x, y, "center", above ? "bottom" : "top",
+                  opts.lineColor || ds.borderColor || base);
+            return;
+          }
+
           if (horizontal) {
-            // Flip inside the bar when the label would overflow the plot area.
-            const over = bar.x + pad + ctx.measureText(text).width > chartArea.right;
-            ctx.textAlign = over ? "right" : "left";
-            ctx.fillStyle = over ? "#fff" : (opts.color || css("--text-2"));
-            ctx.textBaseline = "middle";
-            ctx.fillText(text, bar.x + (over ? -pad : pad), bar.y);
+            const over = pt.x + pad + w > chartArea.right;
+            paint(text, pt.x + (over ? -pad : pad), pt.y,
+                  over ? "right" : "left", "middle", over ? "#fff" : base);
           } else {
-            const over = bar.y - pad - 11 < chartArea.top;
-            // Skip rather than overlap when bars are packed tighter than the text.
-            const slot = bar.width + (meta.data[1] ? Math.abs(meta.data[1].x - meta.data[0].x) - bar.width : 8);
-            if (ctx.measureText(text).width > slot - 2) return;
-            ctx.textAlign = "center";
-            ctx.textBaseline = over ? "top" : "bottom";
-            ctx.fillStyle = over ? "#fff" : (opts.color || css("--text-2"));
-            ctx.fillText(text, bar.x, bar.y + (over ? pad : -pad));
+            const over = pt.y - pad - 11 < chartArea.top;
+            // Skip rather than overlap when bars are tighter than the text.
+            const slot = pt.width
+              + (meta.data[1] ? Math.abs(meta.data[1].x - meta.data[0].x) - pt.width : 8);
+            if (w > slot - 2) return;
+            paint(text, pt.x, pt.y + (over ? pad : -pad), "center",
+                  over ? "top" : "bottom", over ? "#fff" : base);
           }
         });
       });
@@ -473,7 +511,12 @@
               pointRadius: 0, fill: false },
           ],
         },
-        options: baseOpts(),
+        options: baseOpts({
+          plugins: {
+            valueLabels: { display: true, datasets: [0],
+                           formatter: (v) => num(v, 0) },
+          },
+        }),
       });
 
       draw("chartDaily", {
@@ -686,42 +729,78 @@
     if (d.plan.has_plan) {
       clearEmpty("chartPlan");
       const rows = d.plan.rows;
-      // Draw the forecast as a dashed run from today's actual to the projected
-      // finish, so the gap against plan is visible rather than implied.
-      let forecast = null;
-      if (pj.projected_end && pj.rate_mt_per_day) {
-        const lastActualIdx = rows.reduce(
-          (acc, r, i) => (r.cum_actual_mt !== null && r.cum_actual_mt !== undefined ? i : acc), -1);
-        if (lastActualIdx >= 0) {
-          const startMt = rows[lastActualIdx].cum_actual_mt;
-          const startDate = new Date(rows[lastActualIdx].date);
-          forecast = rows.map((r, i) => {
-            if (i < lastActualIdx) return null;
-            const days = (new Date(r.date) - startDate) / 86400000;
-            return Math.min(startMt + days * pj.rate_mt_per_day, d.headline.target_total_mt);
-          });
+      const today = pl.today;
+      const target = d.headline.target_total_mt;
+
+      // The forecast can run past the plan's end date, so extend the axis to
+      // cover it — otherwise the projection is silently clipped at 05 Dec.
+      const labels = rows.map((r) => r.date);
+      if (pj.projected_end && pj.projected_end > labels[labels.length - 1]) {
+        const end = new Date(pj.projected_end);
+        const cur = new Date(labels[labels.length - 1]);
+        while (cur < end) {
+          cur.setDate(cur.getDate() + 1);
+          labels.push(cur.toISOString().slice(0, 10));
         }
       }
+      const at = (iso) => labels.indexOf(iso);
+      const series = (pick) => labels.map((L) => {
+        const r = rows.find((x) => x.date === L);
+        return r ? pick(r) : null;
+      });
+
+      // Anchor the projection to today's actual so the two lines meet rather
+      // than the dashed run appearing to start from nowhere.
+      const lastIdx = rows.reduce(
+        (acc, r, i) => (r.cum_actual_mt !== null && r.cum_actual_mt !== undefined ? i : acc), -1);
+      let forecast = null;
+      if (lastIdx >= 0 && pj.rate_mt_per_day) {
+        const anchorIso = rows[lastIdx].date > today ? today : rows[lastIdx].date;
+        const anchorIdx = at(anchorIso) >= 0 ? at(anchorIso) : at(rows[lastIdx].date);
+        const startMt = rows[lastIdx].cum_actual_mt;
+        const start = new Date(anchorIso);
+        let done = false;
+        forecast = labels.map((L, i) => {
+          if (i < anchorIdx || done) return null;
+          const days = (new Date(L) - start) / 86400000;
+          const v = startMt + days * pj.rate_mt_per_day;
+          if (v >= target) { done = true; return target; }
+          return Math.round(v * 100) / 100;
+        });
+      }
+
       const datasets = [
-        { label: "Plan cumulative MT", data: rows.map((r) => r.cum_planned_mt),
+        { label: "Plan cumulative MT", data: series((r) => r.cum_planned_mt),
           borderColor: css("--text-3"), borderWidth: 2, borderDash: [6, 4],
-          pointRadius: 0, tension: .2, fill: false },
-        { label: "Actual cumulative MT", data: rows.map((r) => r.cum_actual_mt),
-          borderColor: css("--accent"), borderWidth: 2.5,
-          backgroundColor: (c) => fadeFill(c, "#38bdf8"), fill: true,
-          spanGaps: true, tension: .3, pointRadius: 0 },
+          pointRadius: 0, tension: .2, fill: false, spanGaps: false },
+        { label: "Actual cumulative MT", data: series((r) => r.cum_actual_mt),
+          borderColor: css("--accent"), borderWidth: 3,
+          backgroundColor: (c) => fadeFill(c, "#0b1aa3"), fill: true,
+          spanGaps: true, tension: .3,
+          // Mark where actuals stop so the handover to the forecast is obvious.
+          pointRadius: (c) => (c.dataIndex === lastIdx ? 4 : 0),
+          pointBackgroundColor: css("--accent"),
+          pointBorderColor: "#fff", pointBorderWidth: 2 },
       ];
       if (forecast) {
         datasets.push({
-          label: "Forecast at current rate", data: forecast,
-          borderColor: css("--warn"), borderWidth: 2, borderDash: [3, 4],
+          label: "Projected at current rate", data: forecast,
+          borderColor: css("--warn"), borderWidth: 2.5, borderDash: [2, 4],
           pointRadius: 0, tension: .2, fill: false, spanGaps: true,
         });
       }
       draw("chartPlan", {
         type: "line",
-        data: { labels: rows.map((r) => dLabel(r.date)), datasets },
-        options: baseOpts(),
+        data: { labels: labels.map(dLabel), datasets },
+        options: baseOpts({
+          plugins: {
+            valueLabels: { display: true, datasets: [1],
+                           formatter: (v) => num(v, 0) },
+            tooltip: { callbacks: { title: (items) =>
+              (items[0] ? dLong(labels[items[0].dataIndex]) : "") } },
+          },
+          scales: { y: { suggestedMax: target } },
+        }),
       });
 
       const v = pl.variance_to_date_mt ?? d.plan.variance_mt;
@@ -841,16 +920,23 @@
         datasets: [
           { label: "Avg decant (h)", data: by.map((r) => r.avg_decant_hours),
             borderColor: css("--accent"), borderWidth: 2.5, tension: .3,
+            backgroundColor: (c) => fadeFill(c, "#0b1aa3"), fill: true,
             pointRadius: 0, spanGaps: true },
           { label: "Avg interval (h)", data: by.map((r) => r.avg_interval_hours),
             borderColor: css("--accent-2"), borderWidth: 2, tension: .3,
+            backgroundColor: (c) => fadeFill(c, "#28a9c8"), fill: true,
             pointRadius: 0, spanGaps: true },
           { label: "Standard", data: by.map(() => dc.allowed_decant_hours),
             borderColor: css("--bad"), borderWidth: 1.5, borderDash: [6, 5],
-            pointRadius: 0 },
+            pointRadius: 0, fill: false },
         ],
       },
-      options: baseOpts(),
+      options: baseOpts({
+        plugins: {
+          valueLabels: { display: true, datasets: [0],
+                         formatter: (v) => `${num(v, 1)} h` },
+        },
+      }),
     });
 
     draw("chartDecantVolume", {
@@ -1011,10 +1097,16 @@
             { label: "Transit out (h)", data: ta.trend.map((r) => r.transit_out),
               borderColor: css("--good"), borderWidth: 2, tension: .3, pointRadius: 0 },
             { label: "Target", data: ta.trend.map(() => ta.targets.turnaround),
-              borderColor: css("--bad"), borderWidth: 1.5, borderDash: [6, 5], pointRadius: 0 },
+              borderColor: css("--bad"), borderWidth: 1.5, borderDash: [6, 5],
+              pointRadius: 0, fill: false },
           ],
         },
-        options: baseOpts(),
+        options: baseOpts({
+          plugins: {
+            valueLabels: { display: true, datasets: [0],
+                           formatter: (v) => `${num(v, 1)} h` },
+          },
+        }),
       });
     } else emptyChart("chartTurnTrend", "No complete turnaround cycles yet");
 
@@ -1027,15 +1119,23 @@
           datasets: [
             { label: "Connect Logistics", data: dw.trend.map((r) => r.connect),
               borderColor: css("--accent"), borderWidth: 2.5, tension: .3,
+              backgroundColor: (c) => fadeFill(c, "#0b1aa3"), fill: true,
               pointRadius: 0, spanGaps: true },
             { label: "Safripol", data: dw.trend.map((r) => r.safripol),
               borderColor: css("--accent-2"), borderWidth: 2.5, tension: .3,
+              backgroundColor: (c) => fadeFill(c, "#28a9c8"), fill: true,
               pointRadius: 0, spanGaps: true },
             { label: "Target", data: dw.trend.map(() => 2.75),
-              borderColor: css("--bad"), borderWidth: 1.5, borderDash: [6, 5], pointRadius: 0 },
+              borderColor: css("--bad"), borderWidth: 1.5, borderDash: [6, 5],
+              pointRadius: 0, fill: false },
           ],
         },
-        options: baseOpts(),
+        options: baseOpts({
+          plugins: {
+            valueLabels: { display: true, datasets: [0, 1],
+                           formatter: (v) => `${num(v, 1)}` },
+          },
+        }),
       });
     } else emptyChart("chartDwellTrend", "No dwell data");
 
