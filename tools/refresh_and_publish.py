@@ -12,7 +12,6 @@ Register it with tools/install_task.ps1.
 from __future__ import annotations
 
 import os
-import shutil
 import subprocess
 import sys
 from datetime import datetime, timezone
@@ -22,6 +21,19 @@ REPO = Path(__file__).resolve().parent.parent
 LOG = REPO / "refresh.log"
 DATA = REPO / "docs" / "data"
 MAX_LOG_BYTES = 512_000
+
+
+def _hidden_process_options() -> dict:
+    """Prevent git.exe / python.exe child windows flashing during scheduled runs."""
+    if os.name != "nt":
+        return {}
+    startupinfo = subprocess.STARTUPINFO()
+    startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+    startupinfo.wShowWindow = 0
+    return {
+        "startupinfo": startupinfo,
+        "creationflags": getattr(subprocess, "CREATE_NO_WINDOW", 0),
+    }
 
 
 def log(msg: str) -> None:
@@ -38,6 +50,7 @@ def log(msg: str) -> None:
 
 
 def run(args: list[str], **kw) -> subprocess.CompletedProcess:
+    kw = {**_hidden_process_options(), **kw}
     return subprocess.run(
         args, cwd=REPO, capture_output=True, text=True, timeout=600, **kw
     )
@@ -59,6 +72,7 @@ def main() -> int:
     proc = subprocess.run(
         [sys.executable, "-u", "-m", "ingest", "--quiet"],
         cwd=REPO, capture_output=True, text=True, env=env, timeout=900,
+        **_hidden_process_options(),
     )
     tail = (proc.stdout or "").strip().splitlines()[-6:]
     for line in tail:

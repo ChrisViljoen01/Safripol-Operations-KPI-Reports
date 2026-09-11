@@ -59,6 +59,22 @@ python -m ingest --check     # confirm all four sources read
 powershell -ExecutionPolicy Bypass -File tools\install_task.ps1 -Minutes 30
 ```
 
+### Monitoring the refresh
+
+Run the desktop shortcut command:
+
+```text
+C:\Users\Christopher.Viljoen\OneDrive - Connect Logistics\Desktop\Safripol Report Spot Check.cmd
+```
+
+It shows the scheduled task result, next run time, published snapshot timestamp,
+headline tonnages, source status and the latest `refresh.log` lines. To force a
+refresh immediately:
+
+```powershell
+Start-ScheduledTask -TaskName 'Safripol Ops Report Refresh'
+```
+
 ### Sources
 
 | Source | Owner | Used for |
