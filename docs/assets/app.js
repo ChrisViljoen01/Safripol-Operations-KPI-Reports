@@ -198,6 +198,154 @@
     state.charts[id] = new Chart(el.getContext("2d"), config);
   }
 
+  /* -------------------- value labels at the end of bars ------------------ */
+  /* Chart.js ships no datalabels plugin, so this draws the value just beyond
+     each bar's end. Opt in per chart with `plugins: { valueLabels: {...} }`. */
+  const valueLabels = {
+    id: "valueLabels",
+    afterDatasetsDraw(chart, _args, opts) {
+      if (!opts || opts.display !== true) return;
+      const { ctx, chartArea } = chart;
+      const fmt = opts.formatter || ((v) => num(v, 0));
+      const pad = opts.padding ?? 6;
+      ctx.save();
+      ctx.font = `600 ${opts.fontSize || 11}px Inter, system-ui, sans-serif`;
+      ctx.fillStyle = opts.color || css("--text-2");
+      chart.data.datasets.forEach((ds, di) => {
+        const meta = chart.getDatasetMeta(di);
+        if (meta.hidden || meta.type !== "bar") return;
+        if (opts.datasets && !opts.datasets.includes(di)) return;
+        const horizontal = chart.options.indexAxis === "y";
+        meta.data.forEach((bar, i) => {
+          const raw = ds.data[i];
+          const v = typeof raw === "object" && raw !== null ? raw.y ?? raw.x : raw;
+          if (v === null || v === undefined || v === 0 || Number.isNaN(v)) return;
+          const text = fmt(v, i, ds);
+          if (!text) return;
+          if (horizontal) {
+            // Flip inside the bar when the label would overflow the plot area.
+            const over = bar.x + pad + ctx.measureText(text).width > chartArea.right;
+            ctx.textAlign = over ? "right" : "left";
+            ctx.fillStyle = over ? "#fff" : (opts.color || css("--text-2"));
+            ctx.textBaseline = "middle";
+            ctx.fillText(text, bar.x + (over ? -pad : pad), bar.y);
+          } else {
+            const over = bar.y - pad - 11 < chartArea.top;
+            // Skip rather than overlap when bars are packed tighter than the text.
+            const slot = bar.width + (meta.data[1] ? Math.abs(meta.data[1].x - meta.data[0].x) - bar.width : 8);
+            if (ctx.measureText(text).width > slot - 2) return;
+            ctx.textAlign = "center";
+            ctx.textBaseline = over ? "top" : "bottom";
+            ctx.fillStyle = over ? "#fff" : (opts.color || css("--text-2"));
+            ctx.fillText(text, bar.x, bar.y + (over ? pad : -pad));
+          }
+        });
+      });
+      ctx.restore();
+    },
+  };
+
+  /* ------------------ total in the middle of a doughnut ------------------ */
+  const centreTotal = {
+    id: "centreTotal",
+    afterDraw(chart, _args, opts) {
+      if (!opts || opts.enabled !== true) return;
+      const meta = chart.getDatasetMeta(0);
+      if (!meta || !meta.data.length) return;
+      const { ctx } = chart;
+      const arc = meta.data[0];
+      const cx = arc.x;
+      const cy = arc.y;
+      const total = chart.data.datasets[0].data.reduce((a, b) => a + (Number(b) || 0), 0);
+      const value = opts.value || num(total, opts.decimals ?? 0);
+      ctx.save();
+      ctx.textAlign = "center";
+      ctx.fillStyle = css("--text");
+      // Shrink to fit the hole so a long total never spills over the ring.
+      const inner = (arc.innerRadius || 0) * 2 - 12;
+      let size = opts.valueSize || 27;
+      ctx.font = `700 ${size}px "JetBrains Mono", monospace`;
+      while (size > 11 && ctx.measureText(value).width > inner) {
+        size -= 1;
+        ctx.font = `700 ${size}px "JetBrains Mono", monospace`;
+      }
+      ctx.textBaseline = "alphabetic";
+      ctx.fillText(value, cx, cy + 2);
+      if (opts.label) {
+        ctx.fillStyle = css("--text-3");
+        ctx.font = `700 10px Inter, system-ui, sans-serif`;
+        ctx.textBaseline = "top";
+        ctx.fillText(opts.label.toUpperCase(), cx, cy + 10);
+      }
+      ctx.restore();
+    },
+  };
+
+  if (typeof Chart !== "undefined") Chart.register(valueLabels, centreTotal, {
+    // Narrow cards can't afford a side legend without crushing the ring.
+    id: "responsiveLegend",
+    beforeLayout(chart) {
+      if (!chart.options.plugins.responsiveLegend) return;
+      const pos = chart.width < 520 ? "bottom" : "right";
+      if (chart.options.plugins.legend.position !== pos) {
+        chart.options.plugins.legend.position = pos;
+      }
+    },
+  });
+
+  /* Shared doughnut styling: a thinner ring with separated segments reads far
+     better than a solid pie, and the legend carries the value + share. */
+  function doughnutOpts({ label, unit = "", decimals = 0, valueSize } = {}) {
+    return {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: "70%",
+      radius: "92%",
+      layout: { padding: 6 },
+      animation: { duration: 620, easing: "easeOutQuart" },
+      plugins: {
+        centreTotal: { enabled: true, label, valueSize, decimals },
+        responsiveLegend: true,
+        legend: {
+          position: "right",
+          align: "center",
+          labels: {
+            color: css("--text-2"), usePointStyle: true, pointStyle: "circle",
+            boxWidth: 8, boxHeight: 8, padding: 13,
+            font: { size: 11.5, family: "Inter" },
+            generateLabels(chart) {
+              const ds = chart.data.datasets[0];
+              if (!ds) return [];
+              const total = ds.data.reduce((a, b) => a + (Number(b) || 0), 0) || 1;
+              return chart.data.labels.map((l, i) => {
+                const v = Number(ds.data[i]) || 0;
+                const share = (v / total) * 100;
+                return {
+                  text: `${l}  ·  ${num(v, decimals)}${unit} (${share.toFixed(0)}%)`,
+                  fillStyle: ds.backgroundColor[i],
+                  strokeStyle: ds.backgroundColor[i],
+                  lineWidth: 0,
+                  pointStyle: "circle",
+                  hidden: !chart.getDataVisibility(i),
+                  index: i,
+                };
+              });
+            },
+          },
+        },
+        tooltip: deepMerge(baseOpts().plugins.tooltip, {
+          callbacks: {
+            label(c) {
+              const total = c.dataset.data.reduce((a, b) => a + (Number(b) || 0), 0) || 1;
+              const v = Number(c.raw) || 0;
+              return ` ${c.label}: ${num(v, decimals)}${unit} · ${((v / total) * 100).toFixed(1)}%`;
+            },
+          },
+        }),
+      },
+    };
+  }
+
   const fadeFill = (ctx, hex) => {
     const { chart } = ctx;
     const area = chart.chartArea;
@@ -532,7 +680,13 @@
           datasets: [{ label: "Delivered MT", data: dp.by_iso.map((r) => r.mt),
             backgroundColor: css("--accent-2") + "cc", borderRadius: 5 }],
         },
-        options: baseOpts({ plugins: { legend: { display: false } } }),
+        options: baseOpts({
+          plugins: {
+            legend: { display: false },
+            valueLabels: { display: true, formatter: (v) => num(v, 1) },
+          },
+          scales: { y: { grace: "12%" } },
+        }),
       });
     } else {
       emptyChart("chartByIso", "Delivered tonnage by isotainer appears once loads are completed");
@@ -705,7 +859,13 @@
         datasets: [{ label: "Decants started", data: hp.map((r) => r.decants),
           backgroundColor: css("--accent-2") + "bb", borderRadius: 3 }],
       },
-      options: baseOpts({ plugins: { legend: { display: false } } }),
+      options: baseOpts({
+        plugins: {
+          legend: { display: false },
+          valueLabels: { display: true },
+        },
+        scales: { y: { grace: "12%" } },
+      }),
     });
   }
 
@@ -868,10 +1028,14 @@
         },
         options: baseOpts({
           indexAxis: "y",
-          plugins: { legend: { display: false } },
+          plugins: {
+            legend: { display: false },
+            valueLabels: { display: true, formatter: (v) => `${num(v, 1)} h` },
+          },
           // Horizontal bars measure along x, so the value grid belongs there.
           scales: {
-            x: { grid: { display: true, color: css("--grid"), drawBorder: false } },
+            x: { grid: { display: true, color: css("--grid"), drawBorder: false },
+                 grace: "8%" },
             y: { grid: { display: false }, ticks: { padding: 6 } },
           },
         }),
@@ -886,17 +1050,10 @@
           labels: owners.map((o) => o.owner),
           datasets: [{ data: owners.map((o) => o.hours),
             backgroundColor: owners.map((_, i) => palette[i % palette.length]),
-            borderColor: css("--surface"), borderWidth: 3 }],
+            borderColor: css("--surface"), borderWidth: 2,
+            hoverOffset: 8, spacing: 2 }],
         },
-        options: {
-          responsive: true, maintainAspectRatio: false, cutout: "58%",
-          plugins: {
-            legend: { position: "right",
-              labels: { color: css("--text-2"), usePointStyle: true, pointStyle: "circle",
-                        boxWidth: 8, font: { size: 11, family: "Inter" } } },
-            tooltip: baseOpts().plugins.tooltip,
-          },
-        },
+        options: doughnutOpts({ label: "Hours lost", unit: " h", decimals: 1 }),
       });
     } else emptyChart("chartDelayOwner", "No delay ownership recorded yet");
 
@@ -1045,7 +1202,13 @@
           backgroundColor: (st.by_team || []).map((_, i) => palette[i % palette.length] + "cc"),
           borderRadius: 5 }],
       },
-      options: baseOpts({ plugins: { legend: { display: false } } }),
+      options: baseOpts({
+        plugins: {
+          legend: { display: false },
+          valueLabels: { display: true },
+        },
+        scales: { y: { grace: "12%" } },
+      }),
     });
 
     draw("chartTeamRole", {
@@ -1054,17 +1217,10 @@
         labels: (st.by_position || []).map((p) => p.position),
         datasets: [{ data: (st.by_position || []).map((p) => p.headcount),
           backgroundColor: (st.by_position || []).map((_, i) => palette[i % palette.length]),
-          borderColor: css("--surface"), borderWidth: 3 }],
+          borderColor: css("--surface"), borderWidth: 2,
+          hoverOffset: 8, spacing: 2 }],
       },
-      options: {
-        responsive: true, maintainAspectRatio: false, cutout: "58%",
-        plugins: {
-          legend: { position: "right",
-            labels: { color: css("--text-2"), usePointStyle: true, pointStyle: "circle",
-                      boxWidth: 8, font: { size: 11, family: "Inter" } } },
-          tooltip: baseOpts().plugins.tooltip,
-        },
-      },
+      options: doughnutOpts({ label: "On site" }),
     });
 
     const byTeam = d.decant.by_team || [];
