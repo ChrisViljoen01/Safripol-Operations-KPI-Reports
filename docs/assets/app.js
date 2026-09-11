@@ -110,38 +110,85 @@
   function baseOpts(extra = {}) {
     const text = css("--text-2");
     const grid = css("--grid");
-    return {
+    const merged = {
       responsive: true,
       maintainAspectRatio: false,
+      resizeDelay: 120,
       interaction: { mode: "index", intersect: false },
+      layout: { padding: { top: 6, right: 6, bottom: 0, left: 0 } },
+      animation: { duration: 620, easing: "easeOutQuart" },
+      animations: { colors: false },
+      elements: {
+        // Thinner strokes and softer joins read as charting rather than clip-art.
+        line: { borderJoinStyle: "round", borderCapStyle: "round" },
+        point: { hoverBorderWidth: 2, hitRadius: 12 },
+        bar: { borderSkipped: false },
+      },
       plugins: {
         legend: {
           display: true,
-          labels: { color: text, usePointStyle: true, pointStyle: "circle",
-                    boxWidth: 7, font: { size: 11, family: "Inter" } },
+          align: "end",
+          labels: {
+            color: text, usePointStyle: true, pointStyle: "circle",
+            boxWidth: 6, boxHeight: 6, padding: 16,
+            font: { size: 11.5, family: "Inter", weight: "500" },
+          },
         },
         tooltip: {
-          backgroundColor: css("--surface-2"),
-          titleColor: css("--text"),
-          bodyColor: css("--text-2"),
-          borderColor: css("--line"),
+          backgroundColor: "rgba(15,23,42,.94)",
+          titleColor: "#fff",
+          bodyColor: "rgba(255,255,255,.86)",
+          borderColor: "rgba(255,255,255,.10)",
           borderWidth: 1,
-          padding: 10,
-          cornerRadius: 8,
+          padding: { top: 10, right: 13, bottom: 10, left: 13 },
+          cornerRadius: 10,
           displayColors: true,
-          boxPadding: 4,
+          usePointStyle: true,
+          boxPadding: 6,
+          titleFont: { size: 11.5, family: "Inter", weight: "600" },
+          bodyFont: { size: 12.5, family: "Inter" },
+          titleMarginBottom: 8,
         },
       },
       scales: {
-        x: { grid: { color: grid, drawBorder: false },
-             ticks: { color: text, font: { size: 10.5, family: "Inter" }, maxRotation: 0,
-                      autoSkipPadding: 14 } },
-        y: { grid: { color: grid, drawBorder: false },
-             ticks: { color: text, font: { size: 10.5, family: "Inter" } },
-             beginAtZero: true },
+        x: {
+          // Vertical rules add clutter without aiding comparison; the axis line alone
+          // is enough to anchor the series.
+          grid: { display: false, drawBorder: false },
+          border: { color: css("--line") },
+          ticks: {
+            color: text, font: { size: 11, family: "Inter" }, maxRotation: 0,
+            autoSkipPadding: 20, padding: 8,
+          },
+        },
+        y: {
+          grid: { color: grid, drawBorder: false, lineWidth: 1, tickLength: 0 },
+          border: { display: false, dash: [4, 5] },
+          ticks: {
+            color: text, font: { size: 11, family: "Inter" }, padding: 10,
+            maxTicksLimit: 6,
+          },
+          beginAtZero: true,
+        },
       },
-      ...extra,
     };
+    // Merge one level deep so callers can extend plugins/scales without losing
+    // the shared styling above.
+    for (const [k, v] of Object.entries(extra)) {
+      merged[k] = (v && typeof v === "object" && !Array.isArray(v) && merged[k])
+        ? deepMerge(merged[k], v) : v;
+    }
+    return merged;
+  }
+
+  function deepMerge(base, over) {
+    const out = Array.isArray(base) ? base.slice() : { ...base };
+    for (const [k, v] of Object.entries(over)) {
+      out[k] = (v && typeof v === "object" && !Array.isArray(v)
+                && out[k] && typeof out[k] === "object" && !Array.isArray(out[k]))
+        ? deepMerge(out[k], v) : v;
+    }
+    return out;
   }
 
   function draw(id, config) {
@@ -295,13 +342,15 @@
         },
         options: baseOpts({
           scales: {
-            x: baseOpts().scales.x,
-            y: { ...baseOpts().scales.y, title: { display: true, text: "MT",
-                 color: css("--text-3"), font: { size: 10 } } },
-            y1: { ...baseOpts().scales.y, position: "right",
+            y: { title: { display: true, text: "MT",
+                 color: css("--text-3"), font: { size: 10.5, weight: "600" } } },
+            y1: { position: "right", beginAtZero: true,
                   grid: { drawOnChartArea: false },
+                  border: { display: false },
+                  ticks: { color: css("--text-2"), padding: 10, maxTicksLimit: 6,
+                           font: { size: 11, family: "Inter" } },
                   title: { display: true, text: "Loads", color: css("--text-3"),
-                           font: { size: 10 } } },
+                           font: { size: 10.5, weight: "600" } } },
           },
         }),
       });
@@ -586,10 +635,11 @@
       },
       options: baseOpts({
         scales: {
-          x: baseOpts().scales.x,
-          y: baseOpts().scales.y,
-          y1: { ...baseOpts().scales.y, position: "right",
-                grid: { drawOnChartArea: false } },
+          y1: { position: "right", beginAtZero: true,
+                grid: { drawOnChartArea: false },
+                border: { display: false },
+                ticks: { color: css("--text-2"), padding: 10, maxTicksLimit: 6,
+                         font: { size: 11, family: "Inter" } } },
         },
       }),
     });
@@ -819,6 +869,11 @@
         options: baseOpts({
           indexAxis: "y",
           plugins: { legend: { display: false } },
+          // Horizontal bars measure along x, so the value grid belongs there.
+          scales: {
+            x: { grid: { display: true, color: css("--grid"), drawBorder: false } },
+            y: { grid: { display: false }, ticks: { padding: 6 } },
+          },
         }),
       });
     } else emptyChart("chartDelayCat", "No categorised delays recorded yet");
@@ -928,9 +983,11 @@
       },
       options: baseOpts({
         scales: {
-          x: baseOpts().scales.x,
-          y: baseOpts().scales.y,
-          y1: { ...baseOpts().scales.y, position: "right", grid: { drawOnChartArea: false } },
+          y1: { position: "right", beginAtZero: true,
+                grid: { drawOnChartArea: false },
+                border: { display: false },
+                ticks: { color: css("--text-2"), padding: 10, maxTicksLimit: 6,
+                         font: { size: 11, family: "Inter" } } },
         },
       }),
     });
@@ -1145,7 +1202,29 @@
     } catch { /* offline: try again next tick */ }
   }
 
+  function applyChartDefaults() {
+    if (typeof Chart === "undefined") return;
+    Chart.defaults.font.family = "Inter, system-ui, sans-serif";
+    Chart.defaults.font.size = 11.5;
+    Chart.defaults.color = css("--text-2");
+    // Lighter strokes, smaller dots and gentler curves across every chart, so the
+    // data reads as a analytical surface rather than a set of heavy blocks.
+    Chart.defaults.elements.line.borderWidth = 2;
+    Chart.defaults.elements.line.tension = 0.35;
+    Chart.defaults.elements.point.radius = 0;
+    Chart.defaults.elements.point.hoverRadius = 5;
+    Chart.defaults.elements.point.borderWidth = 0;
+    Chart.defaults.elements.bar.borderRadius = 6;
+    Chart.defaults.elements.bar.borderSkipped = false;
+    Chart.defaults.elements.arc.borderWidth = 0;
+    Chart.defaults.datasets.bar.maxBarThickness = 34;
+    Chart.defaults.datasets.bar.categoryPercentage = 0.72;
+    Chart.defaults.datasets.bar.barPercentage = 0.86;
+    Chart.defaults.plugins.tooltip.mode = "index";
+  }
+
   function init() {
+    applyChartDefaults();
     $$(".tab").forEach((t) => t.addEventListener("click", () => switchView(t.dataset.view)));
     $("#refreshBtn").addEventListener("click", () => load(true));
     $("#printBtn").addEventListener("click", () => window.print());

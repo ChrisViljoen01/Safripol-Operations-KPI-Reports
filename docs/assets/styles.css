@@ -264,9 +264,25 @@ main { padding: clamp(18px, 1.4vw, 34px); width: 100%; max-width: none; margin: 
 .kpi .sub.bad  { color: var(--bad); }
 
 /* -------------------------------- charts ------------------------------ */
-.chart-wrap { position: relative; height: clamp(280px, 17vw, 390px); }
-.chart-wrap.tall { height: clamp(340px, 21vw, 460px); }
-.chart-wrap.xlarge { height: clamp(420px, 29vw, 620px); }
+/* Charts need vertical room to read as analysis rather than as a strip. These
+   scale with the viewport so a large external display gets a genuinely bigger
+   plot instead of the same block surrounded by white space. */
+.chart-wrap { position: relative; height: clamp(320px, 20vw, 460px); }
+.chart-wrap.tall { height: clamp(390px, 25vw, 560px); }
+.chart-wrap.xlarge { height: clamp(460px, 33vw, 720px); }
+
+/* A chart card is mostly plot, so it earns a slightly larger heading and a
+   cleaner separation from the canvas below it. */
+.card-head h3 { font-size: 14.5px; letter-spacing: -.01em; font-weight: 700; }
+.card:has(.chart-wrap) .card-head {
+  padding-bottom: 13px; margin-bottom: 17px;
+  border-bottom: 1px solid var(--line);
+}
+.card:has(.chart-wrap) { transition: box-shadow .22s ease, border-color .22s ease; }
+.card:has(.chart-wrap):hover {
+  box-shadow: 0 10px 30px -14px rgba(11, 26, 163, .20), var(--shadow);
+  border-color: color-mix(in srgb, var(--saf-teal) 26%, var(--line));
+}
 
 /* -------------------------- operations ribbon ------------------------- */
 .operations-ribbon {

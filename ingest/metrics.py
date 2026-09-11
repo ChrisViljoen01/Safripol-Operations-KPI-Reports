@@ -213,7 +213,6 @@ def dispatch_block(dispatch: pd.DataFrame, receipts_physical_mt: float,
         "pta_balance_mt": r2(max(receipts_physical_mt, 0)),
         "projected_completion": "Pending", "projected_remaining_days": None,
         "required_rate_mt_per_day": None, "avg_remained_in_tank_kg": None,
-        "tolerance_pct": 0.0, "variance_mt": 0.0,
         "first_delivery": None, "last_delivery": None,
         "by_date": [], "by_iso": [], "open_loads": 0,
     }
@@ -249,14 +248,6 @@ def dispatch_block(dispatch: pd.DataFrame, receipts_physical_mt: float,
             remaining_days = math.ceil(outstanding / avg_daily_offtake)
             base = max(date.today(), last_d)
             projected = (base + timedelta(days=remaining_days)).isoformat()
-
-    # variance / tolerance on physically offloaded vs loaded, completed loads only
-    tol_rows = done[done["actual_weight_offloaded_kg"].notna()
-                    & done["loaded_weight_kg"].notna()] if \
-        {"actual_weight_offloaded_kg", "loaded_weight_kg"}.issubset(done.columns) else pd.DataFrame()
-    variance_kg = float((tol_rows["actual_weight_offloaded_kg"]
-                         - tol_rows["loaded_weight_kg"]).sum()) if not tol_rows.empty else 0.0
-    expected_kg = float(tol_rows["loaded_weight_kg"].sum()) if not tol_rows.empty else 0.0
 
     remained = None
     if "remained_in_tank_kg" in done:
@@ -294,8 +285,6 @@ def dispatch_block(dispatch: pd.DataFrame, receipts_physical_mt: float,
         "projected_remaining_days": remaining_days,
         "required_rate_mt_per_day": r2(required_rate),
         "avg_remained_in_tank_kg": r2(remained),
-        "tolerance_pct": r2(_pct(variance_kg, expected_kg), 5),
-        "variance_mt": r2(variance_kg / 1000.0, 3),
         "first_delivery": iso_d(first_d),
         "last_delivery": iso_d(last_d),
         "by_date": [{
