@@ -224,20 +224,24 @@ main { padding: clamp(18px, 1.4vw, 34px); width: 100%; max-width: none; margin: 
   display: grid; gap: clamp(14px, .9vw, 22px); margin-bottom: clamp(18px, 1.2vw, 26px);
   grid-template-columns: repeat(auto-fit, minmax(236px, 1fr));
 }
-/* The plan set is exactly five cards; force one clean row rather than a 4+1 orphan. */
+/* Five-card and ten-card groups divide cleanly into rows of five; the default
+   auto-fit lands on four columns at common widths and leaves an orphan row. */
 @media (min-width: 1180px) {
   .kpi-grid.cols-5 { grid-template-columns: repeat(5, 1fr); }
 }
 .kpi {
   display: grid;
-  grid-template-rows: 2.65em minmax(38px, auto) 3.2em;
+  /* Fixed rows keep the label, value and sub baselines aligned across cards.
+     Each row reserves just enough for its worst realistic case - over-reserving
+     leaves a short card floating in dead space. */
+  grid-template-rows: 1.6em minmax(44px, auto) 2.7em;
   align-items: start;
   background: var(--surface); border: 1px solid var(--line);
   border-radius: 12px; padding: 15px 15px 14px;
   position: relative; overflow: hidden;
   transition: border-color .15s, transform .15s;
 }
-.kpi.has-icon { padding-right: 54px; min-height: 132px; }
+.kpi.has-icon { padding-right: 48px; }
 .kpi .kpi-icon {
   position: absolute; right: 13px; top: 14px;
   width: 32px; height: 32px; object-fit: contain;
@@ -264,7 +268,9 @@ main { padding: clamp(18px, 1.4vw, 34px); width: 100%; max-width: none; margin: 
 }
 .kpi .value {
   align-self: center;
-  font-size: clamp(24px, 1.35vw, 32px); font-weight: 700; margin-top: 0; line-height: 1.05;
+  font-size: clamp(26px, 1.5vw, 33px); font-weight: 700; margin-top: 0;
+  /* 1.05 clipped glyph descenders on the monospace face. */
+  line-height: 1.15;
   font-family: "JetBrains Mono", monospace; letter-spacing: -.02em;
 }
 .kpi .value .unit { font-size: 12px; color: var(--text-3); margin-left: 4px; font-weight: 500; }

@@ -319,7 +319,60 @@
     },
   };
 
-  if (typeof Chart !== "undefined") Chart.register(valueLabels, centreTotal, {
+  /* Draws a horizontal reference rule across the full plot area. A normal
+     dataset can only join its own points, so with a single day of data it
+     renders nothing - this always spans the chart. */
+  const targetLine = {
+    id: "targetLine",
+    afterDatasetsDraw(chart, _args, opts) {
+      if (!opts || opts.display !== true) return;
+      const value = Number(opts.value);
+      if (!Number.isFinite(value)) return;
+      const scale = chart.scales[opts.scaleId || "y"];
+      const area = chart.chartArea;
+      if (!scale || !area) return;
+      const y = scale.getPixelForValue(value);
+      if (y < area.top - 1 || y > area.bottom + 1) return;
+
+      const { ctx } = chart;
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(area.left, y);
+      ctx.lineTo(area.right, y);
+      ctx.lineWidth = opts.width || 2;
+      ctx.strokeStyle = opts.color || css("--bad");
+      ctx.stroke();
+
+      if (opts.label) {
+        ctx.font = `700 10.5px Inter, system-ui, sans-serif`;
+        const text = opts.label;
+        const w = ctx.measureText(text).width;
+        const padX = 6;
+        const boxW = w + padX * 2;
+        const x = area.right - boxW - 4;
+        // Sit the chip above the rule unless that would clip off the top.
+        const above = y - area.top > 20;
+        const boxY = above ? y - 19 : y + 3;
+        ctx.fillStyle = opts.color || css("--bad");
+        ctx.globalAlpha = .92;
+        if (ctx.roundRect) {
+          ctx.beginPath();
+          ctx.roundRect(x, boxY, boxW, 16, 4);
+          ctx.fill();
+        } else {
+          ctx.fillRect(x, boxY, boxW, 16);
+        }
+        ctx.globalAlpha = 1;
+        ctx.fillStyle = "#fff";
+        ctx.textAlign = "left";
+        ctx.textBaseline = "middle";
+        ctx.fillText(text, x + padX, boxY + 8.5);
+      }
+      ctx.restore();
+    },
+  };
+
+  if (typeof Chart !== "undefined") Chart.register(valueLabels, centreTotal, targetLine, {
     // Narrow cards can't afford a side legend without crushing the ring.
     id: "responsiveLegend",
     beforeLayout(chart) {
@@ -504,13 +557,17 @@
               borderColor: css("--accent"), borderWidth: 2.5,
               backgroundColor: (c) => fadeFill(c, "#38bdf8"), fill: true,
               tension: .3, pointRadius: 0, pointHoverRadius: 4 },
-            { label: "Target", data: by.map(() => h.target_total_mt),
-              borderColor: css("--bad"), borderWidth: 1.5, borderDash: [6, 5],
-              pointRadius: 0, fill: false },
           ],
         },
         options: baseOpts({
+          scales: {
+            // Keep the target in view so the reference rule always has a place
+            // to sit, even on day one when delivered MT is still tiny.
+            y: { suggestedMax: h.target_total_mt },
+          },
           plugins: {
+            targetLine: { display: true, value: h.target_total_mt,
+                          label: `Target ${num(h.target_total_mt, 0)} MT` },
             valueLabels: { display: true, datasets: [0],
                            formatter: (v) => num(v, 0) },
           },
