@@ -22,7 +22,7 @@ SAST = ZoneInfo("Africa/Johannesburg")
 # --- Business constants (mirror of the Power BI model) ----------------------
 SHIPMENT = "TAC IMOLA"
 VESSEL_LABEL = "MV TAC IMOLA"
-TARGET_TOTAL_MT = 20390.40      # 16,992 bags x 1.2 MT - Safripol delivery basis
+TARGET_TOTAL_MT = 20400.00      # Safripol vessel outturn / drawdown basis
 BAG_WEIGHT_MT = 1.2
 TARGET_LOAD_KG = 21600
 ALLOWED_DECANT_HRS = 1.75

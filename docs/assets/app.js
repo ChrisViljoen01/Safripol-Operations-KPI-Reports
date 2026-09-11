@@ -868,7 +868,7 @@
       `${num(v.discharged_bags)} bags / ${num(v.total_discharged_mt, 4)} MT, ` +
       `${num(v.bag_shortfall)} bags / ${num(v.booked_shortfall_mt, 4)} MT short of its ` +
       `${num(v.booked_bags)}-bag booked figure. Connect's administration receipt report ` +
-      `posts the same ${num(receivedBags)} bags at 1.2 MT per bag (${num(v.admin_receipts_mt, 2)} MT): ` +
+      `posts ${num(v.admin_receipts_mt, 2)} MT on the corrected administration basis: ` +
       `${num(d.receipts.direct_mt, 2)} MT to 3PL and ${num(d.receipts.leasehold_mt, 2)} MT to Leasehold. ` +
       `The ${num(v.measurement_basis_difference_mt, 4)} MT difference from A&M outturn is the agreed ` +
       `measurement-basis difference; no bags are unaccounted for.`;
@@ -876,7 +876,7 @@
     $("#vesselRecon").innerHTML = [
       ["A&M final outturn", `${num(v.total_discharged_mt, 2)} MT`, "Physical hatch outturn"],
       ["Discharged bags", num(v.discharged_bags), `${num(v.bag_shortfall)} bags short of booked ${num(v.booked_bags)}`],
-      ["Admin receipts", `${num(v.admin_receipts_mt, 2)} MT`, "16,992 bags × 1.2 MT per bag"],
+      ["Admin receipts", `${num(v.admin_receipts_mt, 2)} MT`, "Corrected administration basis"],
       ["Bag receipt coverage", pct(v.bag_receipt_coverage_pct, 1), `${num(receivedBags)} received bags; ${num(damaged)} damaged`],
     ].map(([label, value, sub]) => `
       <div class="recon-item">
@@ -1040,9 +1040,8 @@
     ], d.meta.sources);
 
     $("#basisList").innerHTML = [
-      ["Delivery target", `${num(d.headline.target_total_mt, 2)} MT — 16,992 bags at 1.2 MT
-        per bag. This is the administrative basis for completion, outstanding quantity and
-        the delivery forecast.`],
+      ["Delivery target", `${num(d.headline.target_total_mt, 2)} MT. This is the corrected
+        vessel/drawdown basis for completion, outstanding quantity and the delivery forecast.`],
       ["Vessel outturn", `${num(d.vessel_discharge.total_discharged_mt, 2)} MT from the hatch
         table. Vessel discharge reporting uses this figure, not the delivery target.`],
       ["Recognised delivery", `Delivered tonnage uses Loaded Weight (KG's) ÷ 1000 by

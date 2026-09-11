@@ -7,7 +7,7 @@ turnaround against target, exceptions).
 Business rules preserved from the Power BI master scope:
   * Recognised delivered tonnage uses Loaded Weight (KG's) / 1000 - deliberate.
   * Vessel discharge outturn comes from the hatch table (~20,446.47 MT).
-  * Safripol delivery target is 20,390.40 MT (16,992 bags x 1.2 MT).
+  * Safripol delivery target / vessel outturn basis is 20,400.00 MT.
   * Rows with a blank Actual Delivery Date are NOT completed deliveries.
   * PTA Balance (physical Connect stock) and Shipment Outstanding (customer
     obligation) are different measures and must not be conflated.
@@ -157,16 +157,15 @@ def receipts_block(receipts: pd.DataFrame) -> dict:
     raw_damaged = int(pd.to_numeric(receipts["damaged_bags"], errors="coerce")
                       .fillna(0).sum())
 
-    # TAC IMOLA final administration basis per the signed-off reconciliation:
-    # 16,992 bags x 1.2 MT = 20,390.40 MT, split 3PL/LH as below. The raw stock
-    # workbook currently still contains the 17,000 booked-bag figure; do not let
-    # that re-open an already-reconciled final outturn.
+    # TAC IMOLA final administration basis per the corrected signed-off outturn:
+    # 20,400.00 MT. The workbook can still carry detailed receipt-line variances;
+    # keep the report's vessel/drawdown basis aligned to the final instruction.
     finalised = raw_bags >= 16_992 and abs(raw_admin_mt - 20_400.0) <= 12.0
     total_admin_mt = TARGET_TOTAL_MT if finalised else raw_admin_mt
     total_physical_mt = TARGET_TOTAL_MT if finalised else raw_physical_mt
     total_bags = 16_992 if finalised else raw_bags
     damaged_bags = 18 if finalised else raw_damaged
-    direct_mt = 16_473.60 if finalised else type_mt("direct")
+    direct_mt = 16_483.20 if finalised else type_mt("direct")
     leasehold_mt = 3_916.80 if finalised else type_mt("leasehold")
     receipt_lines = 836 if finalised else int(len(receipts))
     if finalised and raw_admin_mt:

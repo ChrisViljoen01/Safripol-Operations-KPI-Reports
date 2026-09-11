@@ -32,7 +32,7 @@ from openpyxl.worksheet.datavalidation import DataValidation
 # Shipment constants
 # ---------------------------------------------------------------------------
 SHIPMENT = "TAC IMOLA"
-TARGET_TOTAL_MT = 20390.40          # 16,992 bags x 1.2 MT  (admin basis)
+TARGET_TOTAL_MT = 20400.00          # Safripol vessel outturn / drawdown basis
 TARGET_LOAD_KG = 21600              # nominal isotainer payload
 ALLOWED_DECANT_HRS = 1.75           # 1h45 standard
 ALLOWED_INTERVAL_HRS = 1.00         # target gap between decants
@@ -124,7 +124,7 @@ def build_lookups(wb: Workbook):
 
     params = [
         ("Shipment", SHIPMENT, "Vessel / shipment reference"),
-        ("Target Total MT", TARGET_TOTAL_MT, "16,992 bags x 1.2 MT - Safripol delivery basis"),
+        ("Target Total MT", TARGET_TOTAL_MT, "Safripol vessel outturn / drawdown basis"),
         ("Target Load KG", TARGET_LOAD_KG, "Nominal isotainer payload"),
         ("Allowed Decant Hours", ALLOWED_DECANT_HRS, "Standard 1h45 per isotainer"),
         ("Allowed Interval Hours", ALLOWED_INTERVAL_HRS, "Target gap between consecutive decants"),

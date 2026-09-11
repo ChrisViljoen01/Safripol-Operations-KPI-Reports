@@ -13,7 +13,7 @@ is being lost while there is still time to react.
 
 | Tab | Answers |
 |---|---|
-| **Overview** | Where are we against the 20 390,40 MT drawdown, and will we finish on time? |
+| **Overview** | Where are we against the 20 400,00 MT drawdown, and will we finish on time? |
 | **Drawdown** | Cumulative plan vs actual, offtake rate, receipts, split by isotainer. |
 | **Decanting** | Average decant time, interval between decants, shift output vs planned isotainers, heads on site, hour-of-day profile. |
 | **Turnaround** | Connect and Safripol dwell vs the 2,75 h target, transit legs, full 7,00 h cycle — all derived from the GPS feed. |
