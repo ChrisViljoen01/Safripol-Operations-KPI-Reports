@@ -1,21 +1,20 @@
 # Entra (Azure AD) setup
 
-> **Current state:** `Sites.Selected` (Application) has been **requested** and is
-> awaiting admin consent. Until it lands, the report runs in
-> [delegated mode](#delegated-mode-fallback) from an operator PC. The moment
-> consent + the per-site grants are in place, run
-> `python tools\check_app_auth.py` — when it prints **READY**, the refresh moves
-> to GitHub Actions and no PC is involved.
-
-| | App-only *(target)* | Delegated *(fallback, in use)* |
-|---|---|---|
-| Permission type | Application | Delegated |
-| Who it reads as | the app itself | Christopher Viljoen |
-| Sign-in | none, ever | once per machine |
-| Can run on GitHub Actions | yes | no — needs the cached token |
-| Where the refresh runs | CI runner | an operator PC, via Task Scheduler |
-
----
+> **Current state: LIVE.** The unattended refresh runs in GitHub Actions every
+> 15 minutes and no longer depends on the operator PC.
+>
+> It authenticates as **`YMS - Sharepoint API`** (`136f1446-0a92-4947-99c1-574e0dc3021a`),
+> which already carried a consented `Sites.Selected` application permission and a
+> grant on `/sites/ProcessOptimizationandDevelopment` - the site that holds all
+> five workbooks. No new admin consent was needed.
+>
+> **`Connect Logistics AI Hub` (`207d9293-...`) was never consented.** Its tokens
+> come back with an empty `roles` claim and every source 401s. Do not point the
+> refresh at it unless an admin completes both steps below.
+>
+> One residual PC dependency remains: the hourly **GDS Safripol Dwells Extractor**
+> task produces the dwells workbook. The cloud refresh reads that file, so if the
+> PC is off the dwell figures age even though the rest of the report updates.
 
 ## App-only mode with `Sites.Selected` (target state)
 
