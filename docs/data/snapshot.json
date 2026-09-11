@@ -6,9 +6,9 @@
     "client": "Safripol",
     "operator": "Connect Logistics",
     "product": "PTA",
-    "generated_at_utc": "2026-09-11T12:15:28+00:00",
-    "generated_at_sast": "2026-09-11T14:15:28+02:00",
-    "generated_display": "11 Sep 2026 14:15 SAST",
+    "generated_at_utc": "2026-09-11T12:28:11+00:00",
+    "generated_at_sast": "2026-09-11T14:28:11+02:00",
+    "generated_display": "11 Sep 2026 14:28 SAST",
     "sources": [
       {
         "key": "stock",
@@ -35,7 +35,7 @@
         "label": "SAF Ops Tracking - TAC IMOLA",
         "ok": true,
         "origin": "graph",
-        "last_modified": "2026-09-11T13:23+02:00",
+        "last_modified": "2026-09-11T14:27+02:00",
         "size_kb": 940,
         "required": false,
         "error": ""
@@ -47,6 +47,16 @@
         "origin": "graph",
         "last_modified": "2026-09-10T13:17+02:00",
         "size_kb": 19,
+        "required": false,
+        "error": ""
+      },
+      {
+        "key": "plan",
+        "label": "PTA Drawdown Plan",
+        "ok": true,
+        "origin": "graph",
+        "last_modified": "2026-09-11T14:21+02:00",
+        "size_kb": 36,
         "required": false,
         "error": ""
       }
@@ -66,16 +76,19 @@
     "avg_loads_per_day": 6.0,
     "avg_mt_offloaded_per_tank": 21.6,
     "avg_remained_in_tank_kg": 40.0,
-    "required_rate_mt_per_day": null,
+    "required_rate_mt_per_day": 235.7,
     "projected_completion": "2027-02-15",
     "projected_remaining_days": 157,
-    "avg_decant_hours": 1.1,
+    "avg_decant_hours": 1.28,
     "avg_interval_hours": null,
     "time_lost_hours": 0.25,
-    "decants_per_day": 1.0,
+    "decants_per_day": 2.0,
     "avg_attainment_pct": null,
     "avg_turnaround_hours": 10.34,
-    "open_exceptions": 0
+    "open_exceptions": 1,
+    "planned_completion": "2026-12-05",
+    "days_vs_plan": 72,
+    "plan_status": "behind"
   },
   "vessel_discharge": {
     "start": "2026-09-01T01:57",
@@ -226,7 +239,7 @@
     "pta_balance_mt": 20270.4,
     "projected_completion": "2027-02-15",
     "projected_remaining_days": 157,
-    "required_rate_mt_per_day": null,
+    "required_rate_mt_per_day": 235.7,
     "avg_remained_in_tank_kg": 40.0,
     "first_delivery": "2026-09-11",
     "last_delivery": "2026-09-11",
@@ -1277,22 +1290,22 @@
   },
   "decant": {
     "has_data": true,
-    "total_decants": 1,
-    "avg_decant_hours": 1.1,
+    "total_decants": 2,
+    "avg_decant_hours": 1.28,
     "avg_interval_hours": null,
-    "avg_productive_hours": 0.85,
+    "avg_productive_hours": 1.16,
     "clean_pct": 1.0,
     "time_lost_hours": 0.0,
     "delay_hours_logged": 0.25,
-    "total_net_mt": 0.0,
-    "decants_per_day": 1.0,
+    "total_net_mt": 17.76,
+    "decants_per_day": 2.0,
     "by_day": [
       {
         "date": "2026-09-10",
-        "decants": 1,
-        "net_mt": 0.0,
-        "cum_mt": 0.0,
-        "avg_decant_hours": 1.1,
+        "decants": 2,
+        "net_mt": 17.76,
+        "cum_mt": 17.76,
+        "avg_decant_hours": 1.28,
         "avg_interval_hours": null,
         "delay_minutes": 15.0
       }
@@ -1303,13 +1316,13 @@
         "decants": 1,
         "avg_decant_hours": 1.1,
         "avg_interval_hours": null,
-        "net_mt": 0.0,
+        "net_mt": 17.76,
         "delay_minutes": 15.0
       },
       {
         "shift": "Nightshift",
-        "decants": 0,
-        "avg_decant_hours": null,
+        "decants": 1,
+        "avg_decant_hours": 1.47,
         "avg_interval_hours": null,
         "net_mt": 0.0,
         "delay_minutes": 0.0
@@ -1321,13 +1334,13 @@
         "decants": 1,
         "avg_decant_hours": 1.1,
         "avg_interval_hours": null,
-        "net_mt": 0.0,
+        "net_mt": 17.76,
         "delay_minutes": 15.0
       },
       {
         "team": "C",
-        "decants": 0,
-        "avg_decant_hours": null,
+        "decants": 1,
+        "avg_decant_hours": 1.47,
         "avg_interval_hours": null,
         "net_mt": 0.0,
         "delay_minutes": 0.0
@@ -1339,13 +1352,13 @@
         "decants": 1,
         "avg_decant_hours": 1.1,
         "avg_interval_hours": null,
-        "net_mt": 0.0,
+        "net_mt": 17.76,
         "delay_minutes": 15.0
       },
       {
         "iso": "ISO-02",
-        "decants": 0,
-        "avg_decant_hours": null,
+        "decants": 1,
+        "avg_decant_hours": 1.47,
         "avg_interval_hours": null,
         "net_mt": 0.0,
         "delay_minutes": 0.0
@@ -1455,8 +1468,8 @@
       },
       {
         "hour": 17,
-        "decants": 0,
-        "avg_decant_hours": null
+        "decants": 1,
+        "avg_decant_hours": 1.47
       },
       {
         "hour": 18,
@@ -1496,15 +1509,15 @@
         "team": "C",
         "heads": 14.0,
         "planned_isotainers": 0.0,
-        "actual_isotainers": 0,
+        "actual_isotainers": 1,
         "variance_isotainers": null,
         "attainment_pct": null,
         "actual_mt": 0.0,
-        "avg_decant_hours": null,
+        "avg_decant_hours": 1.47,
         "avg_interval_hours": null,
         "delay_minutes": 0.0,
-        "productive_hours": 0.0,
-        "isotainers_per_head": 0.0,
+        "productive_hours": 1.47,
+        "isotainers_per_head": 0.071,
         "notes": "Preloading for next day dispatch "
       },
       {
@@ -1516,7 +1529,7 @@
         "actual_isotainers": 1,
         "variance_isotainers": null,
         "attainment_pct": null,
-        "actual_mt": 0.0,
+        "actual_mt": 17.76,
         "avg_decant_hours": 1.1,
         "avg_interval_hours": null,
         "delay_minutes": 15.0,
@@ -1530,24 +1543,24 @@
       "shifts_planned": 0,
       "avg_attainment_pct": null,
       "shifts_on_target": 0,
-      "avg_isotainers_per_shift": 0.5,
+      "avg_isotainers_per_shift": 1.0,
       "avg_heads_per_shift": 14.5,
-      "avg_isotainers_per_head": 0.067,
+      "avg_isotainers_per_head": 0.069,
       "best_shift": {
         "date": "2026-09-10",
-        "shift": "Dayshift",
-        "team": "B",
-        "heads": 15.0,
+        "shift": "Nightshift",
+        "team": "C",
+        "heads": 14.0,
         "planned_isotainers": 0.0,
         "actual_isotainers": 1,
         "variance_isotainers": null,
         "attainment_pct": null,
         "actual_mt": 0.0,
-        "avg_decant_hours": 1.1,
+        "avg_decant_hours": 1.47,
         "avg_interval_hours": null,
-        "delay_minutes": 15.0,
-        "productive_hours": 0.85,
-        "isotainers_per_head": 0.067,
+        "delay_minutes": 0.0,
+        "productive_hours": 1.47,
+        "isotainers_per_head": 0.071,
         "notes": "Preloading for next day dispatch "
       }
     },
@@ -1620,18 +1633,987 @@
     },
     "allowed_decant_hours": 1.75,
     "allowed_interval_hours": 1.0,
-    "time_saved_hours": 0.65,
-    "avg_excess_kg": null,
+    "time_saved_hours": 0.93,
+    "avg_excess_kg": 80.0,
     "avg_carry_over_kg": 0.0,
     "total_delay_hours": 0.25
   },
   "plan": {
-    "has_plan": false,
-    "rows": [],
-    "variance_mt": null,
-    "days": 0
+    "has_plan": true,
+    "rows": [
+      {
+        "date": "2026-09-11",
+        "planned_mt": 216.0,
+        "planned_isotainers": 10.0,
+        "cum_planned_mt": 216.0,
+        "cum_planned_isotainers": 10.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -86.4
+      },
+      {
+        "date": "2026-09-12",
+        "planned_mt": 216.0,
+        "planned_isotainers": 10.0,
+        "cum_planned_mt": 432.0,
+        "cum_planned_isotainers": 20.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -302.4
+      },
+      {
+        "date": "2026-09-13",
+        "planned_mt": 216.0,
+        "planned_isotainers": 10.0,
+        "cum_planned_mt": 648.0,
+        "cum_planned_isotainers": 30.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -518.4
+      },
+      {
+        "date": "2026-09-14",
+        "planned_mt": 216.0,
+        "planned_isotainers": 10.0,
+        "cum_planned_mt": 864.0,
+        "cum_planned_isotainers": 40.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -734.4
+      },
+      {
+        "date": "2026-09-15",
+        "planned_mt": 216.0,
+        "planned_isotainers": 10.0,
+        "cum_planned_mt": 1080.0,
+        "cum_planned_isotainers": 50.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -950.4
+      },
+      {
+        "date": "2026-09-16",
+        "planned_mt": 216.0,
+        "planned_isotainers": 10.0,
+        "cum_planned_mt": 1296.0,
+        "cum_planned_isotainers": 60.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -1166.4
+      },
+      {
+        "date": "2026-09-17",
+        "planned_mt": 216.0,
+        "planned_isotainers": 10.0,
+        "cum_planned_mt": 1512.0,
+        "cum_planned_isotainers": 70.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -1382.4
+      },
+      {
+        "date": "2026-09-18",
+        "planned_mt": 216.0,
+        "planned_isotainers": 10.0,
+        "cum_planned_mt": 1728.0,
+        "cum_planned_isotainers": 80.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -1598.4
+      },
+      {
+        "date": "2026-09-19",
+        "planned_mt": 216.0,
+        "planned_isotainers": 10.0,
+        "cum_planned_mt": 1944.0,
+        "cum_planned_isotainers": 90.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -1814.4
+      },
+      {
+        "date": "2026-09-20",
+        "planned_mt": 216.0,
+        "planned_isotainers": 10.0,
+        "cum_planned_mt": 2160.0,
+        "cum_planned_isotainers": 100.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -2030.4
+      },
+      {
+        "date": "2026-09-21",
+        "planned_mt": 216.0,
+        "planned_isotainers": 10.0,
+        "cum_planned_mt": 2376.0,
+        "cum_planned_isotainers": 110.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -2246.4
+      },
+      {
+        "date": "2026-09-22",
+        "planned_mt": 216.0,
+        "planned_isotainers": 10.0,
+        "cum_planned_mt": 2592.0,
+        "cum_planned_isotainers": 120.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -2462.4
+      },
+      {
+        "date": "2026-09-23",
+        "planned_mt": 216.0,
+        "planned_isotainers": 10.0,
+        "cum_planned_mt": 2808.0,
+        "cum_planned_isotainers": 130.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -2678.4
+      },
+      {
+        "date": "2026-09-24",
+        "planned_mt": 216.0,
+        "planned_isotainers": 10.0,
+        "cum_planned_mt": 3024.0,
+        "cum_planned_isotainers": 140.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -2894.4
+      },
+      {
+        "date": "2026-09-25",
+        "planned_mt": 216.0,
+        "planned_isotainers": 10.0,
+        "cum_planned_mt": 3240.0,
+        "cum_planned_isotainers": 150.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -3110.4
+      },
+      {
+        "date": "2026-09-26",
+        "planned_mt": 216.0,
+        "planned_isotainers": 10.0,
+        "cum_planned_mt": 3456.0,
+        "cum_planned_isotainers": 160.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -3326.4
+      },
+      {
+        "date": "2026-09-27",
+        "planned_mt": 216.0,
+        "planned_isotainers": 10.0,
+        "cum_planned_mt": 3672.0,
+        "cum_planned_isotainers": 170.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -3542.4
+      },
+      {
+        "date": "2026-09-28",
+        "planned_mt": 216.0,
+        "planned_isotainers": 10.0,
+        "cum_planned_mt": 3888.0,
+        "cum_planned_isotainers": 180.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -3758.4
+      },
+      {
+        "date": "2026-09-29",
+        "planned_mt": 216.0,
+        "planned_isotainers": 10.0,
+        "cum_planned_mt": 4104.0,
+        "cum_planned_isotainers": 190.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -3974.4
+      },
+      {
+        "date": "2026-09-30",
+        "planned_mt": 216.0,
+        "planned_isotainers": 10.0,
+        "cum_planned_mt": 4320.0,
+        "cum_planned_isotainers": 200.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -4190.4
+      },
+      {
+        "date": "2026-10-01",
+        "planned_mt": 216.0,
+        "planned_isotainers": 10.0,
+        "cum_planned_mt": 4536.0,
+        "cum_planned_isotainers": 210.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -4406.4
+      },
+      {
+        "date": "2026-10-02",
+        "planned_mt": 216.0,
+        "planned_isotainers": 10.0,
+        "cum_planned_mt": 4752.0,
+        "cum_planned_isotainers": 220.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -4622.4
+      },
+      {
+        "date": "2026-10-03",
+        "planned_mt": 216.0,
+        "planned_isotainers": 10.0,
+        "cum_planned_mt": 4968.0,
+        "cum_planned_isotainers": 230.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -4838.4
+      },
+      {
+        "date": "2026-10-04",
+        "planned_mt": 216.0,
+        "planned_isotainers": 10.0,
+        "cum_planned_mt": 5184.0,
+        "cum_planned_isotainers": 240.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -5054.4
+      },
+      {
+        "date": "2026-10-05",
+        "planned_mt": 216.0,
+        "planned_isotainers": 10.0,
+        "cum_planned_mt": 5400.0,
+        "cum_planned_isotainers": 250.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -5270.4
+      },
+      {
+        "date": "2026-10-06",
+        "planned_mt": 216.0,
+        "planned_isotainers": 10.0,
+        "cum_planned_mt": 5616.0,
+        "cum_planned_isotainers": 260.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -5486.4
+      },
+      {
+        "date": "2026-10-07",
+        "planned_mt": 216.0,
+        "planned_isotainers": 10.0,
+        "cum_planned_mt": 5832.0,
+        "cum_planned_isotainers": 270.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -5702.4
+      },
+      {
+        "date": "2026-10-08",
+        "planned_mt": 216.0,
+        "planned_isotainers": 10.0,
+        "cum_planned_mt": 6048.0,
+        "cum_planned_isotainers": 280.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -5918.4
+      },
+      {
+        "date": "2026-10-09",
+        "planned_mt": 216.0,
+        "planned_isotainers": 10.0,
+        "cum_planned_mt": 6264.0,
+        "cum_planned_isotainers": 290.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -6134.4
+      },
+      {
+        "date": "2026-10-10",
+        "planned_mt": 216.0,
+        "planned_isotainers": 10.0,
+        "cum_planned_mt": 6480.0,
+        "cum_planned_isotainers": 300.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -6350.4
+      },
+      {
+        "date": "2026-10-11",
+        "planned_mt": 216.0,
+        "planned_isotainers": 10.0,
+        "cum_planned_mt": 6696.0,
+        "cum_planned_isotainers": 310.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -6566.4
+      },
+      {
+        "date": "2026-10-12",
+        "planned_mt": 216.0,
+        "planned_isotainers": 10.0,
+        "cum_planned_mt": 6912.0,
+        "cum_planned_isotainers": 320.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -6782.4
+      },
+      {
+        "date": "2026-10-13",
+        "planned_mt": 216.0,
+        "planned_isotainers": 10.0,
+        "cum_planned_mt": 7128.0,
+        "cum_planned_isotainers": 330.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -6998.4
+      },
+      {
+        "date": "2026-10-14",
+        "planned_mt": 108.0,
+        "planned_isotainers": 5.0,
+        "cum_planned_mt": 7236.0,
+        "cum_planned_isotainers": 335.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -7106.4
+      },
+      {
+        "date": "2026-10-15",
+        "planned_mt": 108.0,
+        "planned_isotainers": 5.0,
+        "cum_planned_mt": 7344.0,
+        "cum_planned_isotainers": 340.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -7214.4
+      },
+      {
+        "date": "2026-10-16",
+        "planned_mt": 108.0,
+        "planned_isotainers": 5.0,
+        "cum_planned_mt": 7452.0,
+        "cum_planned_isotainers": 345.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -7322.4
+      },
+      {
+        "date": "2026-10-17",
+        "planned_mt": 108.0,
+        "planned_isotainers": 5.0,
+        "cum_planned_mt": 7560.0,
+        "cum_planned_isotainers": 350.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -7430.4
+      },
+      {
+        "date": "2026-10-18",
+        "planned_mt": 108.0,
+        "planned_isotainers": 5.0,
+        "cum_planned_mt": 7668.0,
+        "cum_planned_isotainers": 355.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -7538.4
+      },
+      {
+        "date": "2026-10-19",
+        "planned_mt": 324.0,
+        "planned_isotainers": 15.0,
+        "cum_planned_mt": 7992.0,
+        "cum_planned_isotainers": 370.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -7862.4
+      },
+      {
+        "date": "2026-10-20",
+        "planned_mt": 324.0,
+        "planned_isotainers": 15.0,
+        "cum_planned_mt": 8316.0,
+        "cum_planned_isotainers": 385.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -8186.4
+      },
+      {
+        "date": "2026-10-21",
+        "planned_mt": 324.0,
+        "planned_isotainers": 15.0,
+        "cum_planned_mt": 8640.0,
+        "cum_planned_isotainers": 400.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -8510.4
+      },
+      {
+        "date": "2026-10-22",
+        "planned_mt": 324.0,
+        "planned_isotainers": 15.0,
+        "cum_planned_mt": 8964.0,
+        "cum_planned_isotainers": 415.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -8834.4
+      },
+      {
+        "date": "2026-10-23",
+        "planned_mt": 324.0,
+        "planned_isotainers": 15.0,
+        "cum_planned_mt": 9288.0,
+        "cum_planned_isotainers": 430.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -9158.4
+      },
+      {
+        "date": "2026-10-24",
+        "planned_mt": 324.0,
+        "planned_isotainers": 15.0,
+        "cum_planned_mt": 9612.0,
+        "cum_planned_isotainers": 445.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -9482.4
+      },
+      {
+        "date": "2026-10-25",
+        "planned_mt": 324.0,
+        "planned_isotainers": 15.0,
+        "cum_planned_mt": 9936.0,
+        "cum_planned_isotainers": 460.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -9806.4
+      },
+      {
+        "date": "2026-10-26",
+        "planned_mt": 324.0,
+        "planned_isotainers": 15.0,
+        "cum_planned_mt": 10260.0,
+        "cum_planned_isotainers": 475.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -10130.4
+      },
+      {
+        "date": "2026-10-27",
+        "planned_mt": 324.0,
+        "planned_isotainers": 15.0,
+        "cum_planned_mt": 10584.0,
+        "cum_planned_isotainers": 490.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -10454.4
+      },
+      {
+        "date": "2026-10-28",
+        "planned_mt": 324.0,
+        "planned_isotainers": 15.0,
+        "cum_planned_mt": 10908.0,
+        "cum_planned_isotainers": 505.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -10778.4
+      },
+      {
+        "date": "2026-10-29",
+        "planned_mt": 324.0,
+        "planned_isotainers": 15.0,
+        "cum_planned_mt": 11232.0,
+        "cum_planned_isotainers": 520.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -11102.4
+      },
+      {
+        "date": "2026-10-30",
+        "planned_mt": 324.0,
+        "planned_isotainers": 15.0,
+        "cum_planned_mt": 11556.0,
+        "cum_planned_isotainers": 535.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -11426.4
+      },
+      {
+        "date": "2026-10-31",
+        "planned_mt": 324.0,
+        "planned_isotainers": 15.0,
+        "cum_planned_mt": 11880.0,
+        "cum_planned_isotainers": 550.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -11750.4
+      },
+      {
+        "date": "2026-11-01",
+        "planned_mt": 324.0,
+        "planned_isotainers": 15.0,
+        "cum_planned_mt": 12204.0,
+        "cum_planned_isotainers": 565.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -12074.4
+      },
+      {
+        "date": "2026-11-02",
+        "planned_mt": 324.0,
+        "planned_isotainers": 15.0,
+        "cum_planned_mt": 12528.0,
+        "cum_planned_isotainers": 580.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -12398.4
+      },
+      {
+        "date": "2026-11-03",
+        "planned_mt": 324.0,
+        "planned_isotainers": 15.0,
+        "cum_planned_mt": 12852.0,
+        "cum_planned_isotainers": 595.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -12722.4
+      },
+      {
+        "date": "2026-11-04",
+        "planned_mt": 324.0,
+        "planned_isotainers": 15.0,
+        "cum_planned_mt": 13176.0,
+        "cum_planned_isotainers": 610.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -13046.4
+      },
+      {
+        "date": "2026-11-05",
+        "planned_mt": 324.0,
+        "planned_isotainers": 15.0,
+        "cum_planned_mt": 13500.0,
+        "cum_planned_isotainers": 625.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -13370.4
+      },
+      {
+        "date": "2026-11-06",
+        "planned_mt": 108.0,
+        "planned_isotainers": 5.0,
+        "cum_planned_mt": 13608.0,
+        "cum_planned_isotainers": 630.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -13478.4
+      },
+      {
+        "date": "2026-11-07",
+        "planned_mt": 108.0,
+        "planned_isotainers": 5.0,
+        "cum_planned_mt": 13716.0,
+        "cum_planned_isotainers": 635.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -13586.4
+      },
+      {
+        "date": "2026-11-08",
+        "planned_mt": 108.0,
+        "planned_isotainers": 5.0,
+        "cum_planned_mt": 13824.0,
+        "cum_planned_isotainers": 640.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -13694.4
+      },
+      {
+        "date": "2026-11-09",
+        "planned_mt": 108.0,
+        "planned_isotainers": 5.0,
+        "cum_planned_mt": 13932.0,
+        "cum_planned_isotainers": 645.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -13802.4
+      },
+      {
+        "date": "2026-11-10",
+        "planned_mt": 108.0,
+        "planned_isotainers": 5.0,
+        "cum_planned_mt": 14040.0,
+        "cum_planned_isotainers": 650.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -13910.4
+      },
+      {
+        "date": "2026-11-11",
+        "planned_mt": 108.0,
+        "planned_isotainers": 5.0,
+        "cum_planned_mt": 14148.0,
+        "cum_planned_isotainers": 655.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -14018.4
+      },
+      {
+        "date": "2026-11-12",
+        "planned_mt": 108.0,
+        "planned_isotainers": 5.0,
+        "cum_planned_mt": 14256.0,
+        "cum_planned_isotainers": 660.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -14126.4
+      },
+      {
+        "date": "2026-11-13",
+        "planned_mt": 108.0,
+        "planned_isotainers": 5.0,
+        "cum_planned_mt": 14364.0,
+        "cum_planned_isotainers": 665.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -14234.4
+      },
+      {
+        "date": "2026-11-14",
+        "planned_mt": 108.0,
+        "planned_isotainers": 5.0,
+        "cum_planned_mt": 14472.0,
+        "cum_planned_isotainers": 670.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -14342.4
+      },
+      {
+        "date": "2026-11-15",
+        "planned_mt": 324.0,
+        "planned_isotainers": 15.0,
+        "cum_planned_mt": 14796.0,
+        "cum_planned_isotainers": 685.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -14666.4
+      },
+      {
+        "date": "2026-11-16",
+        "planned_mt": 324.0,
+        "planned_isotainers": 15.0,
+        "cum_planned_mt": 15120.0,
+        "cum_planned_isotainers": 700.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -14990.4
+      },
+      {
+        "date": "2026-11-17",
+        "planned_mt": 324.0,
+        "planned_isotainers": 15.0,
+        "cum_planned_mt": 15444.0,
+        "cum_planned_isotainers": 715.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -15314.4
+      },
+      {
+        "date": "2026-11-18",
+        "planned_mt": 324.0,
+        "planned_isotainers": 15.0,
+        "cum_planned_mt": 15768.0,
+        "cum_planned_isotainers": 730.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -15638.4
+      },
+      {
+        "date": "2026-11-19",
+        "planned_mt": 324.0,
+        "planned_isotainers": 15.0,
+        "cum_planned_mt": 16092.0,
+        "cum_planned_isotainers": 745.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -15962.4
+      },
+      {
+        "date": "2026-11-20",
+        "planned_mt": 324.0,
+        "planned_isotainers": 15.0,
+        "cum_planned_mt": 16416.0,
+        "cum_planned_isotainers": 760.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -16286.4
+      },
+      {
+        "date": "2026-11-21",
+        "planned_mt": 324.0,
+        "planned_isotainers": 15.0,
+        "cum_planned_mt": 16740.0,
+        "cum_planned_isotainers": 775.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -16610.4
+      },
+      {
+        "date": "2026-11-22",
+        "planned_mt": 324.0,
+        "planned_isotainers": 15.0,
+        "cum_planned_mt": 17064.0,
+        "cum_planned_isotainers": 790.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -16934.4
+      },
+      {
+        "date": "2026-11-23",
+        "planned_mt": 108.0,
+        "planned_isotainers": 5.0,
+        "cum_planned_mt": 17172.0,
+        "cum_planned_isotainers": 795.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -17042.4
+      },
+      {
+        "date": "2026-11-24",
+        "planned_mt": 108.0,
+        "planned_isotainers": 5.0,
+        "cum_planned_mt": 17280.0,
+        "cum_planned_isotainers": 800.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -17150.4
+      },
+      {
+        "date": "2026-11-25",
+        "planned_mt": 108.0,
+        "planned_isotainers": 5.0,
+        "cum_planned_mt": 17388.0,
+        "cum_planned_isotainers": 805.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -17258.4
+      },
+      {
+        "date": "2026-11-26",
+        "planned_mt": 324.0,
+        "planned_isotainers": 15.0,
+        "cum_planned_mt": 17712.0,
+        "cum_planned_isotainers": 820.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -17582.4
+      },
+      {
+        "date": "2026-11-27",
+        "planned_mt": 324.0,
+        "planned_isotainers": 15.0,
+        "cum_planned_mt": 18036.0,
+        "cum_planned_isotainers": 835.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -17906.4
+      },
+      {
+        "date": "2026-11-28",
+        "planned_mt": 324.0,
+        "planned_isotainers": 15.0,
+        "cum_planned_mt": 18360.0,
+        "cum_planned_isotainers": 850.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -18230.4
+      },
+      {
+        "date": "2026-11-29",
+        "planned_mt": 324.0,
+        "planned_isotainers": 15.0,
+        "cum_planned_mt": 18684.0,
+        "cum_planned_isotainers": 865.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -18554.4
+      },
+      {
+        "date": "2026-11-30",
+        "planned_mt": 324.0,
+        "planned_isotainers": 15.0,
+        "cum_planned_mt": 19008.0,
+        "cum_planned_isotainers": 880.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -18878.4
+      },
+      {
+        "date": "2026-12-01",
+        "planned_mt": 324.0,
+        "planned_isotainers": 15.0,
+        "cum_planned_mt": 19332.0,
+        "cum_planned_isotainers": 895.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -19202.4
+      },
+      {
+        "date": "2026-12-02",
+        "planned_mt": 324.0,
+        "planned_isotainers": 15.0,
+        "cum_planned_mt": 19656.0,
+        "cum_planned_isotainers": 910.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -19526.4
+      },
+      {
+        "date": "2026-12-03",
+        "planned_mt": 324.0,
+        "planned_isotainers": 15.0,
+        "cum_planned_mt": 19980.0,
+        "cum_planned_isotainers": 925.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -19850.4
+      },
+      {
+        "date": "2026-12-04",
+        "planned_mt": 324.0,
+        "planned_isotainers": 15.0,
+        "cum_planned_mt": 20304.0,
+        "cum_planned_isotainers": 940.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -20174.4
+      },
+      {
+        "date": "2026-12-05",
+        "planned_mt": 96.0,
+        "planned_isotainers": 5.0,
+        "cum_planned_mt": 20400.0,
+        "cum_planned_isotainers": 944.0,
+        "cum_actual_mt": 129.6,
+        "variance_mt": -20270.4
+      }
+    ],
+    "plan_start": "2026-09-11",
+    "plan_end": "2026-12-05",
+    "plan_total_mt": 20400.0,
+    "plan_total_isotainers": 944.0,
+    "cum_planned_to_date_mt": 216.0,
+    "variance_to_date_mt": -86.4,
+    "variance_mt": -20270.4,
+    "days": 86,
+    "days_elapsed": 1,
+    "days_remaining": 85,
+    "assumptions": {
+      "phases": [
+        {
+          "phase": "Phase 1",
+          "start": "2026-09-11",
+          "end": "2026-10-13",
+          "days": 33.0,
+          "daily_target_mt": 216.0,
+          "isotainers_per_day": 10.0,
+          "phase_total_mt": 7128.0
+        },
+        {
+          "phase": "Phase 2",
+          "start": "2026-10-14",
+          "end": "2026-10-18",
+          "days": 5.0,
+          "daily_target_mt": 108.0,
+          "isotainers_per_day": 5.0,
+          "phase_total_mt": 540.0
+        },
+        {
+          "phase": "Phase 3",
+          "start": "2026-10-19",
+          "end": "2026-11-05",
+          "days": 18.0,
+          "daily_target_mt": 324.0,
+          "isotainers_per_day": 15.0,
+          "phase_total_mt": 5832.0
+        },
+        {
+          "phase": "Phase 4",
+          "start": "2026-11-06",
+          "end": "2026-11-14",
+          "days": 9.0,
+          "daily_target_mt": 108.0,
+          "isotainers_per_day": 5.0,
+          "phase_total_mt": 972.0
+        },
+        {
+          "phase": "Phase 5",
+          "start": "2026-11-15",
+          "end": "2026-11-22",
+          "days": 8.0,
+          "daily_target_mt": 324.0,
+          "isotainers_per_day": 15.0,
+          "phase_total_mt": 2592.0
+        },
+        {
+          "phase": "Phase 6",
+          "start": "2026-11-23",
+          "end": "2026-11-25",
+          "days": 3.0,
+          "daily_target_mt": 108.0,
+          "isotainers_per_day": 5.0,
+          "phase_total_mt": 324.0
+        },
+        {
+          "phase": "Phase 7",
+          "start": "2026-11-26",
+          "end": "2026-12-04",
+          "days": 9.0,
+          "daily_target_mt": 324.0,
+          "isotainers_per_day": 15.0,
+          "phase_total_mt": 2916.0
+        },
+        {
+          "phase": "Phase 8",
+          "start": "2026-12-05",
+          "end": "2026-12-05",
+          "days": 1.0,
+          "daily_target_mt": 96.0,
+          "isotainers_per_day": 4.44,
+          "phase_total_mt": 96.0
+        }
+      ],
+      "total_mt": null,
+      "iso_capacity_mt": null,
+      "plan_start": null,
+      "plan_end": null,
+      "duration_days": null,
+      "total_isotainers": null,
+      "avg_isotainers_per_day": null,
+      "avg_mt_per_day": null
+    },
+    "phases": [
+      {
+        "phase": "Phase 1",
+        "start": "2026-09-11",
+        "end": "2026-10-13",
+        "days": 33.0,
+        "daily_target_mt": 216.0,
+        "isotainers_per_day": 10.0,
+        "phase_total_mt": 7128.0
+      },
+      {
+        "phase": "Phase 2",
+        "start": "2026-10-14",
+        "end": "2026-10-18",
+        "days": 5.0,
+        "daily_target_mt": 108.0,
+        "isotainers_per_day": 5.0,
+        "phase_total_mt": 540.0
+      },
+      {
+        "phase": "Phase 3",
+        "start": "2026-10-19",
+        "end": "2026-11-05",
+        "days": 18.0,
+        "daily_target_mt": 324.0,
+        "isotainers_per_day": 15.0,
+        "phase_total_mt": 5832.0
+      },
+      {
+        "phase": "Phase 4",
+        "start": "2026-11-06",
+        "end": "2026-11-14",
+        "days": 9.0,
+        "daily_target_mt": 108.0,
+        "isotainers_per_day": 5.0,
+        "phase_total_mt": 972.0
+      },
+      {
+        "phase": "Phase 5",
+        "start": "2026-11-15",
+        "end": "2026-11-22",
+        "days": 8.0,
+        "daily_target_mt": 324.0,
+        "isotainers_per_day": 15.0,
+        "phase_total_mt": 2592.0
+      },
+      {
+        "phase": "Phase 6",
+        "start": "2026-11-23",
+        "end": "2026-11-25",
+        "days": 3.0,
+        "daily_target_mt": 108.0,
+        "isotainers_per_day": 5.0,
+        "phase_total_mt": 324.0
+      },
+      {
+        "phase": "Phase 7",
+        "start": "2026-11-26",
+        "end": "2026-12-04",
+        "days": 9.0,
+        "daily_target_mt": 324.0,
+        "isotainers_per_day": 15.0,
+        "phase_total_mt": 2916.0
+      },
+      {
+        "phase": "Phase 8",
+        "start": "2026-12-05",
+        "end": "2026-12-05",
+        "days": 1.0,
+        "daily_target_mt": 96.0,
+        "isotainers_per_day": 4.44,
+        "phase_total_mt": 96.0
+      }
+    ],
+    "current_phase": {
+      "phase": "Phase 1",
+      "start": "2026-09-11",
+      "end": "2026-10-13",
+      "days": 33.0,
+      "daily_target_mt": 216.0,
+      "isotainers_per_day": 10.0,
+      "phase_total_mt": 7128.0
+    },
+    "projection": {
+      "projected_end": "2027-02-15",
+      "days_to_go": 157,
+      "rate_mt_per_day": 129.6,
+      "rate_basis": "1 active day to 11 Sep",
+      "plan_end": "2026-12-05",
+      "days_vs_plan": 72,
+      "status": "behind",
+      "required_rate_mt_per_day": 235.7,
+      "outstanding_mt": 20270.4
+    }
   },
   "exceptions": [
+    {
+      "severity": "high",
+      "category": "Behind drawdown pace",
+      "detail": "Current offtake 129.6 MT/day is below the 235.7 MT/day needed to finish on plan.",
+      "when": null,
+      "owner": "Connect",
+      "value": "-106.1 MT/day"
+    },
     {
       "severity": "medium",
       "category": "Dwell breach rate",
