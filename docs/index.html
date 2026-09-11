@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="assets/styles.css" />
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230b1220'/><path d='M22 66 L40 40 L54 56 L78 26' stroke='%2338bdf8' stroke-width='9' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>" />
+<link rel="icon" type="image/png" href="assets/images/Connect-Logistics-Icon.png" />
 </head>
 <body>
 
@@ -24,12 +24,12 @@
 
 <header class="topbar">
   <div class="topbar-left">
-    <div class="mark" aria-hidden="true">
-      <svg viewBox="0 0 100 100"><rect width="100" height="100" rx="22"/><path d="M22 66 L40 40 L54 56 L78 26"/></svg>
-    </div>
+    <img class="connect-logo" src="assets/images/Connect-Logistics-Logo.png" alt="Connect Logistics" />
+    <span class="brand-divider" aria-hidden="true"></span>
+    <img class="safripol-logo" src="assets/images/Safripol-Logo-2022-1024x293.png" alt="Safripol" />
     <div class="titles">
       <h1>Safripol Operations KPI Report</h1>
-      <p><span id="vesselName">MV TAC IMOLA</span> &middot; PTA Outbound Drawdown &middot; <span class="muted">Connect Logistics</span></p>
+      <p><span id="vesselName">MV TAC IMOLA</span> &middot; PTA Outbound Drawdown</p>
     </div>
   </div>
   <div class="topbar-right">
@@ -41,9 +41,6 @@
     <button id="refreshBtn" class="btn" title="Check for new data">
       <svg viewBox="0 0 24 24" width="16" height="16"><path d="M21 12a9 9 0 1 1-2.64-6.36M21 3v6h-6"/></svg>
       <span>Refresh</span>
-    </button>
-    <button id="themeBtn" class="btn btn-icon" title="Toggle light / dark">
-      <svg viewBox="0 0 24 24" width="16" height="16"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
     </button>
     <button id="printBtn" class="btn btn-icon" title="Print / save as PDF">
       <svg viewBox="0 0 24 24" width="16" height="16"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v8H6z"/></svg>
@@ -83,6 +80,28 @@
 
     <div class="kpi-grid" id="kpiPrimary"></div>
 
+    <div class="operations-ribbon card">
+      <div class="ribbon-step">
+        <img src="assets/images/cargo-ship.png" alt="" />
+        <div><span>Vessel outturn</span><strong id="flowVessel">—</strong></div>
+      </div>
+      <span class="ribbon-arrow">→</span>
+      <div class="ribbon-step">
+        <img src="assets/images/warehouse.png" alt="" />
+        <div><span>Received at Connect</span><strong id="flowReceived">—</strong></div>
+      </div>
+      <span class="ribbon-arrow">→</span>
+      <div class="ribbon-step">
+        <img src="assets/images/delivery-truck.png" alt="" />
+        <div><span>Delivered to Safripol</span><strong id="flowDelivered">—</strong></div>
+      </div>
+      <span class="ribbon-arrow">→</span>
+      <div class="ribbon-step">
+        <img src="assets/images/target.png" alt="" />
+        <div><span>Remaining commitment</span><strong id="flowOutstanding">—</strong></div>
+      </div>
+    </div>
+
     <div class="grid-2">
       <div class="card">
         <div class="card-head">
@@ -98,17 +117,31 @@
     </div>
 
     <div class="grid-2">
+      <div class="card iso-summary">
+        <div class="card-head">
+          <div>
+            <h3>Actual offloaded MT by ISO-tainer</h3>
+            <p class="card-sub">Recognised tonnage: Loaded Weight (KG's) ÷ 1,000</p>
+          </div>
+          <img class="section-icon" src="assets/images/container.png" alt="" />
+        </div>
+        <div class="table-wrap"><table id="tblOverviewIso"></table></div>
+      </div>
       <div class="card">
         <div class="card-head">
-          <h3>Exceptions requiring attention</h3>
-          <span class="chip" id="excChip"></span>
+          <h3>Turnaround against target</h3>
+          <img class="section-icon" src="assets/images/on-time.png" alt="" />
         </div>
-        <div id="exceptionList" class="exceptions"></div>
-      </div>
-      <div class="card">
-        <div class="card-head"><h3>Turnaround against target</h3></div>
         <div id="turnaroundBars" class="bars"></div>
       </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <h3>Exceptions requiring attention</h3>
+        <span class="chip" id="excChip"></span>
+      </div>
+      <div id="exceptionList" class="exceptions exception-grid"></div>
     </div>
   </section>
 
@@ -296,7 +329,10 @@
 </main>
 
 <footer class="foot">
-  <span>Connect Logistics &middot; Process Optimization &amp; Development</span>
+  <div class="foot-brand">
+    <img src="assets/images/Connect-Logistics-Icon.png" alt="" />
+    <span>Connect Logistics &middot; Process Optimization &amp; Development</span>
+  </div>
   <span class="muted" id="footStamp"></span>
 </footer>
 

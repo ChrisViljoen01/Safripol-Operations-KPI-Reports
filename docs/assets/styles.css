@@ -4,51 +4,37 @@
    ========================================================================= */
 
 :root {
-  --bg: #070b14;
-  --bg-2: #0b1220;
-  --surface: #101a2e;
-  --surface-2: #16223c;
-  --line: #1e2c4a;
-  --line-soft: #17233c;
-  --text: #e8eefc;
-  --text-2: #9dabc7;
-  --text-3: #6b7a99;
-  --accent: #38bdf8;
-  --accent-2: #6366f1;
-  --good: #34d399;
-  --warn: #fbbf24;
-  --bad: #f87171;
-  --shadow: 0 10px 34px rgba(0, 0, 0, .45);
-  --radius: 14px;
-  --grid: rgba(255, 255, 255, .06);
-}
-
-html[data-theme="light"] {
-  --bg: #f4f6fb;
+  --bg: #f3f6fb;
   --bg-2: #ffffff;
   --surface: #ffffff;
-  --surface-2: #f7f9fd;
-  --line: #dde4f0;
-  --line-soft: #e9eef7;
-  --text: #0f1b33;
-  --text-2: #4a5878;
-  --text-3: #7b88a3;
-  --accent: #0284c7;
-  --accent-2: #4f46e5;
-  --good: #059669;
+  --surface-2: #f6f8fc;
+  --line: #dbe3ef;
+  --line-soft: #e9eef6;
+  --text: #14213d;
+  --text-2: #4d5b77;
+  --text-3: #77849d;
+  --accent: #0b1aa3;
+  --accent-2: #28a9c8;
+  --connect-blue: #0b1aa3;
+  --connect-green: #00ae73;
+  --connect-orange: #ff4b00;
+  --saf-teal: #2fa9c5;
+  --good: #009c69;
   --warn: #b45309;
   --bad: #dc2626;
-  --shadow: 0 8px 24px rgba(15, 27, 51, .08);
+  --shadow: 0 8px 28px rgba(31, 45, 77, .08);
   --grid: rgba(15, 27, 51, .07);
+  --radius: 16px;
 }
 
 * { box-sizing: border-box; }
+html, body { max-width: 100%; overflow-x: hidden; }
 
 body {
   margin: 0;
   background:
-    radial-gradient(1100px 520px at 12% -12%, rgba(56, 189, 248, .13), transparent 60%),
-    radial-gradient(900px 460px at 88% -6%, rgba(99, 102, 241, .12), transparent 60%),
+    radial-gradient(1000px 520px at 4% -12%, rgba(11, 26, 163, .08), transparent 62%),
+    radial-gradient(900px 460px at 95% -8%, rgba(47, 169, 197, .10), transparent 60%),
     var(--bg);
   color: var(--text);
   font-family: Inter, "Segoe UI", system-ui, sans-serif;
@@ -84,15 +70,15 @@ svg { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; 
 .topbar {
   position: sticky; top: 0; z-index: 60;
   display: flex; align-items: center; justify-content: space-between;
-  gap: 20px; padding: 14px 28px;
-  background: color-mix(in srgb, var(--bg-2) 88%, transparent);
+  gap: 20px; padding: 11px 28px;
+  background: color-mix(in srgb, var(--bg-2) 94%, transparent);
   backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--line);
 }
 .topbar-left { display: flex; align-items: center; gap: 14px; min-width: 0; }
-.mark { width: 40px; height: 40px; flex: 0 0 40px; }
-.mark svg rect { fill: var(--surface-2); stroke: var(--line); }
-.mark svg path { stroke: var(--accent); stroke-width: 9; }
+.connect-logo { width: 118px; height: 40px; object-fit: contain; }
+.safripol-logo { width: 116px; height: 34px; object-fit: contain; }
+.brand-divider { width: 1px; height: 30px; background: var(--line); }
 .titles h1 { font-size: 17px; }
 .titles p { margin: 2px 0 0; font-size: 12.5px; color: var(--text-2); }
 .topbar-right { display: flex; align-items: center; gap: 10px; }
@@ -130,10 +116,10 @@ svg { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; 
 
 /* -------------------------------- tabs -------------------------------- */
 .tabs {
-  position: sticky; top: 69px; z-index: 55;
+  position: sticky; top: 63px; z-index: 55;
   display: flex; gap: 4px; padding: 10px 24px;
   overflow-x: auto; scrollbar-width: none;
-  background: color-mix(in srgb, var(--bg) 90%, transparent);
+  background: color-mix(in srgb, var(--bg) 93%, transparent);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--line-soft);
 }
@@ -146,18 +132,19 @@ svg { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; 
 }
 .tab:hover { color: var(--text); background: var(--surface); }
 .tab.active {
-  color: var(--text); background: var(--surface);
+  color: var(--connect-blue); background: var(--surface);
   border-color: var(--line);
-  box-shadow: inset 0 -2px 0 0 var(--accent);
+  box-shadow: inset 0 -3px 0 0 var(--saf-teal);
 }
 
 /* -------------------------------- views ------------------------------- */
-main { padding: 22px 28px 40px; max-width: 1720px; margin: 0 auto; }
-.view { display: none; animation: fade .3s ease; }
+main { padding: 22px 28px 40px; width: 100%; max-width: 1720px; margin: 0 auto; overflow: hidden; }
+.view { display: none; min-width: 0; animation: fade .3s ease; }
 .view.active { display: block; }
 @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 
 .card {
+  min-width: 0;
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius);
@@ -165,11 +152,17 @@ main { padding: 22px 28px 40px; max-width: 1720px; margin: 0 auto; }
   box-shadow: var(--shadow);
   margin-bottom: 18px;
 }
+.card::selection { background: rgba(47, 169, 197, .24); }
 .card-head {
   display: flex; align-items: center; justify-content: space-between;
   gap: 12px; margin-bottom: 14px;
 }
 .card-head h3 { font-size: 13.5px; letter-spacing: .01em; }
+.card-sub { margin: 3px 0 0; font-size: 11.5px; color: var(--text-3); }
+.section-icon {
+  width: 36px; height: 36px; object-fit: contain; opacity: .82;
+  filter: saturate(.9);
+}
 .chip {
   padding: 4px 10px; border-radius: 999px; font-size: 10.5px; font-weight: 700;
   letter-spacing: .04em; text-transform: uppercase;
@@ -184,6 +177,19 @@ main { padding: 22px 28px 40px; max-width: 1720px; margin: 0 auto; }
 
 /* --------------------------------- hero ------------------------------- */
 .progress-hero { padding: 22px 24px; }
+.progress-hero {
+  position: relative; overflow: hidden;
+  background:
+    linear-gradient(112deg, rgba(11, 26, 163, .04), rgba(47, 169, 197, .08)),
+    var(--surface);
+  border-top: 4px solid var(--connect-blue);
+}
+.progress-hero::after {
+  content: ""; position: absolute; width: 230px; height: 230px;
+  right: -60px; bottom: -110px;
+  background: url("images/Connect-Logistics-Icon.png") center/contain no-repeat;
+  opacity: .035; pointer-events: none;
+}
 .hero-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
 .hero-head h2 { font-size: 15px; }
 .hero-head .sub { margin: 3px 0 0; font-size: 12.5px; color: var(--text-2); }
@@ -195,7 +201,7 @@ main { padding: 22px 28px 40px; max-width: 1720px; margin: 0 auto; }
 }
 .bar-fill {
   height: 100%; border-radius: 99px;
-  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  background: linear-gradient(90deg, var(--connect-blue), var(--saf-teal), var(--connect-green));
   transition: width .9s cubic-bezier(.2,.8,.2,1);
 }
 .hero-stats { display: flex; flex-wrap: wrap; gap: 26px; }
@@ -214,11 +220,21 @@ main { padding: 22px 28px 40px; max-width: 1720px; margin: 0 auto; }
   position: relative; overflow: hidden;
   transition: border-color .15s, transform .15s;
 }
+.kpi.has-icon { padding-right: 54px; min-height: 112px; }
+.kpi .kpi-icon {
+  position: absolute; right: 13px; top: 14px;
+  width: 32px; height: 32px; object-fit: contain;
+  opacity: .72; transition: transform .18s, opacity .18s;
+}
+.kpi:hover .kpi-icon { transform: translateY(-2px) scale(1.04); opacity: .92; }
 .kpi:hover { border-color: color-mix(in srgb, var(--accent) 50%, var(--line)); transform: translateY(-2px); }
 .kpi::before {
   content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
   background: var(--accent); opacity: .8;
 }
+.kpi:nth-child(3n+1)::before { background: var(--connect-blue); }
+.kpi:nth-child(3n+2)::before { background: var(--saf-teal); }
+.kpi:nth-child(3n)::before { background: var(--connect-green); }
 .kpi.good::before { background: var(--good); }
 .kpi.warn::before { background: var(--warn); }
 .kpi.bad::before  { background: var(--bad); }
@@ -239,6 +255,35 @@ main { padding: 22px 28px 40px; max-width: 1720px; margin: 0 auto; }
 /* -------------------------------- charts ------------------------------ */
 .chart-wrap { position: relative; height: 260px; }
 .chart-wrap.tall { height: 320px; }
+
+/* -------------------------- operations ribbon ------------------------- */
+.operations-ribbon {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 10px; padding: 15px 20px;
+  background: linear-gradient(90deg, #fff, #f6fbfd 50%, #fff);
+}
+.ribbon-step { display: flex; align-items: center; gap: 11px; min-width: 0; }
+.ribbon-step img { width: 38px; height: 38px; object-fit: contain; }
+.ribbon-step div { display: flex; flex-direction: column; }
+.ribbon-step span {
+  font-size: 10px; text-transform: uppercase; letter-spacing: .07em;
+  color: var(--text-3); font-weight: 700; white-space: nowrap;
+}
+.ribbon-step strong {
+  margin-top: 2px; font: 700 16px/1.2 "JetBrains Mono", monospace;
+  white-space: nowrap; color: var(--text);
+}
+.ribbon-arrow { color: var(--saf-teal); font-size: 20px; opacity: .55; }
+
+.iso-summary table { font-size: 13px; }
+.iso-summary tbody tr:last-child td {
+  font-weight: 800; color: #fff; background: var(--connect-blue);
+  border-bottom: 0;
+}
+.iso-summary tbody tr:last-child:hover td { background: var(--connect-blue); }
+.exception-grid {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+}
 
 /* -------------------------------- tables ------------------------------ */
 .table-wrap { overflow: auto; max-height: 420px; border-radius: 9px; }
@@ -329,10 +374,19 @@ td.good { color: var(--good); } td.warn { color: var(--warn); } td.bad { color: 
 .basis-item .d { font-size: 12.5px; color: var(--text-2); margin-top: 4px; white-space: normal; }
 
 .foot {
+  position: relative; overflow: hidden;
   display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;
-  padding: 18px 28px 26px; border-top: 1px solid var(--line-soft);
+  align-items: center; padding: 16px 28px 22px; border-top: 1px solid var(--line-soft);
   font-size: 11.5px; color: var(--text-3);
 }
+.foot::after {
+  content: ""; position: absolute; right: 48%; top: -35px;
+  width: 90px; height: 90px;
+  background: url("images/Connect-Logistics-Icon.png") center/contain no-repeat;
+  opacity: .025; pointer-events: none;
+}
+.foot-brand { display: flex; align-items: center; gap: 9px; }
+.foot-brand img { width: 25px; height: 25px; object-fit: contain; opacity: .75; }
 
 /* -------------------------------- print ------------------------------- */
 @media print {
@@ -346,8 +400,24 @@ td.good { color: var(--good); } td.warn { color: var(--warn); } td.bad { color: 
 
 @media (max-width: 720px) {
   .topbar { padding: 12px 16px; flex-wrap: wrap; }
+  .topbar-left { flex-wrap: wrap; width: 100%; }
+  .connect-logo { width: 88px; height: 30px; }
+  .safripol-logo { width: 90px; height: 28px; }
+  .brand-divider { height: 24px; }
+  .titles { flex-basis: 100%; width: 100%; }
+  .titles h1 { font-size: 15px; }
   .tabs { top: auto; padding: 8px 12px; }
   main { padding: 16px 14px 32px; }
   .hero-pct { font-size: 34px; }
   .kpi-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+  .operations-ribbon { overflow-x: auto; justify-content: flex-start; }
+  .ribbon-step { min-width: 150px; }
+  .exception-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 400px) {
+  .kpi-grid { grid-template-columns: 1fr; }
+  .hero-head { align-items: center; }
+  .hero-stats { gap: 16px; }
+  .progress-hero, .card { padding-left: 16px; padding-right: 16px; }
 }

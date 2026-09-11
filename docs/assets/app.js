@@ -68,11 +68,15 @@
     getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 
   /* --------------------------- kpi + table dsl -------------------------- */
-  function kpi({ label, value, unit, sub, tone }) {
+  function kpi({ label, value, unit, sub, tone, icon }) {
     const t = tone ? ` ${tone}` : "";
     const s = sub ? `<div class="sub${tone ? " " + tone : ""}">${sub}</div>` : "";
     const u = unit ? `<span class="unit">${unit}</span>` : "";
-    return `<div class="kpi${t}"><div class="label">${label}</div>
+    const image = icon
+      ? `<img class="kpi-icon" src="assets/images/${icon}" alt="" aria-hidden="true" />`
+      : "";
+    return `<div class="kpi${t}${icon ? " has-icon" : ""}">${image}
+            <div class="label">${label}</div>
             <div class="value">${value}${u}</div>${s}</div>`;
   }
 
@@ -185,6 +189,7 @@
 
   function renderOverview(d) {
     const h = d.headline;
+    const dp = d.dispatch;
     const p = (h.completion_pct || 0) * 100;
     $("#heroPct").textContent = p.toFixed(1);
     $("#heroBar").style.width = `${Math.min(p, 100)}%`;
@@ -201,6 +206,11 @@
       `<div class="hero-stat"><div class="l">${l}</div><div class="v">${v}</div></div>`)
       .join("");
 
+    $("#flowVessel").textContent = `${num(d.vessel_discharge.total_discharged_mt, 2)} MT`;
+    $("#flowReceived").textContent = `${num(h.received_admin_mt, 2)} MT`;
+    $("#flowDelivered").textContent = `${num(h.delivered_mt, 2)} MT`;
+    $("#flowOutstanding").textContent = `${num(h.outstanding_mt, 2)} MT`;
+
     const paceTone = h.required_rate_mt_per_day && h.avg_daily_offtake_mt
       ? (h.avg_daily_offtake_mt >= h.required_rate_mt_per_day ? "good" : "bad") : "";
     const paceSub = h.required_rate_mt_per_day
@@ -209,30 +219,43 @@
 
     renderKpis("#kpiPrimary", [
       { label: "Avg daily offtake", value: num(h.avg_daily_offtake_mt, 1), unit: "MT",
-        sub: paceSub, tone: paceTone },
+        sub: paceSub, tone: paceTone, icon: "delivered.png" },
       { label: "Avg loads per day", value: num(h.avg_loads_per_day, 1),
-        sub: `${num(h.loads_total)} loads to date` },
+        sub: `${num(h.loads_total)} loads to date`, icon: "delivery-truck.png" },
+      { label: "Avg MT offloaded p/t",
+        value: num(dp.avg_mt_offloaded_per_tank ?? dp.avg_mt_per_load, 2), unit: "MT",
+        sub: "Loaded Weight (KG's) ÷ 1,000 per completed tank",
+        icon: "average.png" },
+      { label: "Avg remainder in tank",
+        value: num(dp.avg_remained_in_tank_kg, 0), unit: "kg",
+        sub: "Excludes blank and negative values",
+        tone: dp.avg_remained_in_tank_kg > 0 ? "warn" : "",
+        icon: "container.png" },
       { label: "Avg decant time", value: hrs(h.avg_decant_hours), unit: "h",
         sub: toneNote(h.avg_decant_hours, d.decant.allowed_decant_hours, "vs 1.75 h standard"),
-        tone: toneOf(h.avg_decant_hours, d.decant.allowed_decant_hours) },
+        tone: toneOf(h.avg_decant_hours, d.decant.allowed_decant_hours),
+        icon: "time-management.png" },
       { label: "Avg decant interval", value: hrs(h.avg_interval_hours), unit: "h",
         sub: toneNote(h.avg_interval_hours, d.decant.allowed_interval_hours, "vs 1.00 h target"),
-        tone: toneOf(h.avg_interval_hours, d.decant.allowed_interval_hours) },
+        tone: toneOf(h.avg_interval_hours, d.decant.allowed_interval_hours),
+        icon: "on-time.png" },
       { label: "Time lost", value: hrs(h.time_lost_hours, 1), unit: "h",
         sub: "Recorded delays across the drawdown",
-        tone: h.time_lost_hours > 0 ? "warn" : "" },
+        tone: h.time_lost_hours > 0 ? "warn" : "", icon: "time-management.png" },
       { label: "Shift attainment", value: pct(h.avg_attainment_pct),
         sub: "Isotainers completed against plan",
         tone: h.avg_attainment_pct === null ? ""
-          : h.avg_attainment_pct >= 1 ? "good" : h.avg_attainment_pct >= 0.85 ? "warn" : "bad" },
+          : h.avg_attainment_pct >= 1 ? "good" : h.avg_attainment_pct >= 0.85 ? "warn" : "bad",
+        icon: "target.png" },
       { label: "Avg turnaround", value: hrs(h.avg_turnaround_hours), unit: "h",
         sub: "Connect → Safripol → Connect",
         tone: toneOf(h.avg_turnaround_hours,
           (d.dwell.turnaround && d.dwell.turnaround.targets
-            ? d.dwell.turnaround.targets.turnaround : null)) },
+            ? d.dwell.turnaround.targets.turnaround : null)),
+        icon: "on-time.png" },
       { label: "Open escalations", value: num(h.open_exceptions),
         sub: "High severity items",
-        tone: h.open_exceptions > 0 ? "bad" : "good" },
+        tone: h.open_exceptions > 0 ? "bad" : "good", icon: "target.png" },
     ]);
 
     // ---- cumulative offtake vs target
@@ -287,6 +310,19 @@
       emptyChart("chartOfftake", "Cumulative offtake will chart once deliveries begin");
       emptyChart("chartDaily", "Daily delivery activity will chart once deliveries begin");
     }
+
+    const isoValues = Object.fromEntries(
+      (dp.by_iso || []).map((r) => [r.iso, r.actual_offloaded_mt ?? r.mt ?? 0])
+    );
+    const isoRows = ["ISO-01", "ISO-02", "ISO-03", "ISO-04", "ISO-05"].map((iso) => ({
+      iso, actual_offloaded_mt: isoValues[iso] || 0,
+    }));
+    isoRows.push({ iso: "Total", actual_offloaded_mt: dp.delivered_mt || 0 });
+    renderTable("#tblOverviewIso", [
+      { label: "ISO-tainer", key: "iso" },
+      { label: "Actual offloaded MT", num: true,
+        render: (r) => num(r.actual_offloaded_mt, 2) },
+    ], isoRows);
 
     renderExceptions("#exceptionList", d.exceptions.slice(0, 8));
     $("#excChip").textContent = `${d.exceptions.length} item${d.exceptions.length === 1 ? "" : "s"}`;
@@ -1055,22 +1091,11 @@
     } catch { /* offline: try again next tick */ }
   }
 
-  function initTheme() {
-    const saved = localStorage.getItem("saf-theme");
-    if (saved) document.documentElement.dataset.theme = saved;
-    $("#themeBtn").addEventListener("click", () => {
-      const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
-      document.documentElement.dataset.theme = next;
-      localStorage.setItem("saf-theme", next);
-      renderAll();
-    });
-  }
-
   function init() {
     $$(".tab").forEach((t) => t.addEventListener("click", () => switchView(t.dataset.view)));
     $("#refreshBtn").addEventListener("click", () => load(true));
     $("#printBtn").addEventListener("click", () => window.print());
-    initTheme();
+    localStorage.removeItem("saf-theme");
     const hash = location.hash.slice(1);
     if (RENDERERS[hash]) switchView(hash);
     window.addEventListener("hashchange", () => {

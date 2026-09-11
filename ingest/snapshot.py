@@ -102,6 +102,8 @@ def build_snapshot() -> dict:
         "loads_total": disp["loads_total"],
         "avg_daily_offtake_mt": disp["avg_daily_offtake_mt"],
         "avg_loads_per_day": disp["avg_loads_per_day"],
+        "avg_mt_offloaded_per_tank": disp["avg_mt_offloaded_per_tank"],
+        "avg_remained_in_tank_kg": disp["avg_remained_in_tank_kg"],
         "required_rate_mt_per_day": disp["required_rate_mt_per_day"],
         "projected_completion": disp["projected_completion"],
         "projected_remaining_days": disp["projected_remaining_days"],
