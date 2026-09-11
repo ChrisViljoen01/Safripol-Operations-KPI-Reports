@@ -6,9 +6,9 @@
     "client": "Safripol",
     "operator": "Connect Logistics",
     "product": "PTA",
-    "generated_at_utc": "2026-09-10T13:39:48+00:00",
-    "generated_at_sast": "2026-09-10T15:39:48+02:00",
-    "generated_display": "10 Sep 2026 15:39 SAST",
+    "generated_at_utc": "2026-09-11T05:05:40+00:00",
+    "generated_at_sast": "2026-09-11T07:05:40+02:00",
+    "generated_display": "11 Sep 2026 07:05 SAST",
     "sources": [
       {
         "key": "stock",
@@ -35,8 +35,8 @@
         "label": "SAF Ops Tracking - TAC IMOLA",
         "ok": true,
         "origin": "graph",
-        "last_modified": "2026-09-10T14:20+02:00",
-        "size_kb": 1049,
+        "last_modified": "2026-09-10T15:50+02:00",
+        "size_kb": 1047,
         "required": false,
         "error": ""
       },
