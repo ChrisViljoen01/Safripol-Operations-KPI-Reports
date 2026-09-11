@@ -215,12 +215,15 @@ main { padding: clamp(18px, 1.4vw, 34px); width: 100%; max-width: none; margin: 
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 .kpi {
+  display: grid;
+  grid-template-rows: 2.65em minmax(38px, auto) 3.2em;
+  align-items: start;
   background: var(--surface); border: 1px solid var(--line);
-  border-radius: 12px; padding: 14px 15px 13px;
+  border-radius: 12px; padding: 15px 15px 14px;
   position: relative; overflow: hidden;
   transition: border-color .15s, transform .15s;
 }
-.kpi.has-icon { padding-right: 54px; min-height: 112px; }
+.kpi.has-icon { padding-right: 54px; min-height: 132px; }
 .kpi .kpi-icon {
   position: absolute; right: 13px; top: 14px;
   width: 32px; height: 32px; object-fit: contain;
@@ -239,15 +242,23 @@ main { padding: clamp(18px, 1.4vw, 34px); width: 100%; max-width: none; margin: 
 .kpi.warn::before { background: var(--warn); }
 .kpi.bad::before  { background: var(--bad); }
 .kpi .label {
+  align-self: start;
+  display: flex; align-items: flex-start;
   font-size: clamp(10.5px, .58vw, 12px); text-transform: uppercase; letter-spacing: .07em;
   color: var(--text-3); font-weight: 700;
+  line-height: 1.25;
 }
 .kpi .value {
-  font-size: clamp(24px, 1.35vw, 32px); font-weight: 700; margin-top: 6px; line-height: 1.15;
+  align-self: center;
+  font-size: clamp(24px, 1.35vw, 32px); font-weight: 700; margin-top: 0; line-height: 1.05;
   font-family: "JetBrains Mono", monospace; letter-spacing: -.02em;
 }
 .kpi .value .unit { font-size: 12px; color: var(--text-3); margin-left: 4px; font-weight: 500; }
-.kpi .sub { font-size: clamp(11.5px, .64vw, 13px); color: var(--text-2); margin-top: 5px; }
+.kpi .sub {
+  align-self: start;
+  font-size: clamp(11.5px, .64vw, 13px); color: var(--text-2); margin-top: 0;
+  line-height: 1.45;
+}
 .kpi .sub.good { color: var(--good); }
 .kpi .sub.warn { color: var(--warn); }
 .kpi .sub.bad  { color: var(--bad); }
@@ -365,10 +376,11 @@ td.good { color: var(--good); } td.warn { color: var(--warn); } td.bad { color: 
   display: flex; align-items: center; justify-content: space-between; gap: 28px;
   min-height: 178px;
   background:
-    linear-gradient(120deg, rgba(11, 26, 163, .92), rgba(22, 111, 177, .86), rgba(0, 174, 115, .82)),
-    var(--connect-blue);
-  color: #fff;
-  border: 0;
+    linear-gradient(120deg, rgba(11, 26, 163, .055), rgba(47, 169, 197, .075), rgba(0, 174, 115, .045)),
+    #fff;
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-top: 4px solid color-mix(in srgb, var(--connect-blue) 78%, #fff);
   overflow: hidden;
   position: relative;
 }
@@ -376,14 +388,17 @@ td.good { color: var(--good); } td.warn { color: var(--warn); } td.bad { color: 
   content: ""; position: absolute; inset: auto 2% -80px auto;
   width: 320px; height: 320px;
   background: url("images/Connect-Logistics-Icon.png") center/contain no-repeat;
-  opacity: .08; pointer-events: none;
+  opacity: .035; pointer-events: none;
 }
-.vessel-hero h2 { font-size: clamp(26px, 2.2vw, 44px); line-height: 1.08; max-width: 980px; }
-.vessel-hero p { margin: 13px 0 0; max-width: 1180px; color: rgba(255,255,255,.88); font-size: clamp(13px, .78vw, 16px); }
-.vessel-hero img { width: clamp(78px, 6vw, 140px); height: auto; filter: drop-shadow(0 16px 28px rgba(0,0,0,.24)); }
+.vessel-hero h2 {
+  font-size: clamp(24px, 1.85vw, 38px); line-height: 1.1; max-width: 980px;
+  color: var(--connect-blue);
+}
+.vessel-hero p { margin: 13px 0 0; max-width: 1180px; color: var(--text-2); font-size: clamp(13px, .78vw, 16px); }
+.vessel-hero img { width: clamp(70px, 5vw, 118px); height: auto; opacity: .78; filter: saturate(.8); }
 .eyebrow {
   display: inline-block; margin-bottom: 9px; font-size: 11px; text-transform: uppercase;
-  letter-spacing: .12em; font-weight: 800; color: rgba(255,255,255,.78);
+  letter-spacing: .12em; font-weight: 800; color: var(--saf-teal);
 }
 .vessel-summary-grid {
   display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(330px, .65fr);
