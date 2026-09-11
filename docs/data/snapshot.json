@@ -6,9 +6,9 @@
     "client": "Safripol",
     "operator": "Connect Logistics",
     "product": "PTA",
-    "generated_at_utc": "2026-09-11T12:29:55+00:00",
-    "generated_at_sast": "2026-09-11T14:29:55+02:00",
-    "generated_display": "11 Sep 2026 14:29 SAST",
+    "generated_at_utc": "2026-09-11T12:30:27+00:00",
+    "generated_at_sast": "2026-09-11T14:30:27+02:00",
+    "generated_display": "11 Sep 2026 14:30 SAST",
     "sources": [
       {
         "key": "stock",
@@ -79,10 +79,10 @@
     "required_rate_mt_per_day": 235.7,
     "projected_completion": "2027-02-15",
     "projected_remaining_days": 157,
-    "avg_decant_hours": 1.28,
-    "avg_interval_hours": null,
+    "avg_decant_hours": 8.63,
+    "avg_interval_hours": 0.68,
     "time_lost_hours": 0.25,
-    "decants_per_day": 2.0,
+    "decants_per_day": 3.0,
     "avg_attainment_pct": null,
     "avg_turnaround_hours": 10.34,
     "open_exceptions": 1,
@@ -1290,23 +1290,23 @@
   },
   "decant": {
     "has_data": true,
-    "total_decants": 2,
-    "avg_decant_hours": 1.28,
-    "avg_interval_hours": null,
-    "avg_productive_hours": 1.16,
-    "clean_pct": 1.0,
-    "time_lost_hours": 0.0,
+    "total_decants": 3,
+    "avg_decant_hours": 8.63,
+    "avg_interval_hours": 0.68,
+    "avg_productive_hours": 8.54,
+    "clean_pct": 0.6667,
+    "time_lost_hours": 21.57,
     "delay_hours_logged": 0.25,
     "total_net_mt": 35.44,
-    "decants_per_day": 2.0,
+    "decants_per_day": 3.0,
     "by_day": [
       {
         "date": "2026-09-10",
-        "decants": 2,
+        "decants": 3,
         "net_mt": 35.44,
         "cum_mt": 35.44,
-        "avg_decant_hours": 1.28,
-        "avg_interval_hours": null,
+        "avg_decant_hours": 8.63,
+        "avg_interval_hours": 0.68,
         "delay_minutes": 15.0
       }
     ],
@@ -1321,9 +1321,9 @@
       },
       {
         "shift": "Nightshift",
-        "decants": 1,
-        "avg_decant_hours": 1.47,
-        "avg_interval_hours": null,
+        "decants": 2,
+        "avg_decant_hours": 12.39,
+        "avg_interval_hours": 0.68,
         "net_mt": 17.68,
         "delay_minutes": 0.0
       }
@@ -1339,9 +1339,9 @@
       },
       {
         "team": "C",
-        "decants": 1,
-        "avg_decant_hours": 1.47,
-        "avg_interval_hours": null,
+        "decants": 2,
+        "avg_decant_hours": 12.39,
+        "avg_interval_hours": 0.68,
         "net_mt": 17.68,
         "delay_minutes": 0.0
       }
@@ -1365,9 +1365,9 @@
       },
       {
         "iso": "ISO-03",
-        "decants": 0,
-        "avg_decant_hours": null,
-        "avg_interval_hours": null,
+        "decants": 1,
+        "avg_decant_hours": 23.32,
+        "avg_interval_hours": 0.68,
         "net_mt": 0.0,
         "delay_minutes": 0.0
       }
@@ -1486,8 +1486,8 @@
       },
       {
         "hour": 19,
-        "decants": 0,
-        "avg_decant_hours": null
+        "decants": 1,
+        "avg_decant_hours": 23.32
       },
       {
         "hour": 20,
@@ -1517,15 +1517,15 @@
         "team": "C",
         "heads": 14.0,
         "planned_isotainers": 0.0,
-        "actual_isotainers": 1,
+        "actual_isotainers": 2,
         "variance_isotainers": null,
         "attainment_pct": null,
         "actual_mt": 17.68,
-        "avg_decant_hours": 1.47,
-        "avg_interval_hours": null,
+        "avg_decant_hours": 12.39,
+        "avg_interval_hours": 0.68,
         "delay_minutes": 0.0,
-        "productive_hours": 1.47,
-        "isotainers_per_head": 0.071,
+        "productive_hours": 24.78,
+        "isotainers_per_head": 0.143,
         "notes": "Preloading for next day dispatch "
       },
       {
@@ -1551,24 +1551,24 @@
       "shifts_planned": 0,
       "avg_attainment_pct": null,
       "shifts_on_target": 0,
-      "avg_isotainers_per_shift": 1.0,
+      "avg_isotainers_per_shift": 1.5,
       "avg_heads_per_shift": 14.5,
-      "avg_isotainers_per_head": 0.069,
+      "avg_isotainers_per_head": 0.105,
       "best_shift": {
         "date": "2026-09-10",
         "shift": "Nightshift",
         "team": "C",
         "heads": 14.0,
         "planned_isotainers": 0.0,
-        "actual_isotainers": 1,
+        "actual_isotainers": 2,
         "variance_isotainers": null,
         "attainment_pct": null,
         "actual_mt": 17.68,
-        "avg_decant_hours": 1.47,
-        "avg_interval_hours": null,
+        "avg_decant_hours": 12.39,
+        "avg_interval_hours": 0.68,
         "delay_minutes": 0.0,
-        "productive_hours": 1.47,
-        "isotainers_per_head": 0.071,
+        "productive_hours": 24.78,
+        "isotainers_per_head": 0.143,
         "notes": "Preloading for next day dispatch "
       }
     },
@@ -2622,6 +2622,14 @@
       "when": null,
       "owner": "Connect",
       "value": "-106.1 MT/day"
+    },
+    {
+      "severity": "medium",
+      "category": "Decant over standard",
+      "detail": "Average decant 8.63 h against the 1.75 h standard.",
+      "when": null,
+      "owner": "Connect",
+      "value": "+6.88 h"
     },
     {
       "severity": "medium",
