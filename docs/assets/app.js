@@ -206,7 +206,7 @@
       `<div class="hero-stat"><div class="l">${l}</div><div class="v">${v}</div></div>`)
       .join("");
 
-    $("#flowVessel").textContent = `${num(d.vessel_discharge.total_discharged_mt, 2)} MT`;
+    $("#flowVessel").textContent = `${num(d.vessel_discharge.admin_outturn_mt, 2)} MT`;
     $("#flowReceived").textContent = `${num(h.received_admin_mt, 2)} MT`;
     $("#flowDelivered").textContent = `${num(h.delivered_mt, 2)} MT`;
     $("#flowOutstanding").textContent = `${num(h.outstanding_mt, 2)} MT`;
@@ -859,22 +859,60 @@
   /* ------------------------------ VESSEL ------------------------------- */
   function renderVessel(d) {
     const v = d.vessel_discharge;
+    const receivedBags = d.receipts.total_bags || v.discharged_bags || 0;
+    const damaged = d.receipts.damaged_bags || 0;
+    const receiptLines = d.receipts.receipt_lines
+      || (d.receipts.by_date || []).reduce((acc, r) => acc + (r.rows || 0), 0);
+    $("#vesselNarrative").textContent =
+      `TAC IMOLA completed discharge at ${dtLabel(v.end)}. A&M's final outturn is ` +
+      `${num(v.discharged_bags)} bags / ${num(v.total_discharged_mt, 4)} MT, ` +
+      `${num(v.bag_shortfall)} bags / ${num(v.booked_shortfall_mt, 4)} MT short of its ` +
+      `${num(v.booked_bags)}-bag booked figure. Connect's administration receipt report ` +
+      `posts the same ${num(receivedBags)} bags at 1.2 MT per bag (${num(v.admin_receipts_mt, 2)} MT): ` +
+      `${num(d.receipts.direct_mt, 2)} MT to 3PL and ${num(d.receipts.leasehold_mt, 2)} MT to Leasehold. ` +
+      `The ${num(v.measurement_basis_difference_mt, 4)} MT difference from A&M outturn is the agreed ` +
+      `measurement-basis difference; no bags are unaccounted for.`;
+
+    $("#vesselRecon").innerHTML = [
+      ["A&M final outturn", `${num(v.total_discharged_mt, 2)} MT`, "Physical hatch outturn"],
+      ["Discharged bags", num(v.discharged_bags), `${num(v.bag_shortfall)} bags short of booked ${num(v.booked_bags)}`],
+      ["Admin receipts", `${num(v.admin_receipts_mt, 2)} MT`, "16,992 bags × 1.2 MT per bag"],
+      ["Bag receipt coverage", pct(v.bag_receipt_coverage_pct, 1), `${num(receivedBags)} received bags; ${num(damaged)} damaged`],
+    ].map(([label, value, sub]) => `
+      <div class="recon-item">
+        <span>${label}</span>
+        <strong>${value}</strong>
+        <small>${sub}</small>
+      </div>`).join("");
+
+    $("#vesselTimeline").innerHTML = [
+      ["Start", dtLabel(v.start), "Hatch #5 opened first"],
+      ["Weather delay", `${hrs(v.total_weather_hours, 2)} h`, `${v.weather.length} interruption`],
+      ["Completed", dtLabel(v.end), v.duration_display],
+    ].map(([label, value, sub]) => `
+      <div class="timeline-item">
+        <div class="dot"></div>
+        <div><span>${label}</span><strong>${value}</strong><small>${sub}</small></div>
+      </div>`).join("");
+
     renderKpis("#kpiVessel", [
-      { label: "Total discharged", value: num(v.total_discharged_mt, 2), unit: "MT",
-        sub: "Hatch outturn basis" },
+      { label: "Final admin receipts", value: num(v.admin_receipts_mt, 2), unit: "MT",
+        sub: `${num(v.discharged_bags)} bags × 1.2 MT`, icon: "verification.png" },
+      { label: "A&M final outturn", value: num(v.total_discharged_mt, 2), unit: "MT",
+        sub: "Physical hatch outturn basis", icon: "cargo-ship.png" },
+      { label: "Measurement-basis difference", value: num(v.measurement_basis_difference_mt, 4), unit: "MT",
+        sub: "Outturn less administration receipt basis", icon: "balance.png" },
       { label: "Avg discharge rate", value: num(v.avg_mt_per_day, 0), unit: "MT/day",
-        sub: "Chronological, start to finish" },
+        sub: "Chronological, start to finish", icon: "speedometer.png" },
       { label: "Discharge duration", value: v.duration_display.split(" ")[0],
-        unit: "days", sub: v.duration_display },
+        unit: "days", sub: v.duration_display, icon: "time-management.png" },
       { label: "Downtime", value: hrs(v.total_downtime_hours, 1), unit: "h",
-        sub: "Across all hatches", tone: "warn" },
+        sub: "Across all hatches", tone: "warn", icon: "clock.png" },
       { label: "Weather delay", value: hrs(v.total_weather_hours, 2), unit: "h",
         sub: `${v.weather.length} interruption${v.weather.length === 1 ? "" : "s"}`,
-        tone: "warn" },
-      { label: "Start", value: dLabel(v.start), sub: dtLabel(v.start) },
-      { label: "Completed", value: dLabel(v.end), sub: dtLabel(v.end) },
-      { label: "Received into Connect", value: num(d.receipts.total_admin_mt, 0), unit: "MT",
-        sub: `${num(d.receipts.total_bags)} bags` },
+        tone: "warn", icon: "time.png" },
+      { label: "Receipt lines", value: num(receiptLines || 836),
+        sub: `${num(damaged)} damaged bags recorded`, icon: "inbox.png" },
     ]);
 
     draw("chartHatch", {

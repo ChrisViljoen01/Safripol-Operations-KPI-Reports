@@ -6,9 +6,9 @@
     "client": "Safripol",
     "operator": "Connect Logistics",
     "product": "PTA",
-    "generated_at_utc": "2026-09-11T06:39:31+00:00",
-    "generated_at_sast": "2026-09-11T08:39:31+02:00",
-    "generated_display": "11 Sep 2026 08:39 SAST",
+    "generated_at_utc": "2026-09-11T06:40:53+00:00",
+    "generated_at_sast": "2026-09-11T08:40:53+02:00",
+    "generated_display": "11 Sep 2026 08:40 SAST",
     "sources": [
       {
         "key": "stock",
@@ -58,9 +58,9 @@
     "delivered_mt": 0.0,
     "outstanding_mt": 20390.4,
     "completion_pct": 0.0,
-    "pta_balance_mt": 20400.0,
-    "received_admin_mt": 20400.0,
-    "received_physical_mt": 20400.0,
+    "pta_balance_mt": 20390.4,
+    "received_admin_mt": 20390.4,
+    "received_physical_mt": 20390.4,
     "loads_total": 0,
     "avg_daily_offtake_mt": 0.0,
     "avg_loads_per_day": 0.0,
@@ -161,15 +161,18 @@
     ]
   },
   "receipts": {
-    "total_admin_mt": 20400.0,
-    "total_physical_mt": 20400.0,
-    "direct_mt": 16479.6,
-    "leasehold_mt": 3920.4,
-    "total_bags": 17000,
-    "damaged_bags": 20,
-    "receipt_lines": 837,
+    "total_admin_mt": 20390.4,
+    "total_physical_mt": 20390.4,
+    "direct_mt": 16473.6,
+    "leasehold_mt": 3916.8,
+    "total_bags": 16992,
+    "damaged_bags": 18,
+    "receipt_lines": 836,
+    "raw_total_admin_mt": 20400.0,
+    "raw_total_bags": 17000,
+    "finalised_reconciliation": true,
     "receipt_days": 4,
-    "avg_mt_per_receipt_day": 5100.0,
+    "avg_mt_per_receipt_day": 5097.6,
     "first_arrival": "2026-09-01",
     "last_arrival": "2026-09-04",
     "by_date": [
@@ -177,33 +180,33 @@
         "date": "2026-09-01",
         "bags": 5747,
         "rows": 284,
-        "admin_mt": 6896.4,
-        "physical_mt": 6896.4,
-        "cum_admin_mt": 6896.4
+        "admin_mt": 6893.15,
+        "physical_mt": 6893.15,
+        "cum_admin_mt": 6893.15
       },
       {
         "date": "2026-09-02",
         "bags": 6287,
         "rows": 309,
-        "admin_mt": 7544.4,
-        "physical_mt": 7544.4,
-        "cum_admin_mt": 14440.8
+        "admin_mt": 7540.85,
+        "physical_mt": 7540.85,
+        "cum_admin_mt": 14434.0
       },
       {
         "date": "2026-09-03",
         "bags": 4161,
         "rows": 203,
-        "admin_mt": 4993.2,
-        "physical_mt": 4993.2,
-        "cum_admin_mt": 19434.0
+        "admin_mt": 4990.85,
+        "physical_mt": 4990.85,
+        "cum_admin_mt": 19424.85
       },
       {
         "date": "2026-09-04",
         "bags": 805,
         "rows": 41,
-        "admin_mt": 966.0,
-        "physical_mt": 966.0,
-        "cum_admin_mt": 20400.0
+        "admin_mt": 965.55,
+        "physical_mt": 965.55,
+        "cum_admin_mt": 20390.4
       }
     ]
   },
@@ -219,7 +222,7 @@
     "avg_daily_offtake_mt": 0.0,
     "avg_mt_per_load": 0.0,
     "avg_mt_offloaded_per_tank": 0.0,
-    "pta_balance_mt": 20400.0,
+    "pta_balance_mt": 20390.4,
     "projected_completion": "Pending",
     "projected_remaining_days": null,
     "required_rate_mt_per_day": null,

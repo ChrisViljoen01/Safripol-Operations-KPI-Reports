@@ -180,13 +180,6 @@ def parse_dispatch(path: Path) -> pd.DataFrame:
 
 
 def parse_receipts(path: Path) -> pd.DataFrame:
-    sheet = _find_sheet(path, "3PL Receipt Detail", "Receipt Detail", "Receipt")
-    if sheet is None:
-        return pd.DataFrame()
-    df = _read(path, sheet)
-    df = df.loc[:, ~df.columns.str.startswith("Unnamed")]
-    if df.empty:
-        return df
     ren = {
         "Arrival Date": "arrival_date",
         "Total Bags": "total_bags",
@@ -201,9 +194,31 @@ def parse_receipts(path: Path) -> pd.DataFrame:
         "Delivery Note": "delivery_note",
         "Warehouse": "warehouse",
     }
-    df = df.rename(columns={k: v for k, v in ren.items() if k in df.columns})
-    if "arrival_date" not in df:
+
+    frames = []
+    for sheet in (
+        _find_sheet(path, "3PL Receipt Detail"),
+        _find_sheet(path, "Leasehold Receipt Detail"),
+    ):
+        if sheet is None:
+            continue
+        raw = _read(path, sheet)
+        raw = raw.loc[:, ~raw.columns.str.startswith("Unnamed")]
+        if raw.empty:
+            continue
+        raw = raw.rename(columns={k: v for k, v in ren.items() if k in raw.columns})
+        if "arrival_date" not in raw:
+            continue
+        if "receipt_type" not in raw:
+            raw["receipt_type"] = (
+                "Leasehold" if "leasehold" in sheet.lower() else "Direct from Vessel"
+            )
+        raw["source_sheet"] = sheet
+        frames.append(raw)
+
+    if not frames:
         return pd.DataFrame()
+    df = pd.concat(frames, ignore_index=True, sort=False)
     df["arrival_date"] = df["arrival_date"].map(_to_date)
     df = df[df["arrival_date"].notna()].copy()
     for col in ("total_bags", "damaged_bags", "total_received_kg"):

@@ -38,7 +38,7 @@ body {
     var(--bg);
   color: var(--text);
   font-family: Inter, "Segoe UI", system-ui, sans-serif;
-  font-size: 14px;
+  font-size: clamp(14px, .74vw, 16px);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
@@ -77,10 +77,10 @@ svg { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; 
 }
 .topbar-left { display: flex; align-items: center; gap: 14px; min-width: 0; }
 .connect-logo { width: 118px; height: 40px; object-fit: contain; }
-.safripol-logo { width: 116px; height: 34px; object-fit: contain; }
+.safripol-logo { width: 126px; height: 36px; object-fit: contain; }
 .brand-divider { width: 1px; height: 30px; background: var(--line); }
-.titles h1 { font-size: 17px; }
-.titles p { margin: 2px 0 0; font-size: 12.5px; color: var(--text-2); }
+.titles h1 { font-size: clamp(17px, .95vw, 21px); }
+.titles p { margin: 2px 0 0; font-size: clamp(12px, .68vw, 14px); color: var(--text-2); }
 .topbar-right { display: flex; align-items: center; gap: 10px; }
 
 .stamp { text-align: right; line-height: 1.25; margin-right: 4px; }
@@ -138,7 +138,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; 
 }
 
 /* -------------------------------- views ------------------------------- */
-main { padding: 22px 28px 40px; width: 100%; max-width: 1720px; margin: 0 auto; overflow: hidden; }
+main { padding: clamp(18px, 1.4vw, 34px); width: 100%; max-width: none; margin: 0; overflow: hidden; }
 .view { display: none; min-width: 0; animation: fade .3s ease; }
 .view.active { display: block; }
 @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
@@ -148,7 +148,7 @@ main { padding: 22px 28px 40px; width: 100%; max-width: 1720px; margin: 0 auto; 
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  padding: 18px 20px;
+  padding: clamp(18px, 1.1vw, 26px);
   box-shadow: var(--shadow);
   margin-bottom: 18px;
 }
@@ -172,7 +172,7 @@ main { padding: 22px 28px 40px; width: 100%; max-width: 1720px; margin: 0 auto; 
 .chip.warn { color: var(--warn); border-color: color-mix(in srgb, var(--warn) 40%, transparent); }
 .chip.bad  { color: var(--bad);  border-color: color-mix(in srgb, var(--bad) 40%, transparent); }
 
-.grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(18px, 1.2vw, 26px); }
 @media (max-width: 1080px) { .grid-2 { grid-template-columns: 1fr; } }
 
 /* --------------------------------- hero ------------------------------- */
@@ -211,8 +211,8 @@ main { padding: 22px 28px 40px; width: 100%; max-width: 1720px; margin: 0 auto; 
 
 /* --------------------------------- kpis ------------------------------- */
 .kpi-grid {
-  display: grid; gap: 14px; margin-bottom: 18px;
-  grid-template-columns: repeat(auto-fill, minmax(196px, 1fr));
+  display: grid; gap: clamp(14px, .9vw, 22px); margin-bottom: clamp(18px, 1.2vw, 26px);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 .kpi {
   background: var(--surface); border: 1px solid var(--line);
@@ -239,22 +239,23 @@ main { padding: 22px 28px 40px; width: 100%; max-width: 1720px; margin: 0 auto; 
 .kpi.warn::before { background: var(--warn); }
 .kpi.bad::before  { background: var(--bad); }
 .kpi .label {
-  font-size: 10.5px; text-transform: uppercase; letter-spacing: .07em;
+  font-size: clamp(10.5px, .58vw, 12px); text-transform: uppercase; letter-spacing: .07em;
   color: var(--text-3); font-weight: 700;
 }
 .kpi .value {
-  font-size: 24px; font-weight: 700; margin-top: 6px; line-height: 1.15;
+  font-size: clamp(24px, 1.35vw, 32px); font-weight: 700; margin-top: 6px; line-height: 1.15;
   font-family: "JetBrains Mono", monospace; letter-spacing: -.02em;
 }
 .kpi .value .unit { font-size: 12px; color: var(--text-3); margin-left: 4px; font-weight: 500; }
-.kpi .sub { font-size: 11.5px; color: var(--text-2); margin-top: 5px; }
+.kpi .sub { font-size: clamp(11.5px, .64vw, 13px); color: var(--text-2); margin-top: 5px; }
 .kpi .sub.good { color: var(--good); }
 .kpi .sub.warn { color: var(--warn); }
 .kpi .sub.bad  { color: var(--bad); }
 
 /* -------------------------------- charts ------------------------------ */
-.chart-wrap { position: relative; height: 260px; }
-.chart-wrap.tall { height: 320px; }
+.chart-wrap { position: relative; height: clamp(280px, 17vw, 390px); }
+.chart-wrap.tall { height: clamp(340px, 21vw, 460px); }
+.chart-wrap.xlarge { height: clamp(420px, 29vw, 620px); }
 
 /* -------------------------- operations ribbon ------------------------- */
 .operations-ribbon {
@@ -358,6 +359,75 @@ td.good { color: var(--good); } td.warn { color: var(--warn); } td.bad { color: 
 .cycle-step .t { font-size: 11px; color: var(--text-3); margin-top: 3px; }
 .cycle-step.over { border-color: color-mix(in srgb, var(--bad) 45%, transparent); }
 .cycle-step.ok   { border-color: color-mix(in srgb, var(--good) 45%, transparent); }
+
+/* ------------------------------- vessel ------------------------------ */
+.vessel-hero {
+  display: flex; align-items: center; justify-content: space-between; gap: 28px;
+  min-height: 178px;
+  background:
+    linear-gradient(120deg, rgba(11, 26, 163, .92), rgba(22, 111, 177, .86), rgba(0, 174, 115, .82)),
+    var(--connect-blue);
+  color: #fff;
+  border: 0;
+  overflow: hidden;
+  position: relative;
+}
+.vessel-hero::after {
+  content: ""; position: absolute; inset: auto 2% -80px auto;
+  width: 320px; height: 320px;
+  background: url("images/Connect-Logistics-Icon.png") center/contain no-repeat;
+  opacity: .08; pointer-events: none;
+}
+.vessel-hero h2 { font-size: clamp(26px, 2.2vw, 44px); line-height: 1.08; max-width: 980px; }
+.vessel-hero p { margin: 13px 0 0; max-width: 1180px; color: rgba(255,255,255,.88); font-size: clamp(13px, .78vw, 16px); }
+.vessel-hero img { width: clamp(78px, 6vw, 140px); height: auto; filter: drop-shadow(0 16px 28px rgba(0,0,0,.24)); }
+.eyebrow {
+  display: inline-block; margin-bottom: 9px; font-size: 11px; text-transform: uppercase;
+  letter-spacing: .12em; font-weight: 800; color: rgba(255,255,255,.78);
+}
+.vessel-summary-grid {
+  display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(330px, .65fr);
+  gap: clamp(18px, 1.2vw, 26px);
+}
+.vessel-main-grid {
+  display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(520px, .65fr);
+  gap: clamp(18px, 1.2vw, 26px);
+}
+.recon-grid {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px;
+}
+.recon-item {
+  padding: 16px; border-radius: 14px;
+  background: linear-gradient(180deg, #fff, #f7fbff);
+  border: 1px solid var(--line);
+}
+.recon-item span {
+  display: block; font-size: 10.5px; color: var(--text-3);
+  text-transform: uppercase; letter-spacing: .08em; font-weight: 800;
+}
+.recon-item strong {
+  display: block; margin-top: 7px; font: 800 clamp(21px, 1.35vw, 31px)/1.05 "JetBrains Mono", monospace;
+  color: var(--connect-blue);
+}
+.recon-item small { display: block; margin-top: 6px; color: var(--text-2); }
+.timeline { position: relative; display: grid; gap: 16px; padding-left: 5px; }
+.timeline-item { display: grid; grid-template-columns: 20px 1fr; gap: 12px; align-items: start; }
+.timeline-item:not(:last-child) .dot::after {
+  content: ""; position: absolute; top: 16px; left: 6px; width: 2px; height: 42px;
+  background: var(--line);
+}
+.dot { position: relative; width: 14px; height: 14px; border-radius: 50%; background: var(--saf-teal); margin-top: 4px; }
+.timeline-item span { display: block; font-size: 10.5px; text-transform: uppercase; letter-spacing: .08em; color: var(--text-3); font-weight: 800; }
+.timeline-item strong { display: block; margin-top: 2px; font: 800 18px/1.2 "JetBrains Mono", monospace; }
+.timeline-item small { display: block; color: var(--text-2); margin-top: 2px; }
+
+@media (max-width: 1180px) {
+  .vessel-summary-grid,
+  .vessel-main-grid {
+    grid-template-columns: 1fr;
+  }
+  .recon-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 
 /* ------------------------------- misc --------------------------------- */
 .empty-state {

@@ -83,7 +83,7 @@
     <div class="operations-ribbon card">
       <div class="ribbon-step">
         <img src="assets/images/cargo-ship.png" alt="" />
-        <div><span>Vessel outturn</span><strong id="flowVessel">—</strong></div>
+        <div><span>Admin outturn</span><strong id="flowVessel">—</strong></div>
       </div>
       <span class="ribbon-arrow">→</span>
       <div class="ribbon-step">
@@ -278,11 +278,40 @@
 
   <!-- ================= VESSEL ================= -->
   <section class="view" id="view-vessel">
+    <div class="vessel-hero card">
+      <div>
+        <span class="eyebrow">MV TAC IMOLA · Voyage 33 final report</span>
+        <h2>Vessel discharge reconciled to Safripol administration receipts</h2>
+        <p id="vesselNarrative"></p>
+      </div>
+      <img src="assets/images/cargo-ship.png" alt="" />
+    </div>
+
     <div class="kpi-grid" id="kpiVessel"></div>
-    <div class="grid-2">
+    <div class="vessel-summary-grid">
+      <div class="card reconciliation-card">
+        <div class="card-head">
+          <div>
+            <h3>Outturn reconciliation</h3>
+            <p class="card-sub">A&M physical outturn versus Connect administration receipt basis</p>
+          </div>
+          <img class="section-icon" src="assets/images/balance.png" alt="" />
+        </div>
+        <div class="recon-grid" id="vesselRecon"></div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <h3>Discharge timeline</h3>
+          <img class="section-icon" src="assets/images/on-time.png" alt="" />
+        </div>
+        <div id="vesselTimeline" class="timeline"></div>
+      </div>
+    </div>
+
+    <div class="vessel-main-grid">
       <div class="card">
         <div class="card-head"><h3>Discharge volume and rate by hatch</h3></div>
-        <div class="chart-wrap tall"><canvas id="chartHatch"></canvas></div>
+        <div class="chart-wrap xlarge"><canvas id="chartHatch"></canvas></div>
       </div>
       <div class="card">
         <div class="card-head"><h3>Hatch sequence and durations</h3></div>
