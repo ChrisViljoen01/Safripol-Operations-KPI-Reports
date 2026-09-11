@@ -109,6 +109,20 @@ Check Graph connectivity without building anything:
 python -m ingest --check
 ```
 
+### Working on the front end
+
+Pages caches `app.js` and `styles.css` hard, so a deploy can leave visitors on
+the previous build. `tools/stamp_assets.py` writes a content hash into the
+`index.html` references (`app.js?v=b87555fb`), which makes the browser fetch the
+new file. A pre-commit hook runs it automatically whenever either asset is part
+of a commit — enable it once per clone:
+
+```powershell
+git config core.hooksPath tools/hooks
+```
+
+Data-only commits, including the scheduled refresh, skip the hook entirely.
+
 ## Self-hosted (Docker)
 
 Only needed if the report is served internally rather than from Pages. The

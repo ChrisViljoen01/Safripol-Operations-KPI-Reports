@@ -1,4 +1,5 @@
 * text=auto eol=lf
 *.sh text eol=lf
+tools/hooks/* text eol=lf
 *.png binary
 *.xlsx binary

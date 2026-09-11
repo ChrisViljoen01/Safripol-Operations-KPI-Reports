@@ -1,0 +1,35 @@
+#!/bin/sh
+# Re-stamp the cache-busting hashes when a front-end asset is committed.
+#
+# GitHub Pages serves docs/assets/*.js and *.css with a long cache lifetime, so
+# without a changing URL a returning visitor keeps running the previous build -
+# the report looks stale even though the data behind it is current. Stamping is
+# easy to forget by hand, so it happens here instead.
+#
+# The scheduled refresh only ever commits data files, so this hook stays out of
+# that path: it fires only when an asset is actually part of a commit.
+
+changed=$(git diff --cached --name-only --diff-filter=ACMR)
+
+case "$changed" in
+  *docs/assets/app.js*|*docs/assets/styles.css*) ;;
+  *) exit 0 ;;
+esac
+
+if command -v python >/dev/null 2>&1; then
+  PY=python
+elif command -v python3 >/dev/null 2>&1; then
+  PY=python3
+else
+  echo "pre-commit: python not found, skipping asset stamp" >&2
+  exit 0
+fi
+
+# Never block a commit over a cosmetic step.
+if ! "$PY" tools/stamp_assets.py; then
+  echo "pre-commit: asset stamp failed, committing unstamped" >&2
+  exit 0
+fi
+
+git add docs/index.html
+exit 0
