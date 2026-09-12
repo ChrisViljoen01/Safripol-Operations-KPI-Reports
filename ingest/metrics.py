@@ -385,6 +385,7 @@ def dwell_block(visits: pd.DataFrame, turns: pd.DataFrame) -> dict:
             "trend": [{
                 "date": iso_d(d),
                 "turnaround": r2(_mean(g.get("turnaround_hours"))),
+                "connect_dwell": r2(_mean(g["connect_dwell_hours"])),
                 "transit_out": r2(_mean(g["transit_out_hours"])),
                 "safripol_dwell": r2(_mean(g["safripol_dwell_hours"])),
             } for d, g in trend_src.groupby("date")],

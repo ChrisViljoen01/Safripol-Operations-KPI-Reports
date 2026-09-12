@@ -1174,6 +1174,8 @@
               borderColor: css("--accent"), borderWidth: 2.5, tension: .3,
               pointRadius: 0, spanGaps: true,
               backgroundColor: (c) => fadeFill(c, "#38bdf8"), fill: true },
+            { label: "Connect dwell (h)", data: ta.trend.map((r) => r.connect_dwell),
+              borderColor: css("--connect-blue"), borderWidth: 2, tension: .3, pointRadius: 0 },
             { label: "Safripol dwell (h)", data: ta.trend.map((r) => r.safripol_dwell),
               borderColor: css("--warn"), borderWidth: 2, tension: .3, pointRadius: 0 },
             { label: "Transit out (h)", data: ta.trend.map((r) => r.transit_out),
