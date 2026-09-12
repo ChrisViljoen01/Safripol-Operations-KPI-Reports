@@ -56,11 +56,22 @@ def run(args: list[str], **kw) -> subprocess.CompletedProcess:
     )
 
 
+def sync_clean_main() -> None:
+    """Ensure the local repo is cleanly synced with origin/main and not wedged in a rebase."""
+    run(["git", "rebase", "--abort"])
+    run(["git", "merge", "--abort"])
+    run(["git", "fetch", "origin", "main"])
+    run(["git", "reset", "--hard", "origin/main"])
+
+
 def main() -> int:
     env = os.environ.copy()
     env.setdefault("SAFRIPOL_AUTH_MODE", "delegated")
     env["PYTHONPATH"] = str(REPO)
     env["PYTHONUTF8"] = "1"
+
+    # Ensure we are working from the latest remote state before generating data.
+    sync_clean_main()
 
     # Keep the current snapshot so a failed build can be rolled back.
     backup = None
@@ -104,8 +115,18 @@ def main() -> int:
     run(["git", "-c", "user.name=safripol-report-bot",
          "-c", "user.email=safripol-report-bot@connectlogistics.co.za",
          "commit", "-m", f"data: refresh snapshot {stamp}"])
-    run(["git", "pull", "--rebase", "--autostash", "origin", "main"])
+
     push = run(["git", "push", "origin", "main"])
+    if push.returncode != 0:
+        # Remote moved during ingest. Re-align on top of remote HEAD without rebasing old JSON diffs.
+        log("push rejected; re-aligning with remote HEAD and retrying")
+        run(["git", "fetch", "origin", "main"])
+        run(["git", "reset", "--soft", "origin/main"])
+        run(["git", "-c", "user.name=safripol-report-bot",
+             "-c", "user.email=safripol-report-bot@connectlogistics.co.za",
+             "commit", "-m", f"data: refresh snapshot {stamp}"])
+        push = run(["git", "push", "origin", "main"])
+
     if push.returncode != 0:
         log(f"push failed: {(push.stderr or '')[-300:]}")
         return 1

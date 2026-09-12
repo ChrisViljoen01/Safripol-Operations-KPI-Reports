@@ -76,9 +76,15 @@ jobs:
           if git diff --cached --quiet; then
             echo "No data change."
           else
-            git commit -m "data: refresh snapshot $(date -u +'%Y-%m-%d %H:%M UTC')"
-            git pull --rebase --autostash origin "${GITHUB_REF_NAME}"
-            git push
+            stamp="$(date -u +'%Y-%m-%d %H:%M UTC')"
+            git commit -m "data: refresh snapshot ${stamp}"
+            if ! git push origin "${GITHUB_REF_NAME}"; then
+              echo "Push rejected; re-aligning with remote HEAD and retrying."
+              git fetch origin "${GITHUB_REF_NAME}"
+              git reset --soft "origin/${GITHUB_REF_NAME}"
+              git commit -m "data: refresh snapshot ${stamp}"
+              git push origin "${GITHUB_REF_NAME}"
+            fi
           fi
 
       - name: Flag degraded refresh
