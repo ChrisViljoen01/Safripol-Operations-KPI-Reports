@@ -6,9 +6,9 @@
     "client": "Safripol",
     "operator": "Connect Logistics",
     "product": "PTA",
-    "generated_at_utc": "2026-09-12T17:00:11+00:00",
-    "generated_at_sast": "2026-09-12T19:00:11+02:00",
-    "generated_display": "12 Sep 2026 19:00 SAST",
+    "generated_at_utc": "2026-09-12T17:15:14+00:00",
+    "generated_at_sast": "2026-09-12T19:15:14+02:00",
+    "generated_display": "12 Sep 2026 19:15 SAST",
     "sources": [
       {
         "key": "stock",
@@ -25,7 +25,7 @@
         "label": "Safripol v Connect Dwells",
         "ok": true,
         "origin": "local",
-        "last_modified": "2026-09-12T18:01+02:00",
+        "last_modified": "2026-09-12T19:01+02:00",
         "size_kb": 239,
         "required": true,
         "error": ""
@@ -430,16 +430,16 @@
       {
         "date": "2026-04-11",
         "connect": 4.23,
-        "safripol": 8.69
+        "safripol": 8.93
       },
       {
         "date": "2026-04-12",
         "connect": 2.87,
-        "safripol": 8.78
+        "safripol": 8.63
       },
       {
         "date": "2026-04-13",
-        "connect": 3.11,
+        "connect": 3.1,
         "safripol": 9.0
       },
       {
@@ -799,7 +799,7 @@
       "excluded_parked_cycles": 8,
       "max_turnaround_hours": 24.0,
       "avg_connect_dwell_hours": 3.03,
-      "avg_transit_out_hours": 1.27,
+      "avg_transit_out_hours": 1.25,
       "avg_safripol_dwell_hours": 6.4,
       "avg_transit_return_hours": 1.05,
       "avg_turnaround_hours": 10.35,
@@ -885,20 +885,20 @@
         {
           "date": "2026-04-11",
           "turnaround": 12.41,
-          "transit_out": 3.22,
+          "transit_out": 1.31,
           "safripol_dwell": 9.74
         },
         {
           "date": "2026-04-12",
-          "turnaround": 11.51,
-          "transit_out": 0.64,
-          "safripol_dwell": 8.29
+          "turnaround": 11.94,
+          "transit_out": 0.65,
+          "safripol_dwell": 8.44
         },
         {
           "date": "2026-04-13",
-          "turnaround": 11.95,
-          "transit_out": 1.37,
-          "safripol_dwell": 9.55
+          "turnaround": 11.67,
+          "transit_out": 1.3,
+          "safripol_dwell": 9.29
         },
         {
           "date": "2026-04-14",
@@ -2832,10 +2832,10 @@
     {
       "severity": "medium",
       "category": "Transit over target",
-      "detail": "Average Connect to Safripol transit 1.27 h against a 0.75 h target.",
+      "detail": "Average Connect to Safripol transit 1.25 h against a 0.75 h target.",
       "when": null,
       "owner": "Transporter",
-      "value": "+0.52 h"
+      "value": "+0.5 h"
     },
     {
       "severity": "low",
