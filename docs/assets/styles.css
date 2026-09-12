@@ -259,6 +259,14 @@ main { padding: clamp(18px, 1.4vw, 34px); width: 100%; max-width: none; margin: 
 .kpi.good::before { background: var(--good); }
 .kpi.warn::before { background: var(--warn); }
 .kpi.bad::before  { background: var(--bad); }
+/* Global: any KPI card carrying a tone colors its headline number too, not
+   just the accent strip - a red/green strip alone is too easy to miss. */
+.kpi.good .value { color: var(--good); }
+.kpi.warn .value { color: var(--warn); }
+.kpi.bad  .value { color: var(--bad); }
+.kpi.good .value .unit,
+.kpi.warn .value .unit,
+.kpi.bad  .value .unit { color: inherit; opacity: .75; }
 .kpi .label {
   align-self: start;
   display: flex; align-items: flex-start;
@@ -274,6 +282,10 @@ main { padding: clamp(18px, 1.4vw, 34px); width: 100%; max-width: none; margin: 
   font-family: "JetBrains Mono", monospace; letter-spacing: -.02em;
 }
 .kpi .value .unit { font-size: 12px; color: var(--text-3); margin-left: 4px; font-weight: 500; }
+.kpi .value .qualifier {
+  font-size: 13px; font-weight: 700; margin-left: 6px;
+  text-transform: uppercase; letter-spacing: .03em;
+}
 /* Dates read as words, not measurements, so they get the UI face a touch smaller. */
 .kpi .value.is-date {
   font-family: inherit; font-size: clamp(19px, 1.05vw, 25px); letter-spacing: -.01em;

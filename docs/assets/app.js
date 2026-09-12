@@ -68,16 +68,17 @@
     getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 
   /* --------------------------- kpi + table dsl -------------------------- */
-  function kpi({ label, value, unit, sub, tone, icon, date }) {
+  function kpi({ label, value, unit, sub, tone, icon, date, qualifier }) {
     const t = tone ? ` ${tone}` : "";
     const s = sub ? `<div class="sub${tone ? " " + tone : ""}">${sub}</div>` : "";
     const u = unit ? `<span class="unit">${unit}</span>` : "";
+    const q = qualifier ? `<span class="qualifier">${qualifier}</span>` : "";
     const image = icon
       ? `<img class="kpi-icon" src="assets/images/${icon}" alt="" aria-hidden="true" />`
       : "";
     return `<div class="kpi${t}${icon ? " has-icon" : ""}">${image}
             <div class="label">${label}</div>
-            <div class="value${date ? " is-date" : ""}">${value}${u}</div>${s}</div>`;
+            <div class="value${date ? " is-date" : ""}">${value}${u}${q}</div>${s}</div>`;
   }
 
   function renderKpis(target, items) {
@@ -763,8 +764,10 @@
         sub: settling || slipText, tone: statusTone },
       { label: "Ahead / behind plan",
         value: pl.variance_to_date_mt === null || pl.variance_to_date_mt === undefined
-          ? "—" : num(pl.variance_to_date_mt, 1),
+          ? "—" : num(Math.abs(pl.variance_to_date_mt), 1),
         unit: "MT",
+        qualifier: pl.variance_to_date_mt === null || pl.variance_to_date_mt === undefined
+          ? "" : pl.variance_to_date_mt >= 0 ? "Ahead" : "Behind",
         sub: pl.cum_planned_to_date_mt !== null && pl.cum_planned_to_date_mt !== undefined
           ? `Plan says ${num(pl.cum_planned_to_date_mt, 0)} MT by today`
           : "Plan has not started",
