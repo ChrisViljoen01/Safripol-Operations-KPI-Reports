@@ -6,9 +6,9 @@
     "client": "Safripol",
     "operator": "Connect Logistics",
     "product": "PTA",
-    "generated_at_utc": "2026-09-12T15:30:13+00:00",
-    "generated_at_sast": "2026-09-12T17:30:13+02:00",
-    "generated_display": "12 Sep 2026 17:30 SAST",
+    "generated_at_utc": "2026-09-12T15:45:15+00:00",
+    "generated_at_sast": "2026-09-12T17:45:15+02:00",
+    "generated_display": "12 Sep 2026 17:45 SAST",
     "sources": [
       {
         "key": "stock",
@@ -35,7 +35,7 @@
         "label": "SAF Ops Tracking - TAC IMOLA",
         "ok": true,
         "origin": "local",
-        "last_modified": "2026-09-12T14:26+02:00",
+        "last_modified": "2026-09-12T17:37+02:00",
         "size_kb": 944,
         "required": false,
         "error": ""
@@ -1348,7 +1348,7 @@
         "net_mt": 88.08,
         "cum_mt": 388.64,
         "avg_decant_hours": 0.83,
-        "avg_interval_hours": 0.91,
+        "avg_interval_hours": 0.84,
         "delay_minutes": 7.0
       }
     ],
@@ -1357,7 +1357,7 @@
         "shift": "Dayshift",
         "decants": 8,
         "avg_decant_hours": 1.03,
-        "avg_interval_hours": 1.1,
+        "avg_interval_hours": 1.02,
         "net_mt": 158.74,
         "delay_minutes": 67.0
       },
@@ -1375,7 +1375,7 @@
         "team": "A",
         "decants": 7,
         "avg_decant_hours": 1.02,
-        "avg_interval_hours": 1.1,
+        "avg_interval_hours": 1.02,
         "net_mt": 140.98,
         "delay_minutes": 61.0
       },
@@ -1433,7 +1433,7 @@
         "iso": "ISO-05",
         "decants": 4,
         "avg_decant_hours": 1.15,
-        "avg_interval_hours": 0.91,
+        "avg_interval_hours": 0.82,
         "net_mt": 70.64,
         "delay_minutes": 50.0
       }
@@ -1612,7 +1612,7 @@
         "attainment_pct": 0.8,
         "actual_mt": 88.08,
         "avg_decant_hours": 0.83,
-        "avg_interval_hours": 0.91,
+        "avg_interval_hours": 0.84,
         "delay_minutes": 7.0,
         "productive_hours": 3.32,
         "isotainers_per_head": 0.333,
