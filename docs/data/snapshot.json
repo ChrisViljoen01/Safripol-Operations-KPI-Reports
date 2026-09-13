@@ -6,9 +6,9 @@
     "client": "Safripol",
     "operator": "Connect Logistics",
     "product": "PTA",
-    "generated_at_utc": "2026-09-13T07:30:55+00:00",
-    "generated_at_sast": "2026-09-13T09:30:55+02:00",
-    "generated_display": "13 Sep 2026 09:30 SAST",
+    "generated_at_utc": "2026-09-13T07:45:39+00:00",
+    "generated_at_sast": "2026-09-13T09:45:39+02:00",
+    "generated_display": "13 Sep 2026 09:45 SAST",
     "sources": [
       {
         "key": "stock",
@@ -35,7 +35,7 @@
         "label": "SAF Ops Tracking - TAC IMOLA",
         "ok": true,
         "origin": "local",
-        "last_modified": "2026-09-13T09:18+02:00",
+        "last_modified": "2026-09-13T09:22+02:00",
         "size_kb": 951,
         "required": false,
         "error": ""
@@ -1708,7 +1708,7 @@
         "date": "2026-09-13",
         "shift": "Dayshift",
         "team": "C",
-        "heads": 12.0,
+        "heads": 11.0,
         "planned_isotainers": 5.0,
         "actual_isotainers": 2,
         "variance_isotainers": -3.0,
@@ -1718,7 +1718,7 @@
         "avg_interval_hours": 0.4,
         "delay_minutes": 0.0,
         "productive_hours": 1.55,
-        "isotainers_per_head": 0.167,
+        "isotainers_per_head": 0.182,
         "notes": "Normal loading"
       },
       {
@@ -1830,8 +1830,8 @@
       "avg_attainment_pct": 1.08,
       "shifts_on_target": 3,
       "avg_isotainers_per_shift": 4.57,
-      "avg_heads_per_shift": 13.86,
-      "avg_isotainers_per_head": 0.336,
+      "avg_heads_per_shift": 13.71,
+      "avg_isotainers_per_head": 0.338,
       "best_shift": {
         "date": "2026-09-11",
         "shift": "Nightshift",
