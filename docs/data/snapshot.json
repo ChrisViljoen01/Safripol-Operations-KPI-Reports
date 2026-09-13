@@ -6,9 +6,9 @@
     "client": "Safripol",
     "operator": "Connect Logistics",
     "product": "PTA",
-    "generated_at_utc": "2026-09-13T04:30:58+00:00",
-    "generated_at_sast": "2026-09-13T06:30:58+02:00",
-    "generated_display": "13 Sep 2026 06:30 SAST",
+    "generated_at_utc": "2026-09-13T04:46:03+00:00",
+    "generated_at_sast": "2026-09-13T06:46:03+02:00",
+    "generated_display": "13 Sep 2026 06:46 SAST",
     "sources": [
       {
         "key": "stock",
@@ -35,7 +35,7 @@
         "label": "SAF Ops Tracking - TAC IMOLA",
         "ok": true,
         "origin": "local",
-        "last_modified": "2026-09-13T05:37+02:00",
+        "last_modified": "2026-09-13T06:35+02:00",
         "size_kb": 950,
         "required": false,
         "error": ""
@@ -1409,7 +1409,7 @@
     "clean_pct": 0.9667,
     "time_lost_hours": 0.12,
     "delay_hours_logged": 3.83,
-    "total_net_mt": 547.48,
+    "total_net_mt": 565.06,
     "decants_per_day": 10.0,
     "by_day": [
       {
@@ -1433,8 +1433,8 @@
       {
         "date": "2026-09-12",
         "decants": 13,
-        "net_mt": 246.92,
-        "cum_mt": 547.48,
+        "net_mt": 264.5,
+        "cum_mt": 565.06,
         "avg_decant_hours": 0.89,
         "avg_interval_hours": 0.68,
         "delay_minutes": 42.0
@@ -1454,7 +1454,7 @@
         "decants": 19,
         "avg_decant_hours": 0.99,
         "avg_interval_hours": 0.5,
-        "net_mt": 335.86,
+        "net_mt": 353.44,
         "delay_minutes": 163.0
       }
     ],
@@ -1472,7 +1472,7 @@
         "decants": 16,
         "avg_decant_hours": 1.0,
         "avg_interval_hours": 0.46,
-        "net_mt": 282.78,
+        "net_mt": 300.36,
         "delay_minutes": 141.0
       },
       {
@@ -1522,7 +1522,7 @@
         "decants": 6,
         "avg_decant_hours": 0.93,
         "avg_interval_hours": 0.65,
-        "net_mt": 105.92,
+        "net_mt": 123.5,
         "delay_minutes": 50.0
       }
     ],
@@ -1704,7 +1704,7 @@
         "actual_isotainers": 6,
         "variance_isotainers": null,
         "attainment_pct": null,
-        "actual_mt": 105.96,
+        "actual_mt": 123.54,
         "avg_decant_hours": 0.96,
         "avg_interval_hours": 0.55,
         "delay_minutes": 35.0,
@@ -1894,8 +1894,8 @@
     "allowed_decant_hours": 1.75,
     "allowed_interval_hours": 1.0,
     "time_saved_hours": 23.08,
-    "avg_excess_kg": 84.52,
-    "avg_carry_over_kg": 70.32,
+    "avg_excess_kg": 83.75,
+    "avg_carry_over_kg": 72.5,
     "total_delay_hours": 3.83
   },
   "plan": {
