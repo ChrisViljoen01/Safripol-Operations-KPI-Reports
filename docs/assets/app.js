@@ -857,7 +857,10 @@
           pointRadius: 0, tension: .2, fill: false, spanGaps: false },
         { label: "Actual cumulative MT", data: series((r) => r.cum_actual_mt),
           borderColor: css("--accent"), borderWidth: 3,
-          backgroundColor: (c) => fadeFill(c, "#0b1aa3"), fill: true,
+          // A chart-height gradient fades to near-invisible here: the y-axis is
+          // scaled to the full 20,400 MT target, so early actuals sit deep in
+          // its transparent tail. A flat fill stays visible at any value.
+          backgroundColor: "rgba(11, 26, 163, 0.16)", fill: true,
           spanGaps: true, tension: .3,
           // Mark where actuals stop so the handover to the forecast is obvious.
           pointRadius: (c) => (c.dataIndex === lastIdx ? 4 : 0),
