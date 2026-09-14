@@ -6,16 +6,16 @@
     "client": "Safripol",
     "operator": "Connect Logistics",
     "product": "PTA",
-    "generated_at_utc": "2026-09-13T22:02:57+00:00",
-    "generated_at_sast": "2026-09-14T00:02:57+02:00",
-    "generated_display": "14 Sep 2026 00:02 SAST",
+    "generated_at_utc": "2026-09-14T00:10:22+00:00",
+    "generated_at_sast": "2026-09-14T02:10:22+02:00",
+    "generated_display": "14 Sep 2026 02:10 SAST",
     "sources": [
       {
         "key": "stock",
         "label": "Safripol Stock Report - TAC IMOLA",
         "ok": true,
         "origin": "graph",
-        "last_modified": "2026-09-13T22:52+02:00",
+        "last_modified": "2026-09-14T01:49+02:00",
         "size_kb": 253,
         "required": true,
         "error": ""
@@ -35,7 +35,7 @@
         "label": "SAF Ops Tracking - TAC IMOLA",
         "ok": true,
         "origin": "graph",
-        "last_modified": "2026-09-13T22:02+02:00",
+        "last_modified": "2026-09-14T01:11+02:00",
         "size_kb": 951,
         "required": false,
         "error": ""
@@ -65,29 +65,29 @@
   },
   "headline": {
     "target_total_mt": 20400.0,
-    "delivered_mt": 907.2,
-    "outstanding_mt": 19492.8,
-    "completion_pct": 0.0445,
-    "pta_balance_mt": 19708.8,
+    "delivered_mt": 950.4,
+    "outstanding_mt": 19449.6,
+    "completion_pct": 0.0466,
+    "pta_balance_mt": 19665.6,
     "received_admin_mt": 20616.0,
     "received_physical_mt": 20616.0,
-    "loads_total": 42,
-    "avg_daily_offtake_mt": 302.4,
-    "avg_loads_per_day": 14.0,
-    "avg_mt_offloaded_per_tank": 21.6,
-    "avg_remained_in_tank_kg": 40.0,
-    "required_rate_mt_per_day": 232.06,
-    "projected_completion": "2026-11-17",
-    "projected_remaining_days": 65,
-    "avg_decant_hours": 0.97,
-    "avg_interval_hours": 1.15,
+    "loads_total": 46,
+    "avg_daily_offtake_mt": 316.8,
+    "avg_loads_per_day": 15.33,
+    "avg_mt_offloaded_per_tank": 20.66,
+    "avg_remained_in_tank_kg": 13.33,
+    "required_rate_mt_per_day": 234.33,
+    "projected_completion": "2026-11-15",
+    "projected_remaining_days": 62,
+    "avg_decant_hours": 0.96,
+    "avg_interval_hours": 1.1,
     "time_lost_hours": 3.83,
-    "decants_per_day": 9.75,
-    "avg_attainment_pct": 1.1333,
+    "decants_per_day": 10.25,
+    "avg_attainment_pct": 1.2,
     "avg_turnaround_hours": 10.31,
-    "open_exceptions": 6,
+    "open_exceptions": 5,
     "planned_completion": "2026-12-05",
-    "days_vs_plan": -18,
+    "days_vs_plan": -20,
     "plan_status": "ahead"
   },
   "vessel_discharge": {
@@ -232,23 +232,23 @@
     ]
   },
   "dispatch": {
-    "delivered_mt": 907.2,
-    "outstanding_mt": 19492.8,
-    "completion_pct": 0.0445,
+    "delivered_mt": 950.4,
+    "outstanding_mt": 19449.6,
+    "completion_pct": 0.0466,
     "target_total_mt": 20400.0,
-    "loads_total": 42,
+    "loads_total": 46,
     "open_loads": 0,
-    "avg_loads_per_day": 14.0,
+    "avg_loads_per_day": 15.33,
     "max_loads_day": 19,
-    "min_loads_day": 10,
-    "avg_daily_offtake_mt": 302.4,
-    "avg_mt_per_load": 21.6,
-    "avg_mt_offloaded_per_tank": 21.6,
-    "pta_balance_mt": 19708.8,
-    "projected_completion": "2026-11-17",
-    "projected_remaining_days": 65,
-    "required_rate_mt_per_day": 232.06,
-    "avg_remained_in_tank_kg": 40.0,
+    "min_loads_day": 13,
+    "avg_daily_offtake_mt": 316.8,
+    "avg_mt_per_load": 20.66,
+    "avg_mt_offloaded_per_tank": 20.66,
+    "pta_balance_mt": 19665.6,
+    "projected_completion": "2026-11-15",
+    "projected_remaining_days": 62,
+    "required_rate_mt_per_day": 234.33,
+    "avg_remained_in_tank_kg": 13.33,
     "first_delivery": "2026-09-11",
     "last_delivery": "2026-09-13",
     "by_date": [
@@ -268,10 +268,10 @@
       },
       {
         "date": "2026-09-13",
-        "loads": 10,
-        "mt": 216.0,
-        "cum_mt": 907.2,
-        "cum_loads": 42
+        "loads": 14,
+        "mt": 259.2,
+        "cum_mt": 950.4,
+        "cum_loads": 46
       }
     ],
     "by_iso": [
@@ -295,15 +295,15 @@
       },
       {
         "iso": "ISO-05",
-        "loads": 8,
-        "mt": 172.8,
-        "actual_offloaded_mt": 172.8
+        "loads": 9,
+        "mt": 194.4,
+        "actual_offloaded_mt": 194.4
       },
       {
         "iso": "ISO-02",
-        "loads": 7,
-        "mt": 151.2,
-        "actual_offloaded_mt": 151.2
+        "loads": 8,
+        "mt": 172.8,
+        "actual_offloaded_mt": 172.8
       }
     ]
   },
@@ -1424,15 +1424,15 @@
   },
   "decant": {
     "has_data": true,
-    "total_decants": 39,
-    "avg_decant_hours": 0.97,
-    "avg_interval_hours": 1.15,
+    "total_decants": 41,
+    "avg_decant_hours": 0.96,
+    "avg_interval_hours": 1.1,
     "avg_productive_hours": 0.87,
-    "clean_pct": 0.9744,
+    "clean_pct": 0.9756,
     "time_lost_hours": 0.12,
     "delay_hours_logged": 3.83,
-    "total_net_mt": 724.32,
-    "decants_per_day": 9.75,
+    "total_net_mt": 759.64,
+    "decants_per_day": 10.25,
     "by_day": [
       {
         "date": "2026-09-10",
@@ -1463,11 +1463,11 @@
       },
       {
         "date": "2026-09-13",
-        "decants": 9,
-        "net_mt": 159.26,
-        "cum_mt": 724.32,
-        "avg_decant_hours": 0.92,
-        "avg_interval_hours": 0.77,
+        "decants": 11,
+        "net_mt": 194.58,
+        "cum_mt": 759.64,
+        "avg_decant_hours": 0.89,
+        "avg_interval_hours": 0.7,
         "delay_minutes": 0.0
       }
     ],
@@ -1482,20 +1482,20 @@
       },
       {
         "shift": "Nightshift",
-        "decants": 21,
-        "avg_decant_hours": 0.98,
-        "avg_interval_hours": 1.47,
-        "net_mt": 371.28,
+        "decants": 23,
+        "avg_decant_hours": 0.96,
+        "avg_interval_hours": 1.32,
+        "net_mt": 406.6,
         "delay_minutes": 163.0
       }
     ],
     "by_team": [
       {
         "team": "A",
-        "decants": 12,
-        "avg_decant_hours": 0.93,
-        "avg_interval_hours": 0.95,
-        "net_mt": 229.28,
+        "decants": 14,
+        "avg_decant_hours": 0.91,
+        "avg_interval_hours": 0.86,
+        "net_mt": 264.6,
         "delay_minutes": 61.0
       },
       {
@@ -1528,7 +1528,7 @@
         "iso": "ISO-02",
         "decants": 7,
         "avg_decant_hours": 0.92,
-        "avg_interval_hours": 2.78,
+        "avg_interval_hours": 2.42,
         "net_mt": 123.66,
         "delay_minutes": 28.0
       },
@@ -1542,18 +1542,18 @@
       },
       {
         "iso": "ISO-04",
-        "decants": 8,
-        "avg_decant_hours": 1.01,
-        "avg_interval_hours": 0.46,
-        "net_mt": 141.06,
+        "decants": 9,
+        "avg_decant_hours": 0.98,
+        "avg_interval_hours": 0.48,
+        "net_mt": 158.76,
         "delay_minutes": 99.0
       },
       {
         "iso": "ISO-05",
-        "decants": 7,
-        "avg_decant_hours": 0.96,
-        "avg_interval_hours": 0.66,
-        "net_mt": 141.12,
+        "decants": 8,
+        "avg_decant_hours": 0.93,
+        "avg_interval_hours": 0.69,
+        "net_mt": 158.74,
         "delay_minutes": 50.0
       }
     ],
@@ -1711,8 +1711,8 @@
       },
       {
         "hour": 21,
-        "decants": 2,
-        "avg_decant_hours": 0.88
+        "decants": 3,
+        "avg_decant_hours": 0.85
       },
       {
         "hour": 22,
@@ -1721,8 +1721,8 @@
       },
       {
         "hour": 23,
-        "decants": 1,
-        "avg_decant_hours": 0.93
+        "decants": 2,
+        "avg_decant_hours": 0.82
       }
     ],
     "shifts": [
@@ -1732,15 +1732,15 @@
         "team": "A",
         "heads": 12.0,
         "planned_isotainers": 5.0,
-        "actual_isotainers": 2,
-        "variance_isotainers": -3.0,
-        "attainment_pct": 0.4,
-        "actual_mt": 35.42,
-        "avg_decant_hours": 0.82,
-        "avg_interval_hours": 1.28,
+        "actual_isotainers": 4,
+        "variance_isotainers": -1.0,
+        "attainment_pct": 0.8,
+        "actual_mt": 70.74,
+        "avg_decant_hours": 0.79,
+        "avg_interval_hours": 0.74,
         "delay_minutes": 0.0,
-        "productive_hours": 1.65,
-        "isotainers_per_head": 0.167,
+        "productive_hours": 3.15,
+        "isotainers_per_head": 0.333,
         "notes": "Normal loading"
       },
       {
@@ -1866,11 +1866,11 @@
     "shift_summary": {
       "shifts_recorded": 8,
       "shifts_planned": 6,
-      "avg_attainment_pct": 1.1333,
+      "avg_attainment_pct": 1.2,
       "shifts_on_target": 4,
-      "avg_isotainers_per_shift": 4.88,
+      "avg_isotainers_per_shift": 5.12,
       "avg_heads_per_shift": 13.5,
-      "avg_isotainers_per_head": 0.374,
+      "avg_isotainers_per_head": 0.394,
       "best_shift": {
         "date": "2026-09-11",
         "shift": "Nightshift",
@@ -1958,9 +1958,9 @@
     },
     "allowed_decant_hours": 1.75,
     "allowed_interval_hours": 1.0,
-    "time_saved_hours": 30.56,
-    "avg_excess_kg": 91.71,
-    "avg_carry_over_kg": 72.68,
+    "time_saved_hours": 32.56,
+    "avg_excess_kg": 91.63,
+    "avg_carry_over_kg": 71.36,
     "total_delay_hours": 3.83
   },
   "plan": {
@@ -1990,8 +1990,8 @@
         "planned_isotainers": 10.0,
         "cum_planned_mt": 648.0,
         "cum_planned_isotainers": 30.0,
-        "cum_actual_mt": 907.2,
-        "variance_mt": 259.2
+        "cum_actual_mt": 950.4,
+        "variance_mt": 302.4
       },
       {
         "date": "2026-09-14",
@@ -1999,8 +1999,8 @@
         "planned_isotainers": 10.0,
         "cum_planned_mt": 864.0,
         "cum_planned_isotainers": 40.0,
-        "cum_actual_mt": null,
-        "variance_mt": null
+        "cum_actual_mt": 950.4,
+        "variance_mt": 86.4
       },
       {
         "date": "2026-09-15",
@@ -2745,13 +2745,13 @@
     "plan_end": "2026-12-05",
     "plan_total_mt": 20400.0,
     "plan_total_isotainers": 944.0,
-    "cum_planned_to_date_mt": 648.0,
-    "variance_to_date_mt": 259.2,
-    "variance_mt": 259.2,
+    "cum_planned_to_date_mt": 864.0,
+    "variance_to_date_mt": 86.4,
+    "variance_mt": 86.4,
     "days": 86,
-    "days_elapsed": 3,
-    "days_remaining": 83,
-    "today": "2026-09-13",
+    "days_elapsed": 4,
+    "days_remaining": 82,
+    "today": "2026-09-14",
     "assumptions": {
       "phases": [
         {
@@ -2920,16 +2920,16 @@
       "phase_total_mt": 7128.0
     },
     "projection": {
-      "projected_end": "2026-11-17",
-      "days_to_go": 65,
-      "rate_mt_per_day": 302.4,
+      "projected_end": "2026-11-15",
+      "days_to_go": 62,
+      "rate_mt_per_day": 316.8,
       "rate_basis": "3 active days to 13 Sep",
       "plan_end": "2026-12-05",
-      "days_vs_plan": -18,
+      "days_vs_plan": -20,
       "status": "ahead",
-      "required_rate_mt_per_day": 232.06,
+      "required_rate_mt_per_day": 234.33,
       "confidence": "medium",
-      "outstanding_mt": 19492.8
+      "outstanding_mt": 19449.6
     }
   },
   "exceptions": [
@@ -2956,14 +2956,6 @@
       "when": "2026-09-12T01:32",
       "owner": "Connect",
       "value": "50 min"
-    },
-    {
-      "severity": "high",
-      "category": "Shift below plan",
-      "detail": "2026-09-13 Nightshift team A: 2 of 5.0 isotainers.",
-      "when": "2026-09-13",
-      "owner": "Connect",
-      "value": "40%"
     },
     {
       "severity": "high",
@@ -3024,10 +3016,10 @@
     {
       "severity": "low",
       "category": "Interval over target",
-      "detail": "Average gap between decants 1.15 h against a 1.0 h target.",
+      "detail": "Average gap between decants 1.1 h against a 1.0 h target.",
       "when": null,
       "owner": "Connect",
-      "value": "+0.15 h"
+      "value": "+0.1 h"
     },
     {
       "severity": "low",
