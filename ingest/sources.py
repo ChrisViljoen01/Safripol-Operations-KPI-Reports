@@ -238,6 +238,16 @@ def parse_receipts(path: Path) -> pd.DataFrame:
         else:
             df[col] = 0.0
     df["receipt_type"] = df.get("receipt_type", pd.Series(dtype=str)).astype(str).str.strip()
+
+    # "Transfer from Leasehold" rows in the 3PL sheet record leasehold stock being
+    # physically relocated to Connect - those bags are already recognised once, in
+    # Leasehold Receipt Detail. Counting them again here double-counts tonnage and
+    # can inflate "Received at Connect" past the 20,400 MT vessel outturn. The
+    # client-facing basis must never exceed the vessel total, so these transfer
+    # rows are dropped from the receipts total (they are an internal relocation,
+    # not new stock arriving at Connect).
+    df = df[~df["receipt_type"].str.contains("transfer", case=False, na=False)].copy()
+
     df["received_mt_physical"] = df["total_received_kg"] / 1000.0
     df["received_mt_admin"] = df["total_bags"] * BAG_WEIGHT_MT
     return df.reset_index(drop=True)
