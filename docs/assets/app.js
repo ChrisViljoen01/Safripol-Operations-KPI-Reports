@@ -377,7 +377,10 @@
     // Narrow cards can't afford a side legend without crushing the ring.
     id: "responsiveLegend",
     beforeLayout(chart) {
-      if (!chart.options.plugins.responsiveLegend) return;
+      // Chart.js auto-injects an empty {} options entry for every registered
+      // plugin on every chart, even ones that never opt in - so a falsy check
+      // here would fire for ALL charts, not just the doughnuts that ask for it.
+      if (chart.options.plugins.responsiveLegend !== true) return;
       const pos = chart.width < 520 ? "bottom" : "right";
       if (chart.options.plugins.legend.position !== pos) {
         chart.options.plugins.legend.position = pos;
@@ -879,6 +882,7 @@
         data: { labels: labels.map(dLabel), datasets },
         options: baseOpts({
           plugins: {
+            legend: { position: "top", align: "end" },
             valueLabels: { display: true, datasets: [1],
                            formatter: (v) => num(v, 0) },
             tooltip: { callbacks: { title: (items) =>
