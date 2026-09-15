@@ -517,9 +517,13 @@ def decant_block(decant: pd.DataFrame, delays: pd.DataFrame,
     } for h in range(24)]
 
     # ---- shift level: planned vs actual -----------------------------------
+    def mode_or_none(values):
+        modes = values.dropna().mode()
+        return modes.iloc[0] if not modes.empty else None
+
     actual = (d.groupby("shift_key")
               .agg(shift_date=("shift_date", "first"), shift=("shift", "first"),
-                   team=("team", "first"), heads=("heads", "max"),
+                   team=("team", mode_or_none), heads=("heads", mode_or_none),
                    actual_isotainers=("decant_hours", "count"),
                    actual_mt=("net_product_mt", "sum"),
                    avg_decant=("decant_hours", "mean"),

@@ -529,14 +529,16 @@ def parse_decant_log(path: Path) -> pd.DataFrame:
         end = _shift_datetime(r.get(c_end), entered_shift_date)
         if start is None:
             continue
-        shift_date, shift = _operational_shift(start)
         # nightshift roll-over: an end before the start belongs to the next calendar day
-        if end is not None and end < start and (start - end) < timedelta(hours=20):
-            end = end + timedelta(days=1)
+        if end is not None and end < start:
+            rolled_end = end + timedelta(days=1)
+            if timedelta(0) < rolled_end - start <= timedelta(hours=24):
+                end = rolled_end
 
         decant_hours = (end - start).total_seconds() / 3600.0 if end else None
         if decant_hours is not None and (decant_hours <= 0 or decant_hours > 24):
             decant_hours = None
+        shift_date, shift = _operational_shift(end if decant_hours is not None else start)
 
         delay_mins = _num(r.get(c_delay) if c_delay else None, 0.0) or 0.0
         loaded = _num(r.get(c_loaded) if c_loaded else None)
