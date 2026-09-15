@@ -6,15 +6,15 @@
     "client": "Safripol",
     "operator": "Connect Logistics",
     "product": "PTA",
-    "generated_at_utc": "2026-09-15T12:00:23+00:00",
-    "generated_at_sast": "2026-09-15T14:00:23+02:00",
-    "generated_display": "15 Sep 2026 14:00 SAST",
+    "generated_at_utc": "2026-09-15T12:10:10+00:00",
+    "generated_at_sast": "2026-09-15T14:10:10+02:00",
+    "generated_display": "15 Sep 2026 14:10 SAST",
     "sources": [
       {
         "key": "stock",
         "label": "Safripol Stock Report - TAC IMOLA",
         "ok": true,
-        "origin": "local",
+        "origin": "graph",
         "last_modified": "2026-09-15T11:44+02:00",
         "size_kb": 262,
         "required": true,
@@ -24,8 +24,8 @@
         "key": "dwells",
         "label": "Safripol v Connect Dwells",
         "ok": true,
-        "origin": "local",
-        "last_modified": "2026-09-15T13:00+02:00",
+        "origin": "graph",
+        "last_modified": "2026-09-15T14:00+02:00",
         "size_kb": 250,
         "required": true,
         "error": ""
@@ -34,7 +34,7 @@
         "key": "tracking",
         "label": "SAF Ops Tracking - TAC IMOLA",
         "ok": true,
-        "origin": "local",
+        "origin": "graph",
         "last_modified": "2026-09-15T13:21+02:00",
         "size_kb": 782,
         "required": false,
@@ -44,7 +44,7 @@
         "key": "staff",
         "label": "Saf Staff Roles",
         "ok": true,
-        "origin": "local",
+        "origin": "graph",
         "last_modified": "2026-09-10T13:17+02:00",
         "size_kb": 19,
         "required": false,
@@ -54,7 +54,7 @@
         "key": "plan",
         "label": "PTA Drawdown Plan",
         "ok": true,
-        "origin": "local",
+        "origin": "graph",
         "last_modified": "2026-09-11T15:09+02:00",
         "size_kb": 36,
         "required": false,
@@ -446,12 +446,12 @@
       {
         "date": "2026-04-10",
         "connect": 4.3,
-        "safripol": 9.35
+        "safripol": 8.55
       },
       {
         "date": "2026-04-11",
         "connect": 4.35,
-        "safripol": 8.93
+        "safripol": 9.64
       },
       {
         "date": "2026-04-12",
@@ -835,7 +835,7 @@
       "excluded_parked_cycles": 10,
       "max_turnaround_hours": 24.0,
       "avg_connect_dwell_hours": 3.03,
-      "avg_transit_out_hours": 1.21,
+      "avg_transit_out_hours": 1.25,
       "avg_safripol_dwell_hours": 6.32,
       "avg_transit_return_hours": 1.03,
       "avg_turnaround_hours": 10.27,
@@ -927,7 +927,7 @@
           "date": "2026-04-10",
           "turnaround": 12.64,
           "connect_dwell": 4.3,
-          "transit_out": 1.24,
+          "transit_out": 3.98,
           "safripol_dwell": 9.85
         },
         {
@@ -941,7 +941,7 @@
           "date": "2026-04-12",
           "turnaround": 12.26,
           "connect_dwell": 2.87,
-          "transit_out": 1.39,
+          "transit_out": 1.17,
           "safripol_dwell": 8.42
         },
         {
@@ -3125,10 +3125,10 @@
     {
       "severity": "medium",
       "category": "Transit over target",
-      "detail": "Average Connect to Safripol transit 1.21 h against a 0.75 h target.",
+      "detail": "Average Connect to Safripol transit 1.25 h against a 0.75 h target.",
       "when": null,
       "owner": "Transporter",
-      "value": "+0.46 h"
+      "value": "+0.5 h"
     },
     {
       "severity": "low",
