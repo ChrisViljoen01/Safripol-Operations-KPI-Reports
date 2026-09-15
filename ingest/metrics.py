@@ -534,6 +534,7 @@ def decant_block(decant: pd.DataFrame, delays: pd.DataFrame,
             planned_map[p["shift_key"]] = {
                 "planned_isotainers": p.get("planned_isotainers"),
                 "planned_heads": p.get("planned_heads"),
+                "team": p.get("team"),
                 "notes": p.get("notes"),
             }
 
@@ -543,11 +544,17 @@ def decant_block(decant: pd.DataFrame, delays: pd.DataFrame,
         planned = p.get("planned_isotainers")
         planned = float(planned) if planned not in (None, "") and not pd.isna(planned) else None
         attain = _pct(r.actual_isotainers, planned) if planned else None
-        heads = r.heads if r.heads and not pd.isna(r.heads) else p.get("planned_heads")
+        heads = r.heads if r.heads and not pd.isna(r.heads) else None
         heads = float(heads) if heads not in (None, "") and not pd.isna(heads) else None
+        planned_heads = p.get("planned_heads")
+        planned_heads = (float(planned_heads)
+                         if planned_heads not in (None, "") and not pd.isna(planned_heads)
+                         else None)
+        team = r.team or p.get("team") or ""
         shifts.append({
-            "date": iso_d(r.shift_date), "shift": r.shift, "team": r.team,
-            "heads": r2(heads, 0), "planned_isotainers": r2(planned, 0),
+            "date": iso_d(r.shift_date), "shift": r.shift, "team": team,
+            "heads": r2(heads, 0), "planned_heads": r2(planned_heads, 0),
+            "planned_isotainers": r2(planned, 0),
             "actual_isotainers": int(r.actual_isotainers),
             "variance_isotainers": r2((r.actual_isotainers - planned) if planned else None, 0),
             "attainment_pct": r2(attain, 4),

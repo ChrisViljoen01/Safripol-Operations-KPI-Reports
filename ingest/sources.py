@@ -451,7 +451,7 @@ def build_turnaround(visits: pd.DataFrame) -> pd.DataFrame:
 # --------------------------------------------------------------------------- #
 def _shift_datetime(value, fallback_date):
     """Accept a full datetime, or a time-only value anchored to the shift date."""
-    if value is None or (isinstance(value, float) and pd.isna(value)):
+    if value is None or pd.isna(value):
         return None
     if isinstance(value, datetime):
         return value
@@ -470,6 +470,15 @@ def _shift_datetime(value, fallback_date):
         except Exception:
             return None
     return None
+
+
+def _operational_shift(start: datetime) -> tuple[date, str]:
+    """Return the 06:00-18:00 operational shift date and label for a timestamp."""
+    start_time = start.time()
+    if time(6) <= start_time < time(18):
+        return start.date(), "Dayshift"
+    shift_date = start.date() if start_time >= time(18) else start.date() - timedelta(days=1)
+    return shift_date, "Nightshift"
 
 
 def parse_decant_log(path: Path) -> pd.DataFrame:
@@ -510,18 +519,17 @@ def parse_decant_log(path: Path) -> pd.DataFrame:
     c_esc = col("Escalate?")
     c_comment = col("Comments")
 
-    if c_date is None or c_start is None:
+    if c_start is None:
         return pd.DataFrame()
 
     rows: list[dict] = []
     for _, r in raw.iterrows():
-        shift_date = _to_date(r.get(c_date))
-        if shift_date is None:
-            continue
-        start = _shift_datetime(r.get(c_start), shift_date)
-        end = _shift_datetime(r.get(c_end), shift_date)
+        entered_shift_date = _to_date(r.get(c_date)) if c_date else None
+        start = _shift_datetime(r.get(c_start), entered_shift_date)
+        end = _shift_datetime(r.get(c_end), entered_shift_date)
         if start is None:
             continue
+        shift_date, shift = _operational_shift(start)
         # nightshift roll-over: an end before the start belongs to the next calendar day
         if end is not None and end < start and (start - end) < timedelta(hours=20):
             end = end + timedelta(days=1)
@@ -534,11 +542,9 @@ def parse_decant_log(path: Path) -> pd.DataFrame:
         loaded = _num(r.get(c_loaded) if c_loaded else None)
         empty = _num(r.get(c_empty) if c_empty else None)
         tare = _num(r.get(c_tare) if c_tare else None)
-        shift = str(r.get(c_shift) or "").strip() if c_shift else ""
-
         rows.append({
             "shift_date": shift_date,
-            "shift": shift or "Unspecified",
+            "shift": shift,
             "team": str(r.get(c_team) or "").strip() if c_team else "",
             "heads": _num(r.get(c_heads) if c_heads else None),
             "iso": _norm_iso(r.get(c_iso)) if c_iso else None,
@@ -574,18 +580,22 @@ def parse_decant_log(path: Path) -> pd.DataFrame:
     df["shift_key"] = df["shift_date"].astype(str) + "|" + df["shift"]
     df = df.sort_values("start").reset_index(drop=True)
 
-    # Decant interval = gap between the end of the previous decant and this start,
-    # within the same shift. Computed here so it never depends on a formula cache.
+    # Decant interval = gap from the latest completed decant before this start,
+    # within the same operational shift. Overlapping decants are skipped rather
+    # than incorrectly treated as a negative or missing interval.
     df["decant_interval_hours"] = pd.NA
     for _, grp in df.groupby("shift_key", sort=False):
-        idx = grp.index.tolist()
-        for i in range(1, len(idx)):
-            prev_end = df.at[idx[i - 1], "end"]
-            this_start = df.at[idx[i], "start"]
-            if prev_end is not None and this_start is not None and this_start > prev_end:
-                gap = (this_start - prev_end).total_seconds() / 3600.0
-                if 0 <= gap <= 24:
-                    df.at[idx[i], "decant_interval_hours"] = gap
+        for idx in grp.index:
+            this_start = df.at[idx, "start"]
+            prior_ends = grp.loc[
+                (grp.index != idx) & grp["end"].notna() & (grp["end"] < this_start),
+                "end",
+            ]
+            if prior_ends.empty:
+                continue
+            gap = (this_start - prior_ends.max()).total_seconds() / 3600.0
+            if 0 <= gap <= 12:
+                df.at[idx, "decant_interval_hours"] = gap
     df["decant_interval_hours"] = pd.to_numeric(df["decant_interval_hours"], errors="coerce")
     return df
 

@@ -1091,7 +1091,10 @@
       { label: "Date", render: (r) => dLong(r.date) },
       { label: "Shift", key: "shift" },
       { label: "Team", key: "team" },
-      { label: "Heads", num: true, render: (r) => num(r.heads, 0) },
+      { label: "Actual heads", num: true,
+        render: (r) => r.heads === null ? "—" : num(r.heads, 0) },
+      { label: "Planned heads", num: true,
+        render: (r) => r.planned_heads === null ? "—" : num(r.planned_heads, 0) },
       { label: "Plan", num: true, render: (r) => num(r.planned_isotainers, 0) },
       { label: "Actual", num: true, render: (r) => num(r.actual_isotainers, 0) },
       { label: "Attainment", num: true, render: (r) => r.attainment_pct === null ? "—"
