@@ -12,6 +12,7 @@ Register it with tools/install_task.ps1.
 from __future__ import annotations
 
 import os
+import json
 import subprocess
 import sys
 from datetime import datetime, timezone
@@ -64,9 +65,40 @@ def sync_clean_main() -> None:
     run(["git", "reset", "--hard", "origin/main"])
 
 
+def regressed_sources(previous: bytes | None, current_path: Path) -> list[str]:
+    """Return sources whose new snapshot timestamp is older than the published one."""
+    if not previous or not current_path.exists():
+        return []
+    try:
+        old = json.loads(previous)
+        new = json.loads(current_path.read_text(encoding="utf-8"))
+        old_sources = {
+            row["key"]: row for row in old.get("meta", {}).get("sources", [])
+            if row.get("key") and row.get("last_modified")
+        }
+        regressed = []
+        for row in new.get("meta", {}).get("sources", []):
+            key = row.get("key")
+            old_row = old_sources.get(key)
+            if not old_row or not row.get("ok") or not row.get("last_modified"):
+                continue
+            old_time = datetime.fromisoformat(old_row["last_modified"])
+            new_time = datetime.fromisoformat(row["last_modified"])
+            if new_time < old_time:
+                regressed.append(
+                    f"{key} ({row['last_modified']} < {old_row['last_modified']})"
+                )
+        return regressed
+    except (OSError, ValueError, TypeError, KeyError):
+        # Do not block a refresh merely because an old snapshot predates source metadata.
+        return []
+
+
 def main() -> int:
     env = os.environ.copy()
-    env.setdefault("SAFRIPOL_AUTH_MODE", "delegated")
+    # Prefer app-only Graph auth for unattended runs. It works without a signed-in
+    # desktop session and avoids falling back to a stale OneDrive copy.
+    env.setdefault("SAFRIPOL_AUTH_MODE", "app")
     env["PYTHONPATH"] = str(REPO)
     env["PYTHONUTF8"] = "1"
 
@@ -103,6 +135,15 @@ def main() -> int:
         if backup:
             snapshot.write_bytes(backup)
         return 2
+
+    regressions = regressed_sources(backup, snapshot)
+    if regressions:
+        log("stale source regression - not publishing: " + "; ".join(regressions))
+        if backup:
+            snapshot.write_bytes(backup)
+        version = DATA / "version.json"
+        run(["git", "restore", "--source=HEAD", "--", str(version.relative_to(REPO))])
+        return 3
 
     # Only commit the data files. Code changes are pushed deliberately, by hand.
     run(["git", "add", "docs/data/snapshot.json", "docs/data/version.json"])
