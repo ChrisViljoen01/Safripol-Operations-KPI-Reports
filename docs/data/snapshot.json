@@ -6,9 +6,9 @@
     "client": "Safripol",
     "operator": "Connect Logistics",
     "product": "PTA",
-    "generated_at_utc": "2026-09-17T14:00:57+00:00",
-    "generated_at_sast": "2026-09-17T16:00:57+02:00",
-    "generated_display": "17 Sep 2026 16:00 SAST",
+    "generated_at_utc": "2026-09-17T14:16:08+00:00",
+    "generated_at_sast": "2026-09-17T16:16:08+02:00",
+    "generated_display": "17 Sep 2026 16:16 SAST",
     "sources": [
       {
         "key": "stock",
@@ -25,8 +25,8 @@
         "label": "Safripol v Connect Dwells",
         "ok": true,
         "origin": "graph",
-        "last_modified": "2026-09-17T15:13+02:00",
-        "size_kb": 256,
+        "last_modified": "2026-09-17T16:01+02:00",
+        "size_kb": 257,
         "required": true,
         "error": ""
       },
@@ -35,7 +35,7 @@
         "label": "SAF Ops Tracking - TAC IMOLA",
         "ok": true,
         "origin": "graph",
-        "last_modified": "2026-09-17T15:41+02:00",
+        "last_modified": "2026-09-17T16:12+02:00",
         "size_kb": 926,
         "required": false,
         "error": ""
@@ -84,7 +84,7 @@
     "time_lost_hours": 14.98,
     "decants_per_day": 11.62,
     "avg_attainment_pct": 1.3538,
-    "avg_turnaround_hours": 10.28,
+    "avg_turnaround_hours": 10.29,
     "open_exceptions": 5,
     "planned_completion": "2026-12-05",
     "days_vs_plan": -14,
@@ -331,36 +331,36 @@
     "by_site": [
       {
         "site": "Connect Logistics",
-        "visits": 922,
+        "visits": 921,
         "avg_hours": 3.04,
         "min_hours": 0.0,
         "max_hours": 22.22,
         "p90_hours": 4.72,
         "p95_hours": 5.84,
-        "total_hours": 2801.04,
+        "total_hours": 2796.86,
         "target_hours": 2.75,
         "vs_target_hours": 0.29,
-        "breaches": 449,
-        "breach_pct": 0.487,
-        "overstays": 453,
-        "overstay_pct": 0.4913,
+        "breaches": 448,
+        "breach_pct": 0.4864,
+        "overstays": 452,
+        "overstay_pct": 0.4908,
         "status": "Over Target"
       },
       {
         "site": "Safripol",
-        "visits": 886,
-        "avg_hours": 6.24,
+        "visits": 887,
+        "avg_hours": 6.23,
         "min_hours": 0.06,
         "max_hours": 21.43,
-        "p90_hours": 9.85,
+        "p90_hours": 9.84,
         "p95_hours": 11.29,
-        "total_hours": 5526.98,
+        "total_hours": 5527.64,
         "target_hours": 2.75,
-        "vs_target_hours": 3.49,
+        "vs_target_hours": 3.48,
         "breaches": 850,
-        "breach_pct": 0.9594,
+        "breach_pct": 0.9583,
         "overstays": 850,
-        "overstay_pct": 0.9594,
+        "overstay_pct": 0.9583,
         "status": "Over Target"
       }
     ],
@@ -368,8 +368,8 @@
       {
         "iso": "ISO-01",
         "connect_avg_hours": 2.91,
-        "safripol_avg_hours": 6.23,
-        "visits": 395
+        "safripol_avg_hours": 6.2,
+        "visits": 396
       },
       {
         "iso": "ISO-02",
@@ -391,9 +391,9 @@
       },
       {
         "iso": "ISO-05",
-        "connect_avg_hours": 3.02,
+        "connect_avg_hours": 3.01,
         "safripol_avg_hours": 6.18,
-        "visits": 339
+        "visits": 338
       }
     ],
     "trend": [
@@ -624,7 +624,7 @@
       },
       {
         "date": "2026-05-13",
-        "connect": 2.9,
+        "connect": 2.82,
         "safripol": 7.25
       },
       {
@@ -850,19 +850,19 @@
       {
         "date": "2026-09-17",
         "connect": 2.29,
-        "safripol": 3.57
+        "safripol": 3.21
       }
     ],
     "turnaround": {
-      "cycles": 900,
-      "completed_cycles": 878,
+      "cycles": 899,
+      "completed_cycles": 877,
       "excluded_parked_cycles": 10,
       "max_turnaround_hours": 24.0,
       "avg_connect_dwell_hours": 3.04,
-      "avg_transit_out_hours": 1.29,
-      "avg_safripol_dwell_hours": 6.3,
+      "avg_transit_out_hours": 1.28,
+      "avg_safripol_dwell_hours": 6.31,
       "avg_transit_return_hours": 1.06,
-      "avg_turnaround_hours": 10.28,
+      "avg_turnaround_hours": 10.29,
       "targets": {
         "connect_dwell": 2.75,
         "transit": 0.75,
@@ -1180,10 +1180,10 @@
         },
         {
           "date": "2026-05-13",
-          "turnaround": 12.3,
-          "connect_dwell": 2.9,
-          "transit_out": 4.58,
-          "safripol_dwell": 5.81
+          "turnaround": 12.76,
+          "connect_dwell": 2.82,
+          "transit_out": 3.8,
+          "safripol_dwell": 5.91
         },
         {
           "date": "2026-05-14",
@@ -3233,7 +3233,7 @@
     {
       "severity": "medium",
       "category": "Dwell breach rate",
-      "detail": "Connect Logistics breached its dwell target on 449 of 922 visits.",
+      "detail": "Connect Logistics breached its dwell target on 448 of 921 visits.",
       "when": null,
       "owner": "Connect Logistics",
       "value": "49%"
@@ -3241,7 +3241,7 @@
     {
       "severity": "medium",
       "category": "Dwell breach rate",
-      "detail": "Safripol breached its dwell target on 850 of 886 visits.",
+      "detail": "Safripol breached its dwell target on 850 of 887 visits.",
       "when": null,
       "owner": "Safripol",
       "value": "96%"
@@ -3249,7 +3249,7 @@
     {
       "severity": "medium",
       "category": "Dwell over target",
-      "detail": "Connect Logistics average dwell 3.04 h against a 2.75 h target across 922 visits.",
+      "detail": "Connect Logistics average dwell 3.04 h against a 2.75 h target across 921 visits.",
       "when": null,
       "owner": "Connect",
       "value": "+0.29 h"
@@ -3257,18 +3257,18 @@
     {
       "severity": "medium",
       "category": "Dwell over target",
-      "detail": "Safripol average dwell 6.24 h against a 2.75 h target across 886 visits.",
+      "detail": "Safripol average dwell 6.23 h against a 2.75 h target across 887 visits.",
       "when": null,
       "owner": "Safripol",
-      "value": "+3.49 h"
+      "value": "+3.48 h"
     },
     {
       "severity": "medium",
       "category": "Transit over target",
-      "detail": "Average Connect to Safripol transit 1.29 h against a 0.75 h target.",
+      "detail": "Average Connect to Safripol transit 1.28 h against a 0.75 h target.",
       "when": null,
       "owner": "Transporter",
-      "value": "+0.54 h"
+      "value": "+0.53 h"
     },
     {
       "severity": "low",
