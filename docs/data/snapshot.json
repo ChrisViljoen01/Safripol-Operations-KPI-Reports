@@ -6,9 +6,9 @@
     "client": "Safripol",
     "operator": "Connect Logistics",
     "product": "PTA",
-    "generated_at_utc": "2026-09-19T18:30:57+00:00",
-    "generated_at_sast": "2026-09-19T20:30:57+02:00",
-    "generated_display": "19 Sep 2026 20:30 SAST",
+    "generated_at_utc": "2026-09-19T18:45:53+00:00",
+    "generated_at_sast": "2026-09-19T20:45:53+02:00",
+    "generated_display": "19 Sep 2026 20:45 SAST",
     "sources": [
       {
         "key": "stock",
@@ -35,7 +35,7 @@
         "label": "SAF Ops Tracking - TAC IMOLA",
         "ok": true,
         "origin": "graph",
-        "last_modified": "2026-09-19T19:43+02:00",
+        "last_modified": "2026-09-19T20:41+02:00",
         "size_kb": 1063,
         "required": false,
         "error": ""
@@ -83,9 +83,9 @@
     "avg_interval_hours": 0.63,
     "time_lost_hours": 14.98,
     "decants_per_day": 12.4,
-    "avg_attainment_pct": 1.3882,
+    "avg_attainment_pct": 1.3222,
     "avg_turnaround_hours": 10.28,
-    "open_exceptions": 5,
+    "open_exceptions": 6,
     "planned_completion": "2026-12-05",
     "days_vs_plan": -18,
     "plan_status": "ahead"
@@ -1909,11 +1909,11 @@
         "shift": "Nightshift",
         "team": "A",
         "heads": 11.0,
-        "planned_heads": null,
-        "planned_isotainers": null,
+        "planned_heads": 11.0,
+        "planned_isotainers": 5.0,
         "actual_isotainers": 1,
-        "variance_isotainers": null,
-        "attainment_pct": null,
+        "variance_isotainers": -4.0,
+        "attainment_pct": 0.2,
         "actual_mt": 17.62,
         "avg_decant_hours": 1.28,
         "avg_interval_hours": 0.62,
@@ -2267,8 +2267,8 @@
     ],
     "shift_summary": {
       "shifts_recorded": 20,
-      "shifts_planned": 17,
-      "avg_attainment_pct": 1.3882,
+      "shifts_planned": 18,
+      "avg_attainment_pct": 1.3222,
       "shifts_on_target": 15,
       "avg_isotainers_per_shift": 6.2,
       "avg_heads_per_shift": 13.65,
@@ -3359,6 +3359,14 @@
       "when": "2026-09-12T01:32",
       "owner": "Connect",
       "value": "20 min"
+    },
+    {
+      "severity": "high",
+      "category": "Shift below plan",
+      "detail": "2026-09-19 Nightshift team A: 1 of 5.0 isotainers.",
+      "when": "2026-09-19",
+      "owner": "Connect",
+      "value": "20%"
     },
     {
       "severity": "high",
