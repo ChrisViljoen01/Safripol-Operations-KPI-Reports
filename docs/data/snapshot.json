@@ -6,9 +6,9 @@
     "client": "Safripol",
     "operator": "Connect Logistics",
     "product": "PTA",
-    "generated_at_utc": "2026-09-20T06:00:56+00:00",
-    "generated_at_sast": "2026-09-20T08:00:56+02:00",
-    "generated_display": "20 Sep 2026 08:00 SAST",
+    "generated_at_utc": "2026-09-20T06:15:55+00:00",
+    "generated_at_sast": "2026-09-20T08:15:55+02:00",
+    "generated_display": "20 Sep 2026 08:15 SAST",
     "sources": [
       {
         "key": "stock",
@@ -25,8 +25,8 @@
         "label": "Safripol v Connect Dwells",
         "ok": true,
         "origin": "graph",
-        "last_modified": "2026-09-20T05:00+02:00",
-        "size_kb": 261,
+        "last_modified": "2026-09-20T08:01+02:00",
+        "size_kb": 262,
         "required": true,
         "error": ""
       },
@@ -84,7 +84,7 @@
     "time_lost_hours": 14.98,
     "decants_per_day": 12.0,
     "avg_attainment_pct": 1.3368,
-    "avg_turnaround_hours": 10.27,
+    "avg_turnaround_hours": 10.26,
     "open_exceptions": 6,
     "planned_completion": "2026-12-05",
     "days_vs_plan": -12,
@@ -352,19 +352,19 @@
     "by_site": [
       {
         "site": "Connect Logistics",
-        "visits": 938,
+        "visits": 939,
         "avg_hours": 3.05,
         "min_hours": 0.0,
         "max_hours": 22.22,
         "p90_hours": 4.75,
         "p95_hours": 5.9,
-        "total_hours": 2858.79,
+        "total_hours": 2862.66,
         "target_hours": 2.75,
         "vs_target_hours": 0.3,
-        "breaches": 459,
-        "breach_pct": 0.4893,
-        "overstays": 463,
-        "overstay_pct": 0.4936,
+        "breaches": 460,
+        "breach_pct": 0.4899,
+        "overstays": 464,
+        "overstay_pct": 0.4941,
         "status": "Over Target"
       },
       {
@@ -412,9 +412,9 @@
       },
       {
         "iso": "ISO-05",
-        "connect_avg_hours": 3.01,
+        "connect_avg_hours": 3.02,
         "safripol_avg_hours": 6.1,
-        "visits": 354
+        "visits": 355
       }
     ],
     "trend": [
@@ -885,20 +885,20 @@
       },
       {
         "date": "2026-09-20",
-        "connect": 2.65,
+        "connect": 3.26,
         "safripol": 3.17
       }
     ],
     "turnaround": {
       "cycles": 915,
-      "completed_cycles": 895,
+      "completed_cycles": 896,
       "excluded_parked_cycles": 9,
       "max_turnaround_hours": 24.0,
       "avg_connect_dwell_hours": 3.05,
       "avg_transit_out_hours": 1.28,
       "avg_safripol_dwell_hours": 6.26,
       "avg_transit_return_hours": 1.03,
-      "avg_turnaround_hours": 10.27,
+      "avg_turnaround_hours": 10.26,
       "targets": {
         "connect_dwell": 2.75,
         "transit": 0.75,
@@ -1531,14 +1531,14 @@
         },
         {
           "date": "2026-09-19",
-          "turnaround": 8.95,
+          "turnaround": 8.31,
           "connect_dwell": 3.09,
           "transit_out": 0.67,
           "safripol_dwell": 4.05
         }
       ]
     },
-    "total_visits": 1841
+    "total_visits": 1842
   },
   "decant": {
     "has_data": true,
@@ -3426,7 +3426,7 @@
     {
       "severity": "medium",
       "category": "Dwell breach rate",
-      "detail": "Connect Logistics breached its dwell target on 459 of 938 visits.",
+      "detail": "Connect Logistics breached its dwell target on 460 of 939 visits.",
       "when": null,
       "owner": "Connect Logistics",
       "value": "49%"
@@ -3442,7 +3442,7 @@
     {
       "severity": "medium",
       "category": "Dwell over target",
-      "detail": "Connect Logistics average dwell 3.05 h against a 2.75 h target across 938 visits.",
+      "detail": "Connect Logistics average dwell 3.05 h against a 2.75 h target across 939 visits.",
       "when": null,
       "owner": "Connect",
       "value": "+0.3 h"
