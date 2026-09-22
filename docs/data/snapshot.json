@@ -6,16 +6,16 @@
     "client": "Safripol",
     "operator": "Connect Logistics",
     "product": "PTA",
-    "generated_at_utc": "2026-09-22T07:45:53+00:00",
-    "generated_at_sast": "2026-09-22T09:45:53+02:00",
-    "generated_display": "22 Sep 2026 09:45 SAST",
+    "generated_at_utc": "2026-09-22T08:00:55+00:00",
+    "generated_at_sast": "2026-09-22T10:00:55+02:00",
+    "generated_display": "22 Sep 2026 10:00 SAST",
     "sources": [
       {
         "key": "stock",
         "label": "Safripol Stock Report - TAC IMOLA",
         "ok": true,
         "origin": "graph",
-        "last_modified": "2026-09-22T09:44+02:00",
+        "last_modified": "2026-09-22T09:59+02:00",
         "size_kb": 275,
         "required": true,
         "error": ""
@@ -75,7 +75,7 @@
     "avg_daily_offtake_mt": 312.22,
     "avg_loads_per_day": 14.45,
     "avg_mt_offloaded_per_tank": 21.6,
-    "avg_remained_in_tank_kg": 89.44,
+    "avg_remained_in_tank_kg": 88.83,
     "required_rate_mt_per_day": 226.21,
     "projected_completion": "2026-11-14",
     "projected_remaining_days": 53,
@@ -240,7 +240,7 @@
     "projected_completion": "2026-11-16",
     "projected_remaining_days": 55,
     "required_rate_mt_per_day": 226.21,
-    "avg_remained_in_tank_kg": 89.44,
+    "avg_remained_in_tank_kg": 88.83,
     "first_delivery": "2026-09-11",
     "last_delivery": "2026-09-21",
     "by_date": [
