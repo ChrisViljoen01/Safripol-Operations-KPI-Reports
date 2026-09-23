@@ -6,16 +6,16 @@
     "client": "Safripol",
     "operator": "Connect Logistics",
     "product": "PTA",
-    "generated_at_utc": "2026-09-23T12:57:26+00:00",
-    "generated_at_sast": "2026-09-23T14:57:26+02:00",
-    "generated_display": "23 Sep 2026 14:57 SAST",
+    "generated_at_utc": "2026-09-23T13:00:56+00:00",
+    "generated_at_sast": "2026-09-23T15:00:56+02:00",
+    "generated_display": "23 Sep 2026 15:00 SAST",
     "sources": [
       {
         "key": "stock",
         "label": "Safripol Stock Report - TAC IMOLA",
         "ok": true,
         "origin": "graph",
-        "last_modified": "2026-09-23T14:08+02:00",
+        "last_modified": "2026-09-23T14:59+02:00",
         "size_kb": 281,
         "required": true,
         "error": ""
@@ -35,7 +35,7 @@
         "label": "SAF Ops Tracking - TAC IMOLA",
         "ok": true,
         "origin": "graph",
-        "last_modified": "2026-09-23T14:56+02:00",
+        "last_modified": "2026-09-23T14:57+02:00",
         "size_kb": 934,
         "required": false,
         "error": ""
@@ -1732,7 +1732,7 @@
         "net_mt": 53.22,
         "cum_mt": 3109.72,
         "avg_decant_hours": 1.05,
-        "avg_interval_hours": 0.53,
+        "avg_interval_hours": 0.7,
         "delay_minutes": 0.0
       }
     ],
@@ -1801,7 +1801,7 @@
         "iso": "ISO-03",
         "decants": 36,
         "avg_decant_hours": 1.05,
-        "avg_interval_hours": 0.66,
+        "avg_interval_hours": 0.67,
         "net_mt": 636.32,
         "delay_minutes": 54.0
       },
@@ -2021,7 +2021,7 @@
         "attainment_pct": 0.6,
         "actual_mt": 53.22,
         "avg_decant_hours": 1.05,
-        "avg_interval_hours": 0.53,
+        "avg_interval_hours": 0.7,
         "delay_minutes": 0.0,
         "productive_hours": 3.15,
         "isotainers_per_head": 0.214,
@@ -2594,7 +2594,7 @@
     "allowed_interval_hours": 1.0,
     "time_saved_hours": 133.31,
     "avg_excess_kg": 111.7,
-    "avg_carry_over_kg": 87.5,
+    "avg_carry_over_kg": 87.8,
     "total_delay_hours": 14.98
   },
   "plan": {
