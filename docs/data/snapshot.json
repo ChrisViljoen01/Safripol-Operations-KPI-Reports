@@ -6,9 +6,9 @@
     "client": "Safripol",
     "operator": "Connect Logistics",
     "product": "PTA",
-    "generated_at_utc": "2026-09-25T06:00:57+00:00",
-    "generated_at_sast": "2026-09-25T08:00:57+02:00",
-    "generated_display": "25 Sep 2026 08:00 SAST",
+    "generated_at_utc": "2026-09-25T06:15:39+00:00",
+    "generated_at_sast": "2026-09-25T08:15:39+02:00",
+    "generated_display": "25 Sep 2026 08:15 SAST",
     "sources": [
       {
         "key": "stock",
@@ -25,7 +25,7 @@
         "label": "Safripol v Connect Dwells",
         "ok": true,
         "origin": "graph",
-        "last_modified": "2026-09-25T07:00+02:00",
+        "last_modified": "2026-09-25T08:00+02:00",
         "size_kb": 267,
         "required": true,
         "error": ""
@@ -35,7 +35,7 @@
         "label": "SAF Ops Tracking - TAC IMOLA",
         "ok": true,
         "origin": "graph",
-        "last_modified": "2026-09-25T07:21+02:00",
+        "last_modified": "2026-09-25T08:02+02:00",
         "size_kb": 934,
         "required": false,
         "error": ""
@@ -82,9 +82,9 @@
     "avg_decant_hours": 1.03,
     "avg_interval_hours": 0.67,
     "time_lost_hours": 14.98,
-    "decants_per_day": 12.38,
-    "avg_attainment_pct": 1.3286,
-    "avg_turnaround_hours": 10.24,
+    "decants_per_day": 12.44,
+    "avg_attainment_pct": 1.3357,
+    "avg_turnaround_hours": 10.25,
     "open_exceptions": 6,
     "planned_completion": "2026-12-05",
     "days_vs_plan": -13,
@@ -380,19 +380,19 @@
     "by_site": [
       {
         "site": "Connect Logistics",
-        "visits": 960,
+        "visits": 959,
         "avg_hours": 3.04,
         "min_hours": 0.0,
         "max_hours": 22.22,
-        "p90_hours": 4.69,
+        "p90_hours": 4.7,
         "p95_hours": 5.86,
-        "total_hours": 2916.22,
+        "total_hours": 2913.21,
         "target_hours": 2.75,
         "vs_target_hours": 0.29,
-        "breaches": 470,
-        "breach_pct": 0.4896,
-        "overstays": 474,
-        "overstay_pct": 0.4938,
+        "breaches": 469,
+        "breach_pct": 0.4891,
+        "overstays": 473,
+        "overstay_pct": 0.4932,
         "status": "Over Target"
       },
       {
@@ -442,7 +442,7 @@
         "iso": "ISO-05",
         "connect_avg_hours": 2.99,
         "safripol_avg_hours": 6.06,
-        "visits": 381
+        "visits": 380
       }
     ],
     "trend": [
@@ -913,7 +913,7 @@
       },
       {
         "date": "2026-09-20",
-        "connect": 2.93,
+        "connect": 2.92,
         "safripol": 4.49
       },
       {
@@ -943,15 +943,15 @@
       }
     ],
     "turnaround": {
-      "cycles": 933,
-      "completed_cycles": 913,
+      "cycles": 932,
+      "completed_cycles": 912,
       "excluded_parked_cycles": 10,
       "max_turnaround_hours": 24.0,
       "avg_connect_dwell_hours": 3.04,
       "avg_transit_out_hours": 1.31,
       "avg_safripol_dwell_hours": 6.24,
       "avg_transit_return_hours": 1.05,
-      "avg_turnaround_hours": 10.24,
+      "avg_turnaround_hours": 10.25,
       "targets": {
         "connect_dwell": 2.75,
         "transit": 0.75,
@@ -1591,10 +1591,10 @@
         },
         {
           "date": "2026-09-20",
-          "turnaround": 7.83,
-          "connect_dwell": 2.93,
-          "transit_out": 0.28,
-          "safripol_dwell": 4.54
+          "turnaround": 8.42,
+          "connect_dwell": 2.92,
+          "transit_out": 0.29,
+          "safripol_dwell": 4.71
         },
         {
           "date": "2026-09-21",
@@ -1626,19 +1626,19 @@
         }
       ]
     },
-    "total_visits": 1878
+    "total_visits": 1877
   },
   "decant": {
     "has_data": true,
-    "total_decants": 198,
+    "total_decants": 199,
     "avg_decant_hours": 1.03,
     "avg_interval_hours": 0.67,
     "avg_productive_hours": 0.99,
-    "clean_pct": 0.9545,
+    "clean_pct": 0.9548,
     "time_lost_hours": 7.91,
     "delay_hours_logged": 14.98,
-    "total_net_mt": 3516.54,
-    "decants_per_day": 12.38,
+    "total_net_mt": 3534.2,
+    "decants_per_day": 12.44,
     "by_day": [
       {
         "date": "2026-09-10",
@@ -1777,10 +1777,10 @@
       },
       {
         "date": "2026-09-25",
-        "decants": 0,
-        "net_mt": 0.0,
-        "cum_mt": 3516.54,
-        "avg_decant_hours": null,
+        "decants": 1,
+        "net_mt": 17.66,
+        "cum_mt": 3534.2,
+        "avg_decant_hours": 0.92,
         "avg_interval_hours": null,
         "delay_minutes": 0.0
       }
@@ -1788,10 +1788,10 @@
     "by_shift": [
       {
         "shift": "Dayshift",
-        "decants": 90,
-        "avg_decant_hours": 1.08,
+        "decants": 91,
+        "avg_decant_hours": 1.07,
         "avg_interval_hours": 0.71,
-        "net_mt": 1608.28,
+        "net_mt": 1625.94,
         "delay_minutes": 124.0
       },
       {
@@ -1822,10 +1822,10 @@
       },
       {
         "team": "C",
-        "decants": 59,
-        "avg_decant_hours": 0.99,
+        "decants": 60,
+        "avg_decant_hours": 0.98,
         "avg_interval_hours": 0.66,
-        "net_mt": 1042.96,
+        "net_mt": 1060.62,
         "delay_minutes": 530.0
       }
     ],
@@ -1856,10 +1856,10 @@
       },
       {
         "iso": "ISO-04",
-        "decants": 40,
+        "decants": 41,
         "avg_decant_hours": 1.03,
         "avg_interval_hours": 0.74,
-        "net_mt": 705.76,
+        "net_mt": 723.42,
         "delay_minutes": 114.0
       },
       {
@@ -1968,8 +1968,8 @@
       },
       {
         "hour": 6,
-        "decants": 8,
-        "avg_decant_hours": 1.13
+        "decants": 9,
+        "avg_decant_hours": 1.11
       },
       {
         "hour": 7,
@@ -2065,15 +2065,15 @@
         "heads": 14.0,
         "planned_heads": 15.0,
         "planned_isotainers": 5.0,
-        "actual_isotainers": 0,
-        "variance_isotainers": -5.0,
-        "attainment_pct": 0.0,
-        "actual_mt": 0.0,
-        "avg_decant_hours": null,
+        "actual_isotainers": 1,
+        "variance_isotainers": -4.0,
+        "attainment_pct": 0.2,
+        "actual_mt": 17.66,
+        "avg_decant_hours": 0.92,
         "avg_interval_hours": null,
         "delay_minutes": 0.0,
-        "productive_hours": 0.0,
-        "isotainers_per_head": 0.0,
+        "productive_hours": 0.92,
+        "isotainers_per_head": 0.071,
         "notes": ""
       },
       {
@@ -2620,11 +2620,11 @@
     "shift_summary": {
       "shifts_recorded": 31,
       "shifts_planned": 28,
-      "avg_attainment_pct": 1.3286,
+      "avg_attainment_pct": 1.3357,
       "shifts_on_target": 25,
-      "avg_isotainers_per_shift": 6.39,
+      "avg_isotainers_per_shift": 6.42,
       "avg_heads_per_shift": 13.39,
-      "avg_isotainers_per_head": 0.51,
+      "avg_isotainers_per_head": 0.496,
       "best_shift": {
         "date": "2026-09-16",
         "shift": "Nightshift",
@@ -2713,9 +2713,9 @@
     },
     "allowed_decant_hours": 1.75,
     "allowed_interval_hours": 1.0,
-    "time_saved_hours": 149.92,
-    "avg_excess_kg": 112.86,
-    "avg_carry_over_kg": 86.73,
+    "time_saved_hours": 150.75,
+    "avg_excess_kg": 112.8,
+    "avg_carry_over_kg": 86.6,
     "total_delay_hours": 14.98
   },
   "plan": {
@@ -3715,10 +3715,10 @@
     {
       "severity": "high",
       "category": "Shift below plan",
-      "detail": "2026-09-25 Dayshift team C: 0 of 5.0 isotainers.",
+      "detail": "2026-09-25 Dayshift team C: 1 of 5.0 isotainers.",
       "when": "2026-09-25",
       "owner": "Connect",
-      "value": "0%"
+      "value": "20%"
     },
     {
       "severity": "high",
@@ -3739,7 +3739,7 @@
     {
       "severity": "medium",
       "category": "Dwell breach rate",
-      "detail": "Connect Logistics breached its dwell target on 470 of 960 visits.",
+      "detail": "Connect Logistics breached its dwell target on 469 of 959 visits.",
       "when": null,
       "owner": "Connect Logistics",
       "value": "49%"
@@ -3755,7 +3755,7 @@
     {
       "severity": "medium",
       "category": "Dwell over target",
-      "detail": "Connect Logistics average dwell 3.04 h against a 2.75 h target across 960 visits.",
+      "detail": "Connect Logistics average dwell 3.04 h against a 2.75 h target across 959 visits.",
       "when": null,
       "owner": "Connect",
       "value": "+0.29 h"
