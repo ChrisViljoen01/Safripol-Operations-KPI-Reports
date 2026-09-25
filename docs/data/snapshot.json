@@ -6,9 +6,9 @@
     "client": "Safripol",
     "operator": "Connect Logistics",
     "product": "PTA",
-    "generated_at_utc": "2026-09-25T00:14:47+00:00",
-    "generated_at_sast": "2026-09-25T02:14:47+02:00",
-    "generated_display": "25 Sep 2026 02:14 SAST",
+    "generated_at_utc": "2026-09-25T04:54:45+00:00",
+    "generated_at_sast": "2026-09-25T06:54:45+02:00",
+    "generated_display": "25 Sep 2026 06:54 SAST",
     "sources": [
       {
         "key": "stock",
@@ -24,9 +24,9 @@
         "key": "dwells",
         "label": "Safripol v Connect Dwells",
         "ok": true,
-        "origin": "graph",
-        "last_modified": "2026-09-23T15:00+02:00",
-        "size_kb": 266,
+        "origin": "local",
+        "last_modified": "2026-09-25T06:49+02:00",
+        "size_kb": 267,
         "required": true,
         "error": ""
       },
@@ -35,8 +35,8 @@
         "label": "SAF Ops Tracking - TAC IMOLA",
         "ok": true,
         "origin": "graph",
-        "last_modified": "2026-09-25T02:07+02:00",
-        "size_kb": 933,
+        "last_modified": "2026-09-25T05:37+02:00",
+        "size_kb": 934,
         "required": false,
         "error": ""
       },
@@ -79,12 +79,12 @@
     "required_rate_mt_per_day": 226.03,
     "projected_completion": "2026-11-22",
     "projected_remaining_days": 58,
-    "avg_decant_hours": 1.04,
+    "avg_decant_hours": 1.03,
     "avg_interval_hours": 0.67,
     "time_lost_hours": 14.98,
-    "decants_per_day": 13.0,
-    "avg_attainment_pct": 1.3556,
-    "avg_turnaround_hours": 10.26,
+    "decants_per_day": 13.2,
+    "avg_attainment_pct": 1.3778,
+    "avg_turnaround_hours": 10.25,
     "open_exceptions": 5,
     "planned_completion": "2026-12-05",
     "days_vs_plan": -13,
@@ -380,36 +380,36 @@
     "by_site": [
       {
         "site": "Connect Logistics",
-        "visits": 953,
+        "visits": 959,
         "avg_hours": 3.04,
         "min_hours": 0.0,
         "max_hours": 22.22,
-        "p90_hours": 4.72,
-        "p95_hours": 5.88,
-        "total_hours": 2897.47,
+        "p90_hours": 4.7,
+        "p95_hours": 5.86,
+        "total_hours": 2912.56,
         "target_hours": 2.75,
         "vs_target_hours": 0.29,
-        "breaches": 467,
-        "breach_pct": 0.49,
-        "overstays": 471,
-        "overstay_pct": 0.4942,
+        "breaches": 469,
+        "breach_pct": 0.4891,
+        "overstays": 473,
+        "overstay_pct": 0.4932,
         "status": "Over Target"
       },
       {
         "site": "Safripol",
-        "visits": 913,
-        "avg_hours": 6.18,
+        "visits": 917,
+        "avg_hours": 6.17,
         "min_hours": 0.06,
         "max_hours": 21.43,
-        "p90_hours": 9.82,
-        "p95_hours": 11.23,
-        "total_hours": 5645.48,
+        "p90_hours": 9.81,
+        "p95_hours": 11.21,
+        "total_hours": 5660.59,
         "target_hours": 2.75,
-        "vs_target_hours": 3.43,
-        "breaches": 873,
-        "breach_pct": 0.9562,
-        "overstays": 873,
-        "overstay_pct": 0.9562,
+        "vs_target_hours": 3.42,
+        "breaches": 877,
+        "breach_pct": 0.9564,
+        "overstays": 877,
+        "overstay_pct": 0.9564,
         "status": "Over Target"
       }
     ],
@@ -418,7 +418,7 @@
         "iso": "ISO-01",
         "connect_avg_hours": 2.92,
         "safripol_avg_hours": 6.11,
-        "visits": 419
+        "visits": 420
       },
       {
         "iso": "ISO-02",
@@ -440,9 +440,9 @@
       },
       {
         "iso": "ISO-05",
-        "connect_avg_hours": 2.99,
-        "safripol_avg_hours": 6.1,
-        "visits": 370
+        "connect_avg_hours": 2.98,
+        "safripol_avg_hours": 6.05,
+        "visits": 379
       }
     ],
     "trend": [
@@ -639,17 +639,17 @@
       {
         "date": "2026-05-06",
         "connect": 2.47,
-        "safripol": 8.04
+        "safripol": 8.06
       },
       {
         "date": "2026-05-07",
         "connect": 2.86,
-        "safripol": 9.24
+        "safripol": 9.04
       },
       {
         "date": "2026-05-08",
         "connect": 5.15,
-        "safripol": 7.59
+        "safripol": 8.15
       },
       {
         "date": "2026-05-09",
@@ -673,7 +673,7 @@
       },
       {
         "date": "2026-05-13",
-        "connect": 2.89,
+        "connect": 2.9,
         "safripol": 7.25
       },
       {
@@ -913,7 +913,7 @@
       },
       {
         "date": "2026-09-20",
-        "connect": 2.92,
+        "connect": 2.93,
         "safripol": 4.49
       },
       {
@@ -928,20 +928,25 @@
       },
       {
         "date": "2026-09-23",
-        "connect": 2.04,
-        "safripol": null
+        "connect": 2.12,
+        "safripol": 7.49
+      },
+      {
+        "date": "2026-09-24",
+        "connect": 2.5,
+        "safripol": 4.16
       }
     ],
     "turnaround": {
-      "cycles": 927,
-      "completed_cycles": 907,
-      "excluded_parked_cycles": 10,
+      "cycles": 933,
+      "completed_cycles": 911,
+      "excluded_parked_cycles": 11,
       "max_turnaround_hours": 24.0,
-      "avg_connect_dwell_hours": 3.05,
-      "avg_transit_out_hours": 1.31,
-      "avg_safripol_dwell_hours": 6.25,
-      "avg_transit_return_hours": 1.06,
-      "avg_turnaround_hours": 10.26,
+      "avg_connect_dwell_hours": 3.04,
+      "avg_transit_out_hours": 1.33,
+      "avg_safripol_dwell_hours": 6.24,
+      "avg_transit_return_hours": 1.07,
+      "avg_turnaround_hours": 10.25,
       "targets": {
         "connect_dwell": 2.75,
         "transit": 0.75,
@@ -1210,16 +1215,16 @@
         },
         {
           "date": "2026-05-06",
-          "turnaround": 13.19,
-          "connect_dwell": 2.24,
-          "transit_out": 0.66,
-          "safripol_dwell": 9.35
+          "turnaround": 12.87,
+          "connect_dwell": 2.17,
+          "transit_out": 0.71,
+          "safripol_dwell": 9.41
         },
         {
           "date": "2026-05-07",
-          "turnaround": 12.24,
+          "turnaround": 12.64,
           "connect_dwell": 2.86,
-          "transit_out": 0.37,
+          "transit_out": 3.34,
           "safripol_dwell": 9.3
         },
         {
@@ -1260,7 +1265,7 @@
         {
           "date": "2026-05-13",
           "turnaround": 12.3,
-          "connect_dwell": 2.89,
+          "connect_dwell": 2.9,
           "transit_out": 3.59,
           "safripol_dwell": 5.81
         },
@@ -1581,10 +1586,10 @@
         },
         {
           "date": "2026-09-20",
-          "turnaround": 8.42,
-          "connect_dwell": 2.92,
-          "transit_out": 0.29,
-          "safripol_dwell": 4.71
+          "turnaround": 7.83,
+          "connect_dwell": 2.93,
+          "transit_out": 0.28,
+          "safripol_dwell": 4.54
         },
         {
           "date": "2026-09-21",
@@ -1599,22 +1604,36 @@
           "connect_dwell": 2.15,
           "transit_out": 5.19,
           "safripol_dwell": 10.97
+        },
+        {
+          "date": "2026-09-23",
+          "turnaround": 9.63,
+          "connect_dwell": 2.28,
+          "transit_out": 0.37,
+          "safripol_dwell": 6.54
+        },
+        {
+          "date": "2026-09-24",
+          "turnaround": 7.87,
+          "connect_dwell": 2.5,
+          "transit_out": 0.36,
+          "safripol_dwell": 3.68
         }
       ]
     },
-    "total_visits": 1866
+    "total_visits": 1876
   },
   "decant": {
     "has_data": true,
-    "total_decants": 195,
-    "avg_decant_hours": 1.04,
+    "total_decants": 198,
+    "avg_decant_hours": 1.03,
     "avg_interval_hours": 0.67,
     "avg_productive_hours": 0.99,
-    "clean_pct": 0.9538,
+    "clean_pct": 0.9545,
     "time_lost_hours": 7.91,
     "delay_hours_logged": 14.98,
-    "total_net_mt": 3463.2,
-    "decants_per_day": 13.0,
+    "total_net_mt": 3516.54,
+    "decants_per_day": 13.2,
     "by_day": [
       {
         "date": "2026-09-10",
@@ -1744,11 +1763,11 @@
       },
       {
         "date": "2026-09-24",
-        "decants": 12,
-        "net_mt": 211.98,
-        "cum_mt": 3463.2,
-        "avg_decant_hours": 1.07,
-        "avg_interval_hours": 0.71,
+        "decants": 15,
+        "net_mt": 265.32,
+        "cum_mt": 3516.54,
+        "avg_decant_hours": 1.02,
+        "avg_interval_hours": 0.66,
         "delay_minutes": 0.0
       }
     ],
@@ -1763,10 +1782,10 @@
       },
       {
         "shift": "Nightshift",
-        "decants": 105,
+        "decants": 108,
         "avg_decant_hours": 1.0,
         "avg_interval_hours": 0.64,
-        "net_mt": 1854.92,
+        "net_mt": 1908.26,
         "delay_minutes": 775.0
       }
     ],
@@ -1781,10 +1800,10 @@
       },
       {
         "team": "B",
-        "decants": 71,
-        "avg_decant_hours": 1.11,
+        "decants": 74,
+        "avg_decant_hours": 1.1,
         "avg_interval_hours": 0.65,
-        "net_mt": 1255.48,
+        "net_mt": 1308.82,
         "delay_minutes": 111.0
       },
       {
@@ -1799,10 +1818,10 @@
     "by_iso": [
       {
         "iso": "ISO-01",
-        "decants": 38,
+        "decants": 39,
         "avg_decant_hours": 1.02,
         "avg_interval_hours": 0.71,
-        "net_mt": 689.34,
+        "net_mt": 707.04,
         "delay_minutes": 525.0
       },
       {
@@ -1815,10 +1834,10 @@
       },
       {
         "iso": "ISO-03",
-        "decants": 40,
-        "avg_decant_hours": 1.05,
+        "decants": 41,
+        "avg_decant_hours": 1.04,
         "avg_interval_hours": 0.68,
-        "net_mt": 706.82,
+        "net_mt": 724.58,
         "delay_minutes": 54.0
       },
       {
@@ -1831,10 +1850,10 @@
       },
       {
         "iso": "ISO-05",
-        "decants": 39,
+        "decants": 40,
         "avg_decant_hours": 1.16,
-        "avg_interval_hours": 0.68,
-        "net_mt": 689.4,
+        "avg_interval_hours": 0.67,
+        "net_mt": 707.28,
         "delay_minutes": 178.0
       }
     ],
@@ -1915,18 +1934,18 @@
       },
       {
         "hour": 2,
-        "decants": 10,
-        "avg_decant_hours": 1.03
+        "decants": 11,
+        "avg_decant_hours": 1.01
       },
       {
         "hour": 3,
-        "decants": 6,
-        "avg_decant_hours": 0.98
+        "decants": 7,
+        "avg_decant_hours": 0.95
       },
       {
         "hour": 4,
-        "decants": 8,
-        "avg_decant_hours": 0.94
+        "decants": 9,
+        "avg_decant_hours": 0.93
       },
       {
         "hour": 5,
@@ -2032,15 +2051,15 @@
         "heads": 11.0,
         "planned_heads": 15.0,
         "planned_isotainers": 5.0,
-        "actual_isotainers": 5,
-        "variance_isotainers": 0.0,
-        "attainment_pct": 1.0,
-        "actual_mt": 88.36,
-        "avg_decant_hours": 0.96,
-        "avg_interval_hours": 1.0,
+        "actual_isotainers": 8,
+        "variance_isotainers": 3.0,
+        "attainment_pct": 1.6,
+        "actual_mt": 141.7,
+        "avg_decant_hours": 0.9,
+        "avg_interval_hours": 0.83,
         "delay_minutes": 0.0,
-        "productive_hours": 4.78,
-        "isotainers_per_head": 0.455,
+        "productive_hours": 7.23,
+        "isotainers_per_head": 0.727,
         "notes": ""
       },
       {
@@ -2569,11 +2588,11 @@
     "shift_summary": {
       "shifts_recorded": 30,
       "shifts_planned": 27,
-      "avg_attainment_pct": 1.3556,
+      "avg_attainment_pct": 1.3778,
       "shifts_on_target": 25,
-      "avg_isotainers_per_shift": 6.5,
+      "avg_isotainers_per_shift": 6.6,
       "avg_heads_per_shift": 13.37,
-      "avg_isotainers_per_head": 0.501,
+      "avg_isotainers_per_head": 0.51,
       "best_shift": {
         "date": "2026-09-16",
         "shift": "Nightshift",
@@ -2662,9 +2681,9 @@
     },
     "allowed_decant_hours": 1.75,
     "allowed_interval_hours": 1.0,
-    "time_saved_hours": 147.12,
-    "avg_excess_kg": 111.73,
-    "avg_carry_over_kg": 87.11,
+    "time_saved_hours": 149.92,
+    "avg_excess_kg": 112.86,
+    "avg_carry_over_kg": 86.73,
     "total_delay_hours": 14.98
   },
   "plan": {
@@ -3680,7 +3699,7 @@
     {
       "severity": "medium",
       "category": "Dwell breach rate",
-      "detail": "Connect Logistics breached its dwell target on 467 of 953 visits.",
+      "detail": "Connect Logistics breached its dwell target on 469 of 959 visits.",
       "when": null,
       "owner": "Connect Logistics",
       "value": "49%"
@@ -3688,7 +3707,7 @@
     {
       "severity": "medium",
       "category": "Dwell breach rate",
-      "detail": "Safripol breached its dwell target on 873 of 913 visits.",
+      "detail": "Safripol breached its dwell target on 877 of 917 visits.",
       "when": null,
       "owner": "Safripol",
       "value": "96%"
@@ -3696,7 +3715,7 @@
     {
       "severity": "medium",
       "category": "Dwell over target",
-      "detail": "Connect Logistics average dwell 3.04 h against a 2.75 h target across 953 visits.",
+      "detail": "Connect Logistics average dwell 3.04 h against a 2.75 h target across 959 visits.",
       "when": null,
       "owner": "Connect",
       "value": "+0.29 h"
@@ -3704,18 +3723,18 @@
     {
       "severity": "medium",
       "category": "Dwell over target",
-      "detail": "Safripol average dwell 6.18 h against a 2.75 h target across 913 visits.",
+      "detail": "Safripol average dwell 6.17 h against a 2.75 h target across 917 visits.",
       "when": null,
       "owner": "Safripol",
-      "value": "+3.43 h"
+      "value": "+3.42 h"
     },
     {
       "severity": "medium",
       "category": "Transit over target",
-      "detail": "Average Connect to Safripol transit 1.31 h against a 0.75 h target.",
+      "detail": "Average Connect to Safripol transit 1.33 h against a 0.75 h target.",
       "when": null,
       "owner": "Transporter",
-      "value": "+0.56 h"
+      "value": "+0.58 h"
     },
     {
       "severity": "low",
