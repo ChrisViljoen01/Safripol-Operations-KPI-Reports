@@ -6,16 +6,16 @@
     "client": "Safripol",
     "operator": "Connect Logistics",
     "product": "PTA",
-    "generated_at_utc": "2026-09-28T05:45:49+00:00",
-    "generated_at_sast": "2026-09-28T07:45:49+02:00",
-    "generated_display": "28 Sep 2026 07:45 SAST",
+    "generated_at_utc": "2026-09-28T06:01:10+00:00",
+    "generated_at_sast": "2026-09-28T08:01:10+02:00",
+    "generated_display": "28 Sep 2026 08:01 SAST",
     "sources": [
       {
         "key": "stock",
         "label": "Safripol Stock Report - TAC IMOLA",
         "ok": true,
         "origin": "graph",
-        "last_modified": "2026-09-28T05:35+02:00",
+        "last_modified": "2026-09-28T08:00+02:00",
         "size_kb": 288,
         "required": true,
         "error": ""
@@ -75,7 +75,7 @@
     "avg_daily_offtake_mt": 288.0,
     "avg_loads_per_day": 13.33,
     "avg_mt_offloaded_per_tank": 21.6,
-    "avg_remained_in_tank_kg": 88.25,
+    "avg_remained_in_tank_kg": 88.35,
     "required_rate_mt_per_day": 220.52,
     "projected_completion": "2026-11-28",
     "projected_remaining_days": 61,
@@ -240,7 +240,7 @@
     "projected_completion": "2026-11-20",
     "projected_remaining_days": 53,
     "required_rate_mt_per_day": 220.52,
-    "avg_remained_in_tank_kg": 88.25,
+    "avg_remained_in_tank_kg": 88.35,
     "first_delivery": "2026-09-11",
     "last_delivery": "2026-09-28",
     "by_date": [
@@ -374,12 +374,18 @@
     "by_iso": [
       {
         "iso": "ISO-03",
-        "loads": 51,
-        "mt": 1101.6,
-        "actual_offloaded_mt": 1101.6
+        "loads": 49,
+        "mt": 1058.4,
+        "actual_offloaded_mt": 1058.4
       },
       {
         "iso": "ISO-01",
+        "loads": 48,
+        "mt": 1036.8,
+        "actual_offloaded_mt": 1036.8
+      },
+      {
+        "iso": "ISO-04",
         "loads": 48,
         "mt": 1036.8,
         "actual_offloaded_mt": 1036.8
@@ -395,12 +401,6 @@
         "loads": 47,
         "mt": 1015.2,
         "actual_offloaded_mt": 1015.2
-      },
-      {
-        "iso": "ISO-04",
-        "loads": 46,
-        "mt": 993.6,
-        "actual_offloaded_mt": 993.6
       }
     ]
   },
