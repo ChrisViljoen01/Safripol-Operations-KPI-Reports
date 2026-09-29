@@ -6,9 +6,9 @@
     "client": "Safripol",
     "operator": "Connect Logistics",
     "product": "PTA",
-    "generated_at_utc": "2026-09-29T06:45:43+00:00",
-    "generated_at_sast": "2026-09-29T08:45:43+02:00",
-    "generated_display": "29 Sep 2026 08:45 SAST",
+    "generated_at_utc": "2026-09-29T07:00:59+00:00",
+    "generated_at_sast": "2026-09-29T09:00:59+02:00",
+    "generated_display": "29 Sep 2026 09:00 SAST",
     "sources": [
       {
         "key": "stock",
@@ -35,8 +35,8 @@
         "label": "SAF Ops Tracking - TAC IMOLA",
         "ok": true,
         "origin": "graph",
-        "last_modified": "2026-09-29T08:42+02:00",
-        "size_kb": 940,
+        "last_modified": "2026-09-29T08:55+02:00",
+        "size_kb": 941,
         "required": false,
         "error": ""
       },
@@ -1859,7 +1859,7 @@
         "net_mt": 35.26,
         "cum_mt": 4522.7,
         "avg_decant_hours": 1.24,
-        "avg_interval_hours": 0.35,
+        "avg_interval_hours": 0.34,
         "delay_minutes": 0.0
       }
     ],
@@ -1868,7 +1868,7 @@
         "shift": "Dayshift",
         "decants": 119,
         "avg_decant_hours": 1.06,
-        "avg_interval_hours": 0.74,
+        "avg_interval_hours": 0.73,
         "net_mt": 2119.92,
         "delay_minutes": 124.0
       },
@@ -1920,7 +1920,7 @@
         "iso": "ISO-02",
         "decants": 49,
         "avg_decant_hours": 0.92,
-        "avg_interval_hours": 0.62,
+        "avg_interval_hours": 0.61,
         "net_mt": 866.44,
         "delay_minutes": 28.0
       },
@@ -2148,7 +2148,7 @@
         "attainment_pct": 0.4,
         "actual_mt": 35.26,
         "avg_decant_hours": 1.24,
-        "avg_interval_hours": 0.35,
+        "avg_interval_hours": 0.34,
         "delay_minutes": 0.0,
         "productive_hours": 2.48,
         "isotainers_per_head": 0.182,
@@ -2937,7 +2937,7 @@
     "allowed_interval_hours": 1.0,
     "time_saved_hours": 192.17,
     "avg_excess_kg": 111.33,
-    "avg_carry_over_kg": 89.22,
+    "avg_carry_over_kg": 89.03,
     "total_delay_hours": 14.98
   },
   "plan": {
