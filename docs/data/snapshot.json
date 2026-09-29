@@ -6,9 +6,9 @@
     "client": "Safripol",
     "operator": "Connect Logistics",
     "product": "PTA",
-    "generated_at_utc": "2026-09-29T08:48:46+00:00",
-    "generated_at_sast": "2026-09-29T10:48:46+02:00",
-    "generated_display": "29 Sep 2026 10:48 SAST",
+    "generated_at_utc": "2026-09-29T09:03:59+00:00",
+    "generated_at_sast": "2026-09-29T11:03:59+02:00",
+    "generated_display": "29 Sep 2026 11:03 SAST",
     "sources": [
       {
         "key": "stock",
@@ -54,7 +54,7 @@
         "key": "plan",
         "label": "PTA Drawdown Plan",
         "ok": true,
-        "origin": "graph",
+        "origin": "local",
         "last_modified": "2026-09-11T15:09+02:00",
         "size_kb": 36,
         "required": false,
