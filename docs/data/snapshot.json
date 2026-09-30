@@ -6,9 +6,9 @@
     "client": "Safripol",
     "operator": "Connect Logistics",
     "product": "PTA",
-    "generated_at_utc": "2026-09-30T13:00:54+00:00",
-    "generated_at_sast": "2026-09-30T15:00:54+02:00",
-    "generated_display": "30 Sep 2026 15:00 SAST",
+    "generated_at_utc": "2026-09-30T13:13:11+00:00",
+    "generated_at_sast": "2026-09-30T15:13:11+02:00",
+    "generated_display": "30 Sep 2026 15:13 SAST",
     "sources": [
       {
         "key": "stock",
@@ -35,7 +35,7 @@
         "label": "SAF Ops Tracking - TAC IMOLA",
         "ok": true,
         "origin": "graph",
-        "last_modified": "2026-09-30T14:23+02:00",
+        "last_modified": "2026-09-30T15:11+02:00",
         "size_kb": 941,
         "required": false,
         "error": ""
@@ -1875,7 +1875,7 @@
         "net_mt": 88.24,
         "cum_mt": 4787.46,
         "avg_decant_hours": 0.89,
-        "avg_interval_hours": 0.85,
+        "avg_interval_hours": 0.73,
         "delay_minutes": 0.0
       },
       {
@@ -1893,7 +1893,7 @@
         "shift": "Dayshift",
         "decants": 129,
         "avg_decant_hours": 1.04,
-        "avg_interval_hours": 0.76,
+        "avg_interval_hours": 0.75,
         "net_mt": 2296.34,
         "delay_minutes": 124.0
       },
@@ -1911,7 +1911,7 @@
         "team": "A",
         "decants": 91,
         "avg_decant_hours": 0.99,
-        "avg_interval_hours": 0.71,
+        "avg_interval_hours": 0.7,
         "net_mt": 1623.6,
         "delay_minutes": 258.0
       },
@@ -1937,7 +1937,7 @@
         "iso": "ISO-01",
         "decants": 53,
         "avg_decant_hours": 1.01,
-        "avg_interval_hours": 0.68,
+        "avg_interval_hours": 0.67,
         "net_mt": 954.24,
         "delay_minutes": 525.0
       },
@@ -2191,7 +2191,7 @@
         "attainment_pct": 1.0,
         "actual_mt": 88.24,
         "avg_decant_hours": 0.89,
-        "avg_interval_hours": 0.85,
+        "avg_interval_hours": 0.73,
         "delay_minutes": 0.0,
         "productive_hours": 4.47,
         "isotainers_per_head": 0.455,
