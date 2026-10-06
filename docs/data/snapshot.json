@@ -6,8 +6,8 @@
     "client": "Safripol",
     "operator": "Connect Logistics",
     "product": "PTA",
-    "generated_at_utc": "2026-10-06T06:15:31+00:00",
-    "generated_at_sast": "2026-10-06T08:15:31+02:00",
+    "generated_at_utc": "2026-10-06T06:15:55+00:00",
+    "generated_at_sast": "2026-10-06T08:15:55+02:00",
     "generated_display": "06 Oct 2026 08:15 SAST",
     "sources": [
       {
@@ -435,13 +435,13 @@
         "actual_offloaded_mt": 1533.6
       },
       {
-        "iso": "ISO-05",
+        "iso": "ISO-04",
         "loads": 70,
         "mt": 1512.0,
         "actual_offloaded_mt": 1512.0
       },
       {
-        "iso": "ISO-04",
+        "iso": "ISO-05",
         "loads": 70,
         "mt": 1512.0,
         "actual_offloaded_mt": 1512.0
