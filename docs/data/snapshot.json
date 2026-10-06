@@ -6,17 +6,17 @@
     "client": "Safripol",
     "operator": "Connect Logistics",
     "product": "PTA",
-    "generated_at_utc": "2026-10-06T07:45:45+00:00",
-    "generated_at_sast": "2026-10-06T09:45:45+02:00",
-    "generated_display": "06 Oct 2026 09:45 SAST",
+    "generated_at_utc": "2026-10-06T07:57:37+00:00",
+    "generated_at_sast": "2026-10-06T09:57:37+02:00",
+    "generated_display": "06 Oct 2026 09:57 SAST",
     "sources": [
       {
         "key": "stock",
         "label": "Safripol Stock Report - TAC IMOLA",
         "ok": true,
         "origin": "graph",
-        "last_modified": "2026-10-06T08:48+02:00",
-        "size_kb": 298,
+        "last_modified": "2026-10-06T09:45+02:00",
+        "size_kb": 299,
         "required": true,
         "error": ""
       },
@@ -35,8 +35,8 @@
         "label": "SAF Ops Tracking - TAC IMOLA",
         "ok": true,
         "origin": "graph",
-        "last_modified": "2026-10-06T09:15+02:00",
-        "size_kb": 947,
+        "last_modified": "2026-10-06T09:50+02:00",
+        "size_kb": 945,
         "required": false,
         "error": ""
       },
@@ -1971,7 +1971,7 @@
         "net_mt": 35.32,
         "cum_mt": 6130.8,
         "avg_decant_hours": 0.9,
-        "avg_interval_hours": 0.32,
+        "avg_interval_hours": 0.68,
         "delay_minutes": 0.0
       },
       {
@@ -2033,7 +2033,7 @@
         "iso": "ISO-01",
         "decants": 68,
         "avg_decant_hours": 0.99,
-        "avg_interval_hours": 0.7,
+        "avg_interval_hours": 0.71,
         "net_mt": 1219.84,
         "delay_minutes": 525.0
       },
@@ -2287,7 +2287,7 @@
         "attainment_pct": 0.4,
         "actual_mt": 35.32,
         "avg_decant_hours": 0.9,
-        "avg_interval_hours": 0.32,
+        "avg_interval_hours": 0.68,
         "delay_minutes": 0.0,
         "productive_hours": 1.8,
         "isotainers_per_head": 0.182,
@@ -3328,7 +3328,7 @@
     "allowed_interval_hours": 1.0,
     "time_saved_hours": 270.33,
     "avg_excess_kg": 115.06,
-    "avg_carry_over_kg": 91.49,
+    "avg_carry_over_kg": 91.52,
     "total_delay_hours": 14.98
   },
   "plan": {
