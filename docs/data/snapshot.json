@@ -6,9 +6,9 @@
     "client": "Safripol",
     "operator": "Connect Logistics",
     "product": "PTA",
-    "generated_at_utc": "2026-10-06T07:15:47+00:00",
-    "generated_at_sast": "2026-10-06T09:15:47+02:00",
-    "generated_display": "06 Oct 2026 09:15 SAST",
+    "generated_at_utc": "2026-10-06T07:16:29+00:00",
+    "generated_at_sast": "2026-10-06T09:16:29+02:00",
+    "generated_display": "06 Oct 2026 09:16 SAST",
     "sources": [
       {
         "key": "stock",
@@ -35,7 +35,7 @@
         "label": "SAF Ops Tracking - TAC IMOLA",
         "ok": true,
         "origin": "graph",
-        "last_modified": "2026-10-06T08:51+02:00",
+        "last_modified": "2026-10-06T09:15+02:00",
         "size_kb": 947,
         "required": false,
         "error": ""
@@ -83,9 +83,9 @@
     "avg_interval_hours": 0.75,
     "time_lost_hours": 14.98,
     "decants_per_day": 12.36,
-    "avg_attainment_pct": 1.3583,
+    "avg_attainment_pct": 1.3388,
     "avg_turnaround_hours": 10.25,
-    "open_exceptions": 4,
+    "open_exceptions": 5,
     "planned_completion": "2026-12-05",
     "days_vs_plan": -8,
     "plan_status": "ahead"
@@ -2280,18 +2280,18 @@
         "shift": "Dayshift",
         "team": "A",
         "heads": 11.0,
-        "planned_heads": null,
-        "planned_isotainers": null,
+        "planned_heads": 13.0,
+        "planned_isotainers": 5.0,
         "actual_isotainers": 2,
-        "variance_isotainers": null,
-        "attainment_pct": null,
+        "variance_isotainers": -3.0,
+        "attainment_pct": 0.4,
         "actual_mt": 35.32,
         "avg_decant_hours": 0.9,
         "avg_interval_hours": 0.32,
         "delay_minutes": 0.0,
         "productive_hours": 1.8,
         "isotainers_per_head": 0.182,
-        "notes": ""
+        "notes": "Normal loading"
       },
       {
         "date": "2026-10-05",
@@ -3232,8 +3232,8 @@
     ],
     "shift_summary": {
       "shifts_recorded": 54,
-      "shifts_planned": 48,
-      "avg_attainment_pct": 1.3583,
+      "shifts_planned": 49,
+      "avg_attainment_pct": 1.3388,
       "shifts_on_target": 46,
       "avg_isotainers_per_shift": 6.41,
       "avg_heads_per_shift": 12.72,
@@ -4324,6 +4324,14 @@
       "when": "2026-09-12T01:32",
       "owner": "Connect",
       "value": "20 min"
+    },
+    {
+      "severity": "high",
+      "category": "Shift below plan",
+      "detail": "2026-10-06 Dayshift team A: 2 of 5.0 isotainers.",
+      "when": "2026-10-06",
+      "owner": "Connect",
+      "value": "40%"
     },
     {
       "severity": "high",
