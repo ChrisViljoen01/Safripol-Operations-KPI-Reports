@@ -6,9 +6,9 @@
     "client": "Safripol",
     "operator": "Connect Logistics",
     "product": "PTA",
-    "generated_at_utc": "2026-10-07T16:22:31+00:00",
-    "generated_at_sast": "2026-10-07T18:22:31+02:00",
-    "generated_display": "07 Oct 2026 18:22 SAST",
+    "generated_at_utc": "2026-10-07T16:41:16+00:00",
+    "generated_at_sast": "2026-10-07T18:41:16+02:00",
+    "generated_display": "07 Oct 2026 18:41 SAST",
     "sources": [
       {
         "key": "stock",
@@ -35,7 +35,7 @@
         "label": "SAF Ops Tracking - TAC IMOLA",
         "ok": true,
         "origin": "graph",
-        "last_modified": "2026-10-07T18:05+02:00",
+        "last_modified": "2026-10-07T18:39+02:00",
         "size_kb": 949,
         "required": false,
         "error": ""
@@ -2293,6 +2293,24 @@
       },
       {
         "date": "2026-10-07",
+        "shift": "Nightshift",
+        "team": "A",
+        "heads": 12.0,
+        "planned_heads": null,
+        "planned_isotainers": null,
+        "actual_isotainers": 0,
+        "variance_isotainers": null,
+        "attainment_pct": null,
+        "actual_mt": 0.0,
+        "avg_decant_hours": null,
+        "avg_interval_hours": null,
+        "delay_minutes": 0.0,
+        "productive_hours": 0.0,
+        "isotainers_per_head": 0.0,
+        "notes": ""
+      },
+      {
+        "date": "2026-10-07",
         "shift": "Dayshift",
         "team": "C",
         "heads": 13.0,
@@ -2307,7 +2325,7 @@
         "delay_minutes": 0.0,
         "productive_hours": 5.67,
         "isotainers_per_head": 0.538,
-        "notes": "Normal loading"
+        "notes": ""
       },
       {
         "date": "2026-10-06",
@@ -3283,12 +3301,12 @@
       }
     ],
     "shift_summary": {
-      "shifts_recorded": 56,
+      "shifts_recorded": 57,
       "shifts_planned": 51,
       "avg_attainment_pct": 1.3647,
       "shifts_on_target": 49,
-      "avg_isotainers_per_shift": 6.54,
-      "avg_heads_per_shift": 12.71,
+      "avg_isotainers_per_shift": 6.42,
+      "avg_heads_per_shift": 12.7,
       "avg_isotainers_per_head": 0.537,
       "best_shift": {
         "date": "2026-09-16",
@@ -3380,7 +3398,7 @@
     "allowed_interval_hours": 1.0,
     "time_saved_hours": 288.55,
     "avg_excess_kg": 116.79,
-    "avg_carry_over_kg": 91.85,
+    "avg_carry_over_kg": 91.92,
     "total_delay_hours": 14.98
   },
   "plan": {
