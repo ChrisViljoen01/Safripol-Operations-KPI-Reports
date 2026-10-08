@@ -6,9 +6,9 @@
     "client": "Safripol",
     "operator": "Connect Logistics",
     "product": "PTA",
-    "generated_at_utc": "2026-10-08T15:09:01+00:00",
-    "generated_at_sast": "2026-10-08T17:09:01+02:00",
-    "generated_display": "08 Oct 2026 17:09 SAST",
+    "generated_at_utc": "2026-10-08T15:28:31+00:00",
+    "generated_at_sast": "2026-10-08T17:28:31+02:00",
+    "generated_display": "08 Oct 2026 17:28 SAST",
     "sources": [
       {
         "key": "stock",
@@ -35,7 +35,7 @@
         "label": "SAF Ops Tracking - TAC IMOLA",
         "ok": true,
         "origin": "graph",
-        "last_modified": "2026-10-08T16:24+02:00",
+        "last_modified": "2026-10-08T17:25+02:00",
         "size_kb": 948,
         "required": false,
         "error": ""
@@ -2003,7 +2003,7 @@
         "net_mt": 105.92,
         "cum_mt": 6714.32,
         "avg_decant_hours": 0.89,
-        "avg_interval_hours": 1.07,
+        "avg_interval_hours": 1.06,
         "delay_minutes": 0.0
       },
       {
@@ -2073,7 +2073,7 @@
         "iso": "ISO-02",
         "decants": 73,
         "avg_decant_hours": 0.92,
-        "avg_interval_hours": 0.7,
+        "avg_interval_hours": 0.71,
         "net_mt": 1291.8,
         "delay_minutes": 28.0
       },
@@ -2319,7 +2319,7 @@
         "attainment_pct": 1.2,
         "actual_mt": 105.92,
         "avg_decant_hours": 0.89,
-        "avg_interval_hours": 1.07,
+        "avg_interval_hours": 1.06,
         "delay_minutes": 0.0,
         "productive_hours": 5.33,
         "isotainers_per_head": 0.462,
@@ -3432,7 +3432,7 @@
     "allowed_interval_hours": 1.0,
     "time_saved_hours": 299.69,
     "avg_excess_kg": 116.9,
-    "avg_carry_over_kg": 92.23,
+    "avg_carry_over_kg": 92.09,
     "total_delay_hours": 14.98
   },
   "plan": {
