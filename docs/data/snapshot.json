@@ -6,9 +6,9 @@
     "client": "Safripol",
     "operator": "Connect Logistics",
     "product": "PTA",
-    "generated_at_utc": "2026-10-08T12:44:13+00:00",
-    "generated_at_sast": "2026-10-08T14:44:13+02:00",
-    "generated_display": "08 Oct 2026 14:44 SAST",
+    "generated_at_utc": "2026-10-08T12:45:53+00:00",
+    "generated_at_sast": "2026-10-08T14:45:53+02:00",
+    "generated_display": "08 Oct 2026 14:45 SAST",
     "sources": [
       {
         "key": "stock",
