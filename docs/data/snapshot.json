@@ -6,9 +6,9 @@
     "client": "Safripol",
     "operator": "Connect Logistics",
     "product": "PTA",
-    "generated_at_utc": "2026-10-08T19:51:35+00:00",
-    "generated_at_sast": "2026-10-08T21:51:35+02:00",
-    "generated_display": "08 Oct 2026 21:51 SAST",
+    "generated_at_utc": "2026-10-08T20:09:35+00:00",
+    "generated_at_sast": "2026-10-08T22:09:35+02:00",
+    "generated_display": "08 Oct 2026 22:09 SAST",
     "sources": [
       {
         "key": "stock",
@@ -35,7 +35,7 @@
         "label": "SAF Ops Tracking - TAC IMOLA",
         "ok": true,
         "origin": "graph",
-        "last_modified": "2026-10-08T21:49+02:00",
+        "last_modified": "2026-10-08T21:53+02:00",
         "size_kb": 950,
         "required": false,
         "error": ""
@@ -80,7 +80,7 @@
     "projected_completion": "2026-11-19",
     "projected_remaining_days": 42,
     "avg_decant_hours": 0.98,
-    "avg_interval_hours": 0.75,
+    "avg_interval_hours": 0.76,
     "time_lost_hours": 14.98,
     "decants_per_day": 12.73,
     "avg_attainment_pct": 1.3472,
@@ -1737,7 +1737,7 @@
     "has_data": true,
     "total_decants": 382,
     "avg_decant_hours": 0.98,
-    "avg_interval_hours": 0.75,
+    "avg_interval_hours": 0.76,
     "avg_productive_hours": 0.96,
     "clean_pct": 0.9686,
     "time_lost_hours": 8.6,
@@ -2003,7 +2003,7 @@
         "net_mt": 159.02,
         "cum_mt": 6767.42,
         "avg_decant_hours": 0.86,
-        "avg_interval_hours": 0.94,
+        "avg_interval_hours": 0.96,
         "delay_minutes": 0.0
       },
       {
@@ -2319,7 +2319,7 @@
         "attainment_pct": 0.4,
         "actual_mt": 35.36,
         "avg_decant_hours": 0.92,
-        "avg_interval_hours": 0.22,
+        "avg_interval_hours": 0.65,
         "delay_minutes": 0.0,
         "productive_hours": 1.83,
         "isotainers_per_head": 0.167,
@@ -3450,7 +3450,7 @@
     "allowed_interval_hours": 1.0,
     "time_saved_hours": 302.5,
     "avg_excess_kg": 117.29,
-    "avg_carry_over_kg": 92.24,
+    "avg_carry_over_kg": 92.31,
     "total_delay_hours": 14.98
   },
   "plan": {
