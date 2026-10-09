@@ -6,16 +6,16 @@
     "client": "Safripol",
     "operator": "Connect Logistics",
     "product": "PTA",
-    "generated_at_utc": "2026-10-09T07:01:15+00:00",
-    "generated_at_sast": "2026-10-09T09:01:15+02:00",
-    "generated_display": "09 Oct 2026 09:01 SAST",
+    "generated_at_utc": "2026-10-09T07:15:59+00:00",
+    "generated_at_sast": "2026-10-09T09:15:59+02:00",
+    "generated_display": "09 Oct 2026 09:15 SAST",
     "sources": [
       {
         "key": "stock",
         "label": "Safripol Stock Report - TAC IMOLA",
         "ok": true,
         "origin": "graph",
-        "last_modified": "2026-10-09T05:52+02:00",
+        "last_modified": "2026-10-09T09:12+02:00",
         "size_kb": 302,
         "required": true,
         "error": ""
@@ -35,7 +35,7 @@
         "label": "SAF Ops Tracking - TAC IMOLA",
         "ok": true,
         "origin": "graph",
-        "last_modified": "2026-10-09T06:32+02:00",
+        "last_modified": "2026-10-09T09:10+02:00",
         "size_kb": 950,
         "required": false,
         "error": ""
@@ -82,10 +82,10 @@
     "avg_decant_hours": 0.98,
     "avg_interval_hours": 0.75,
     "time_lost_hours": 14.98,
-    "decants_per_day": 12.93,
-    "avg_attainment_pct": 1.3698,
+    "decants_per_day": 12.52,
+    "avg_attainment_pct": 1.3444,
     "avg_turnaround_hours": 10.25,
-    "open_exceptions": 4,
+    "open_exceptions": 5,
     "planned_completion": "2026-12-05",
     "days_vs_plan": -18,
     "plan_status": "ahead"
@@ -1743,7 +1743,7 @@
     "time_lost_hours": 8.6,
     "delay_hours_logged": 14.98,
     "total_net_mt": 6891.0,
-    "decants_per_day": 12.93,
+    "decants_per_day": 12.52,
     "by_day": [
       {
         "date": "2026-09-10",
@@ -2004,6 +2004,15 @@
         "cum_mt": 6873.28,
         "avg_decant_hours": 0.88,
         "avg_interval_hours": 0.77,
+        "delay_minutes": 0.0
+      },
+      {
+        "date": "2026-10-09",
+        "decants": 0,
+        "net_mt": 0.0,
+        "cum_mt": 6873.28,
+        "avg_decant_hours": null,
+        "avg_interval_hours": null,
         "delay_minutes": 0.0
       },
       {
@@ -2300,6 +2309,24 @@
         "variance_isotainers": null,
         "attainment_pct": null,
         "actual_mt": 17.72,
+        "avg_decant_hours": null,
+        "avg_interval_hours": null,
+        "delay_minutes": 0.0,
+        "productive_hours": 0.0,
+        "isotainers_per_head": 0.0,
+        "notes": ""
+      },
+      {
+        "date": "2026-10-09",
+        "shift": "Dayshift",
+        "team": "B",
+        "heads": 12.0,
+        "planned_heads": null,
+        "planned_isotainers": 5.0,
+        "actual_isotainers": 0,
+        "variance_isotainers": -5.0,
+        "attainment_pct": 0.0,
+        "actual_mt": 0.0,
         "avg_decant_hours": null,
         "avg_interval_hours": null,
         "delay_minutes": 0.0,
@@ -3353,12 +3380,12 @@
       }
     ],
     "shift_summary": {
-      "shifts_recorded": 59,
-      "shifts_planned": 53,
-      "avg_attainment_pct": 1.3698,
+      "shifts_recorded": 60,
+      "shifts_planned": 54,
+      "avg_attainment_pct": 1.3444,
       "shifts_on_target": 51,
-      "avg_isotainers_per_shift": 6.58,
-      "avg_heads_per_shift": 12.69,
+      "avg_isotainers_per_shift": 6.47,
+      "avg_heads_per_shift": 12.68,
       "avg_isotainers_per_head": 0.54,
       "best_shift": {
         "date": "2026-09-16",
@@ -3450,7 +3477,7 @@
     "allowed_interval_hours": 1.0,
     "time_saved_hours": 307.55,
     "avg_excess_kg": 117.18,
-    "avg_carry_over_kg": 92.56,
+    "avg_carry_over_kg": 92.38,
     "total_delay_hours": 14.98
   },
   "plan": {
@@ -4446,6 +4473,14 @@
       "when": "2026-09-12T01:32",
       "owner": "Connect",
       "value": "20 min"
+    },
+    {
+      "severity": "high",
+      "category": "Shift below plan",
+      "detail": "2026-10-09 Dayshift team B: 0 of 5.0 isotainers.",
+      "when": "2026-10-09",
+      "owner": "Connect",
+      "value": "0%"
     },
     {
       "severity": "high",
