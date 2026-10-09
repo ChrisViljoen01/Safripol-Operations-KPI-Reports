@@ -6,9 +6,9 @@
     "client": "Safripol",
     "operator": "Connect Logistics",
     "product": "PTA",
-    "generated_at_utc": "2026-10-09T19:24:01+00:00",
-    "generated_at_sast": "2026-10-09T21:24:01+02:00",
-    "generated_display": "09 Oct 2026 21:24 SAST",
+    "generated_at_utc": "2026-10-09T19:30:57+00:00",
+    "generated_at_sast": "2026-10-09T21:30:57+02:00",
+    "generated_display": "09 Oct 2026 21:30 SAST",
     "sources": [
       {
         "key": "stock",
@@ -35,7 +35,7 @@
         "label": "SAF Ops Tracking - TAC IMOLA",
         "ok": true,
         "origin": "graph",
-        "last_modified": "2026-10-09T21:23+02:00",
+        "last_modified": "2026-10-09T21:25+02:00",
         "size_kb": 948,
         "required": false,
         "error": ""
@@ -2325,6 +2325,24 @@
       },
       {
         "date": "2026-10-09",
+        "shift": "Nightshift",
+        "team": "C",
+        "heads": 12.0,
+        "planned_heads": null,
+        "planned_isotainers": null,
+        "actual_isotainers": 0,
+        "variance_isotainers": null,
+        "attainment_pct": null,
+        "actual_mt": 0.0,
+        "avg_decant_hours": null,
+        "avg_interval_hours": null,
+        "delay_minutes": 0.0,
+        "productive_hours": 0.0,
+        "isotainers_per_head": 0.0,
+        "notes": ""
+      },
+      {
+        "date": "2026-10-09",
         "shift": "Dayshift",
         "team": "B",
         "heads": 12.0,
@@ -3387,12 +3405,12 @@
       }
     ],
     "shift_summary": {
-      "shifts_recorded": 60,
+      "shifts_recorded": 61,
       "shifts_planned": 54,
       "avg_attainment_pct": 1.3704,
       "shifts_on_target": 52,
-      "avg_isotainers_per_shift": 6.58,
-      "avg_heads_per_shift": 12.68,
+      "avg_isotainers_per_shift": 6.48,
+      "avg_heads_per_shift": 12.67,
       "avg_isotainers_per_head": 0.541,
       "best_shift": {
         "date": "2026-09-16",
@@ -3484,7 +3502,7 @@
     "allowed_interval_hours": 1.0,
     "time_saved_hours": 314.87,
     "avg_excess_kg": 116.98,
-    "avg_carry_over_kg": 92.95,
+    "avg_carry_over_kg": 93.02,
     "total_delay_hours": 14.98
   },
   "plan": {
