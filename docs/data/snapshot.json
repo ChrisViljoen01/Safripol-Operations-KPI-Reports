@@ -6,16 +6,16 @@
     "client": "Safripol",
     "operator": "Connect Logistics",
     "product": "PTA",
-    "generated_at_utc": "2026-10-10T10:08:20+00:00",
-    "generated_at_sast": "2026-10-10T12:08:20+02:00",
-    "generated_display": "10 Oct 2026 12:08 SAST",
+    "generated_at_utc": "2026-10-10T10:25:34+00:00",
+    "generated_at_sast": "2026-10-10T12:25:34+02:00",
+    "generated_display": "10 Oct 2026 12:25 SAST",
     "sources": [
       {
         "key": "stock",
         "label": "Safripol Stock Report - TAC IMOLA",
         "ok": true,
         "origin": "graph",
-        "last_modified": "2026-10-10T06:02+02:00",
+        "last_modified": "2026-10-10T12:25+02:00",
         "size_kb": 303,
         "required": true,
         "error": ""
@@ -65,20 +65,20 @@
   },
   "headline": {
     "target_total_mt": 20400.0,
-    "delivered_mt": 8683.2,
-    "outstanding_mt": 11716.8,
-    "completion_pct": 0.4256,
-    "pta_balance_mt": 11716.8,
+    "delivered_mt": 8769.6,
+    "outstanding_mt": 11630.4,
+    "completion_pct": 0.4299,
+    "pta_balance_mt": 11630.4,
     "received_admin_mt": 20400.0,
     "received_physical_mt": 20400.0,
-    "loads_total": 402,
-    "avg_daily_offtake_mt": 289.44,
-    "avg_loads_per_day": 13.4,
+    "loads_total": 406,
+    "avg_daily_offtake_mt": 292.32,
+    "avg_loads_per_day": 13.53,
     "avg_mt_offloaded_per_tank": 21.6,
     "avg_remained_in_tank_kg": 93.83,
-    "required_rate_mt_per_day": 205.56,
-    "projected_completion": "2026-11-23",
-    "projected_remaining_days": 44,
+    "required_rate_mt_per_day": 204.04,
+    "projected_completion": "2026-11-21",
+    "projected_remaining_days": 42,
     "avg_decant_hours": 0.97,
     "avg_interval_hours": 0.75,
     "time_lost_hours": 14.98,
@@ -87,7 +87,7 @@
     "avg_turnaround_hours": 10.25,
     "open_exceptions": 4,
     "planned_completion": "2026-12-05",
-    "days_vs_plan": -12,
+    "days_vs_plan": -14,
     "plan_status": "ahead"
   },
   "vessel_discharge": {
@@ -224,22 +224,22 @@
     ]
   },
   "dispatch": {
-    "delivered_mt": 8683.2,
-    "outstanding_mt": 11716.8,
-    "completion_pct": 0.4256,
+    "delivered_mt": 8769.6,
+    "outstanding_mt": 11630.4,
+    "completion_pct": 0.4299,
     "target_total_mt": 20400.0,
-    "loads_total": 402,
+    "loads_total": 406,
     "open_loads": 0,
-    "avg_loads_per_day": 13.4,
+    "avg_loads_per_day": 13.53,
     "max_loads_day": 18,
-    "min_loads_day": 1,
-    "avg_daily_offtake_mt": 289.44,
+    "min_loads_day": 5,
+    "avg_daily_offtake_mt": 292.32,
     "avg_mt_per_load": 21.6,
     "avg_mt_offloaded_per_tank": 21.6,
-    "pta_balance_mt": 11716.8,
-    "projected_completion": "2026-11-20",
-    "projected_remaining_days": 41,
-    "required_rate_mt_per_day": 205.56,
+    "pta_balance_mt": 11630.4,
+    "projected_completion": "2026-11-19",
+    "projected_remaining_days": 40,
+    "required_rate_mt_per_day": 204.04,
     "avg_remained_in_tank_kg": 93.83,
     "first_delivery": "2026-09-11",
     "last_delivery": "2026-10-10",
@@ -449,10 +449,10 @@
       },
       {
         "date": "2026-10-10",
-        "loads": 1,
-        "mt": 21.6,
-        "cum_mt": 8683.2,
-        "cum_loads": 402
+        "loads": 5,
+        "mt": 108.0,
+        "cum_mt": 8769.6,
+        "cum_loads": 406
       }
     ],
     "by_iso": [
@@ -464,27 +464,27 @@
       },
       {
         "iso": "ISO-03",
+        "loads": 82,
+        "mt": 1771.2,
+        "actual_offloaded_mt": 1771.2
+      },
+      {
+        "iso": "ISO-04",
         "loads": 81,
         "mt": 1749.6,
         "actual_offloaded_mt": 1749.6
       },
       {
-        "iso": "ISO-04",
+        "iso": "ISO-01",
         "loads": 80,
         "mt": 1728.0,
         "actual_offloaded_mt": 1728.0
       },
       {
-        "iso": "ISO-01",
-        "loads": 79,
-        "mt": 1706.4,
-        "actual_offloaded_mt": 1706.4
-      },
-      {
         "iso": "ISO-02",
-        "loads": 79,
-        "mt": 1706.4,
-        "actual_offloaded_mt": 1706.4
+        "loads": 80,
+        "mt": 1728.0,
+        "actual_offloaded_mt": 1728.0
       }
     ]
   },
@@ -3809,8 +3809,8 @@
         "planned_isotainers": 10.0,
         "cum_planned_mt": 6480.0,
         "cum_planned_isotainers": 300.0,
-        "cum_actual_mt": 8683.2,
-        "variance_mt": 2203.2
+        "cum_actual_mt": 8769.6,
+        "variance_mt": 2289.6
       },
       {
         "date": "2026-10-11",
@@ -4322,8 +4322,8 @@
     "plan_total_mt": 20400.0,
     "plan_total_isotainers": 944.0,
     "cum_planned_to_date_mt": 6480.0,
-    "variance_to_date_mt": 2203.2,
-    "variance_mt": 2203.2,
+    "variance_to_date_mt": 2289.6,
+    "variance_mt": 2289.6,
     "days": 86,
     "days_elapsed": 30,
     "days_remaining": 56,
@@ -4496,16 +4496,16 @@
       "phase_total_mt": 7128.0
     },
     "projection": {
-      "projected_end": "2026-11-23",
-      "days_to_go": 44,
-      "rate_mt_per_day": 268.46,
+      "projected_end": "2026-11-21",
+      "days_to_go": 42,
+      "rate_mt_per_day": 280.8,
       "rate_basis": "7 active days to 10 Oct",
       "plan_end": "2026-12-05",
-      "days_vs_plan": -12,
+      "days_vs_plan": -14,
       "status": "ahead",
-      "required_rate_mt_per_day": 205.56,
+      "required_rate_mt_per_day": 204.04,
       "confidence": "high",
-      "outstanding_mt": 11716.8
+      "outstanding_mt": 11630.4
     }
   },
   "exceptions": [
